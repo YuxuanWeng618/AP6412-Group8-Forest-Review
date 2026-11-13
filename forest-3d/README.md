@@ -4,7 +4,7 @@ The team's C++ and C# additions are in [overlay/](overlay/). Changes to existing
 
 ## 1. Prepare the project
 
-Use Windows x64, Git for Windows, Unreal Engine 5.8.1, the Visual Studio C++ toolchain and Windows SDK, and a standalone [x64 .NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0). Put the repository in a short ASCII path such as `C:\ForestReview`. The first step downloads about 1.4 GB of upstream sources and assets. Allow extra disk space for the download, extraction and build.
+Use Windows x64, Git for Windows, Unreal Engine 5.8.1, the Visual Studio C++ toolchain and Windows SDK, and a standalone [x64 .NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) from the 10.0.4xx feature band. UnrealSharp's source generators require a newer C# compiler than the one in the engine's 10.0.203 SDK. Put the repository in a short ASCII path such as `C:\ForestReview`. The first step downloads about 1.4 GB of upstream sources and assets. Allow extra disk space for the download, extraction and build.
 
 From the repository root in PowerShell:
 
@@ -21,8 +21,8 @@ From the repository root, set the first two paths to your installation. If you u
 ```powershell
 $engine = 'C:\UE_5.8'
 $sdk = 'C:\Program Files\dotnet'
-if (-not (& "$sdk\dotnet.exe" --list-sdks | Select-String '^10\.')) {
-    throw 'Set $sdk to the standalone x64 .NET 10 SDK directory.'
+if (-not (& "$sdk\dotnet.exe" --list-sdks | Select-String '^10\.0\.4\d\d\s')) {
+    throw 'Set $sdk to a standalone x64 .NET 10.0.4xx SDK directory.'
 }
 $project = (Resolve-Path '.\build-3d\BCR.uproject').Path
 $projectRoot = Split-Path -Parent $project
