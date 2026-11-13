@@ -2,6 +2,8 @@
 
 Forest Together is a local two-player workshop game built in Unreal Engine. Players share a keyboard to accept an order, gather and carry a log, cut it into three pieces, assemble a rocking chair, and deliver it.
 
+On Windows, extract or clone the repository to a short path containing only ASCII characters, such as `C:\ForestReview`. Both projects use the Visual Studio C++ toolchain.
+
 | Version | Start here |
 | --- | --- |
 | 2D | [Source and keyboard controls](forest-2d/README.md). Open `forest-2d/Forest2D.uproject` in Unreal Engine 5.8.1 on Windows. Load `/Game/Maps/Forest`, click **Play**, and press **Enter**. The menu also has **Watch demo**. |
