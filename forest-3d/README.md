@@ -50,6 +50,16 @@ try {
 & "$engine\Engine\Binaries\Win64\UnrealEditor.exe" $project
 ```
 
+If a previous build with an older SDK left UnrealSharp assemblies missing, rebuild the plugin with the configured 10.0.4xx SDK before retrying step 2:
+
+```powershell
+Push-Location (Join-Path $projectRoot 'Plugins\UnrealSharp\Managed\UnrealSharp')
+try {
+    & "$sdk\dotnet.exe" build --configuration Release
+    if ($LASTEXITCODE -ne 0) { throw 'UnrealSharp plugin build failed.' }
+} finally { Pop-Location }
+```
+
 ## 3. Generate bilingual prompts and play
 
 Before playing for the first time, select **Tools → forest: Apply English / 中文 Hints** in the editor. This applies the team's translations and widget changes to the locally downloaded assets. The plugin imports the CJK font from the installed engine. If your engine installation lacks that font, set `BECORN_CJK_FONT` to the full path of a local CJK `.ttf` or `.otf` before launching the editor.
