@@ -1,0 +1,89 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-H3CTSR1",
+			"instance": "FAEDC36E44F35DAB7E93CEBCA9919A75",
+			"instanceName": "DESKTOP-H3CTSR1-22040",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 10 (22H2) [10.0.19045.6466] ",
+			"model": "Default",
+			"gPU": "Intel(R) UHD Graphics",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz",
+			"rAMInGB": 16,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.11.12-07.28.07",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.065699100494384766,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "OrderAndInvalidActions",
+			"fullTestPath": "Forest2D.Rules.OrderAndInvalidActions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"FAEDC36E44F35DAB7E93CEBCA9919A75"
+			],
+			"duration": 0.016378000378608704,
+			"dateTime": "2026.11.12-07.28.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SharedRecipeRopesOutput",
+			"fullTestPath": "Forest2D.Rules.SharedRecipeRopesOutput",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"FAEDC36E44F35DAB7E93CEBCA9919A75"
+			],
+			"duration": 0.016398701816797256,
+			"dateTime": "2026.11.12-07.28.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CompleteOrderWithoutTeleport",
+			"fullTestPath": "Forest2D.World.CompleteOrderWithoutTeleport",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"FAEDC36E44F35DAB7E93CEBCA9919A75"
+			],
+			"duration": 0.016405202448368073,
+			"dateTime": "2026.11.12-07.28.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MovementPauseAndItems",
+			"fullTestPath": "Forest2D.World.MovementPauseAndItems",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"FAEDC36E44F35DAB7E93CEBCA9919A75"
+			],
+			"duration": 0.016517199575901031,
+			"dateTime": "2026.11.12-07.28.07",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

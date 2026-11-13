@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 507 400" width="507" height="400" role="img">
+  <title>工坊核心 Class Map</title>
+  <desc>工坊回合与配方、双绳和交付的类关系，以及原关卡关键流程。</desc>
+  <rect x="0" y="0" width="507" height="400" rx="0" fill="#FFFFFF" stroke="none" stroke-width="0.7" />
+  <g id="managed-qte">
+    <rect x="0" y="0" width="149" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="9" y="16" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UManagedQteRules</text>
+    <text x="9" y="32" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">把 QTE 操作转给回合</text>
+    <text x="9" y="46" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">round: QteRound</text>
+    <text x="9" y="58" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">JoinRound()</text>
+  </g>
+  <g id="managed-workshop">
+    <rect x="174" y="0" width="151" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="183" y="16" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UManagedWorkshopRules</text>
+    <text x="183" y="32" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">协调工位、装配与交付</text>
+    <text x="183" y="46" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">CanStartMachineRound()</text>
+    <text x="183" y="58" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">ReserveCraft()</text>
+  </g>
+  <g id="workshop-bridge">
+    <rect x="358" y="0" width="149" height="75" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="367" y="16" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UBCRWorkshopRulesBridge</text>
+    <text x="367" y="32" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">UE 可调用的抽象契约</text>
+    <text x="367" y="46" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">ReserveCraft()</text>
+    <text x="367" y="58" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">ReserveDelivery()</text>
+  </g>
+  <g id="qte-round">
+    <rect x="0" y="120" width="149" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="9" y="136" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">QteRound</text>
+    <text x="9" y="152" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">维护两人回合进度</text>
+    <text x="9" y="166" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">State · TimeoutSeconds</text>
+    <text x="9" y="178" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">RecordSuccess()</text>
+  </g>
+  <g id="machine-run">
+    <rect x="174" y="120" width="151" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="183" y="136" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">MachineRunRules</text>
+    <text x="183" y="152" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">确认回合启动和收尾</text>
+    <text x="183" y="166" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">OwnsRound</text>
+    <text x="183" y="178" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">CanStart() / Finish()</text>
+  </g>
+  <g id="recipe">
+    <rect x="358" y="120" width="149" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="367" y="136" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">WorkshopRecipe</text>
+    <text x="367" y="152" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">预约并扣减材料</text>
+    <text x="367" y="166" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">RemainingTotal</text>
+    <text x="367" y="178" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">Reserve() / Finish()</text>
+  </g>
+  <g id="slots">
+    <rect x="0" y="238" width="149" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="9" y="254" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">WorkstationSlots</text>
+    <text x="9" y="270" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">记录两个工位占用</text>
+    <text x="9" y="284" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">Count</text>
+    <text x="9" y="296" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">Join() / Leave()</text>
+  </g>
+  <g id="ropes">
+    <rect x="174" y="238" width="151" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="183" y="254" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">RopeRules</text>
+    <text x="183" y="270" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">验证两名玩家各拉一侧</text>
+    <text x="183" y="284" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">approvedLeft / approvedRight</text>
+    <text x="183" y="296" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">Observe() / CanActivate()</text>
+  </g>
+  <g id="output">
+    <rect x="358" y="238" width="149" height="75" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="367" y="254" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">SpawnGate</text>
+    <text x="367" y="270" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">产物生成成功才结算</text>
+    <text x="367" y="284" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">Completed</text>
+    <text x="367" y="296" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.2" font-weight="normal" text-anchor="start">Reserve() / Finish()</text>
+  </g>
+  <g id="qte-action">
+    <rect x="45" y="205" width="104" height="24" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="53" y="220" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.4" font-weight="normal" text-anchor="start">QteActionRules</text>
+  </g>
+  <polyline points="325,24 358,24" fill="none" stroke="#475A52" stroke-width="1" />
+  <polygon points="352.00,27.00 358.00,24.00 352.00,21.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <polyline points="35,75 35,120" fill="none" stroke="#475A52" stroke-width="1" />
+  <text x="44" y="102" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.1" font-weight="normal" text-anchor="start">round</text>
+  <polyline points="35,195 35,238" fill="none" stroke="#475A52" stroke-width="1" />
+  <text x="8" y="219" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="7.6" font-weight="normal" text-anchor="start">slots</text>
+  <polyline points="91,195 91,205" fill="none" stroke="#475A52" stroke-width="1" stroke-dasharray="3 2" />
+  <polyline points="88.50,201.00 91.00,205.00 93.50,201.00" fill="none" stroke="#475A52" stroke-width="1" />
+  <polyline points="251,75 251,92 341,92 341,264" fill="none" stroke="#475A52" stroke-width="1" />
+  <polyline points="325,143 358,143" fill="none" stroke="#475A52" stroke-width="1" />
+  <rect x="339.2" y="141.2" width="3.6" height="3.6" rx="1" fill="#475A52" stroke="none" stroke-width="0.7" />
+  <polyline points="325,264 358,264" fill="none" stroke="#475A52" stroke-width="1" />
+  <rect x="339.2" y="262.2" width="3.6" height="3.6" rx="1" fill="#475A52" stroke="none" stroke-width="0.7" />
+  <text x="174" y="110" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.2" font-weight="normal" text-anchor="start">字段 machineRun</text>
+  <text x="358" y="110" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.2" font-weight="normal" text-anchor="start">字段 recipe</text>
+  <text x="174" y="225" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.2" font-weight="normal" text-anchor="start">字段 ropes</text>
+  <text x="358" y="225" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.2" font-weight="normal" text-anchor="start">字段 output</text>
+  <text x="0" y="331" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">工位和 QTE 分别持有各自的 WorkstationSlots 实例。</text>
+  <polyline points="0,343 507,343" fill="none" stroke="#C0CDC2" stroke-width="0.65" />
+  <rect x="0" y="354" width="114" height="29" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+  <text x="57" y="372" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="middle">锯木转轮与落刀</text>
+  <polyline points="116,369 128,369" fill="none" stroke="#826032" stroke-width="1" />
+  <polyline points="124.00,371.50 128.00,369.00 124.00,366.50" fill="none" stroke="#826032" stroke-width="1" />
+  <rect x="131" y="354" width="114" height="29" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+  <text x="188" y="372" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="middle">投入三段木料</text>
+  <polyline points="247,369 259,369" fill="none" stroke="#826032" stroke-width="1" />
+  <polyline points="255.00,371.50 259.00,369.00 255.00,366.50" fill="none" stroke="#826032" stroke-width="1" />
+  <rect x="262" y="354" width="114" height="29" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+  <text x="319" y="372" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="middle">两人各拉一侧</text>
+  <polyline points="378,369 390,369" fill="none" stroke="#826032" stroke-width="1" />
+  <polyline points="386.00,371.50 390.00,369.00 386.00,366.50" fill="none" stroke="#826032" stroke-width="1" />
+  <rect x="393" y="354" width="114" height="29" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+  <text x="450" y="372" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="middle">交付生成摇椅</text>
+</svg>

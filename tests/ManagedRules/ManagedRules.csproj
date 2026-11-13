@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/PlayerActionRules.cs" Link="PlayerActionRules.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/QuestProgress.cs" Link="QuestProgress.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/KeyboardInputPolicy.cs" Link="KeyboardInputPolicy.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/KeyboardPromptRules.cs" Link="KeyboardPromptRules.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/QteActionRules.cs" Link="QteActionRules.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/QteRound.cs" Link="QteRound.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/WorkshopRules.cs" Link="WorkshopRules.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/TriggerOccupancy.cs" Link="TriggerOccupancy.cs" />
+    <Compile Include="../../forest-3d/overlay/Script/ManagedBCR/SharedCameraRules.cs" Link="SharedCameraRules.cs" />
+  </ItemGroup>
+</Project>

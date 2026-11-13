@@ -1,0 +1,59 @@
+<svg viewBox="0 0 720 610" width="720" height="610" xmlns="http://www.w3.org/2000/svg"><defs><marker id="diamond" viewBox="0 0 12 8" refX="0" refY="4" markerWidth="12" markerHeight="8" orient="auto"><path d="M0,4 L6,0 L12,4 L6,8 Z" fill="#555"/></marker><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#555"/></marker><marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#fff" stroke="#555"/></marker></defs><style>.ct{font:600 11px Consolas,monospace;fill:#fff}.cr{font:10.5px "Microsoft YaHei",sans-serif;fill:#444}.cm{font:10px Consolas,monospace;fill:#333}.el{font:9.5px "Microsoft YaHei",sans-serif;fill:#444;paint-order:stroke;stroke:#f4f1ea;stroke-width:3px}.nt{font:9.5px "Microsoft YaHei",sans-serif;fill:#555}.gl{font:600 10px Consolas,monospace;fill:#a0784a;letter-spacing:.06em}</style><rect width="720" height="610" fill="#fff"/><rect x="15" y="12" width="690" height="275" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="23" y="26" class="gl">CORE · forest-2d/Source/Forest2D/Domain/WorkshopSession.h · 无 UE 类型</text><rect x="15" y="298" width="690" height="162" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="23" y="312" class="gl">2D WORLD ADAPTER</text><rect x="15" y="492" width="690" height="108" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="23" y="506" class="gl">UE PRESENTATION · 输入、绘制、回放</text><path d="M360,69.5 L430,69.5" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="366" y="53" class="el" text-anchor="start"><tspan x="366" dy="0">has-a</tspan><tspan x="366" dy="11">Stations</tspan></text><path d="M360,154.0 L430,154.0" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="366" y="137" class="el" text-anchor="start"><tspan x="366" dy="0">has-a</tspan><tspan x="366" dy="11">Recipe</tspan></text><path d="M330,164 L330,241.0 L430,241.0" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="366" y="224" class="el" text-anchor="start"><tspan x="366" dy="0">has-a</tspan><tspan x="366" dy="11">Qte</tspan></text><path d="M180,322 L180,164" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="188" y="236" class="el" text-anchor="start"><tspan x="188" dy="0">has-a · Session</tspan><tspan x="188" dy="11">全部规则判断委托给它</tspan></text><path d="M320,351.5 L400,351.5" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="326" y="334" class="el" text-anchor="start"><tspan x="326" dy="0">has-a</tspan><tspan x="326" dy="11">Players[2]</tspan></text><path d="M320,423.5 L400,423.5" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="326" y="406" class="el" text-anchor="start"><tspan x="326" dy="0">has-a</tspan><tspan x="326" dy="11">Items</tspan></text><path d="M285,517 L285,433" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="279" y="452" class="el" text-anchor="end"><tspan x="279" dy="0">has-a · Board</tspan></text><path d="M165,548 L215,548" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/><text x="169" y="532" class="el" text-anchor="start"><tspan x="169" dy="0">uses-a</tspan><tspan x="169" dy="11">读 Board</tspan></text><path d="M405,548 L355,548" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/><text x="359" y="532" class="el" text-anchor="start"><tspan x="359" dy="0">uses-a</tspan><tspan x="359" dy="11">调 Update</tspan></text><path d="M555,548 L600,548" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="558" y="532" class="el" text-anchor="start"><tspan x="558" dy="0">has-a</tspan><tspan x="558" dy="11">Replay</tspan></text><path d="M652.5,517 L652.5,476 L310,476 L310,433" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/><text x="420" y="471" class="el" text-anchor="start"><tspan x="420" dy="0">uses-a · Tick(world, dt) 推进同一个世界</tspan></text><text x="575" y="340" class="nt">2d-v1.1 没有接口：</text><text x="575" y="352" class="nt">每条规则只有一个实现，</text><text x="575" y="364" class="nt">表现层直接持有具体类，</text><text x="575" y="376" class="nt">不需要用接口替换。</text><rect x="30" y="40" width="330" height="124" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="30" y="40" width="330" height="22" rx="3" fill="#2c5a45"/>
+<text x="38" y="55" class="ct">WorkshopSession</text>
+<text x="38" y="75" class="cr">订单九步状态机（2D 的全部规则从这里进）</text>
+<text x="38" y="90" class="cm">Current : Stage   Stations   Recipe   Qte</text>
+<text x="38" y="103" class="cm">AcceptOrder()  Discover()  ReturnLog()</text>
+<text x="38" y="116" class="cm">LoadSaw(kind)  Join()  Leave()  Work()</text>
+<text x="38" y="129" class="cm">Supply(id, kind)  Deliver()</text>
+<text x="38" y="142" class="cm">Pull(p1Held, p2Held)  // 两人都拉住才通过</text>
+<text x="38" y="155" class="cm">- Advance(expected)  // 拒绝乱序</text><rect x="430" y="40" width="260" height="59" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="430" y="40" width="260" height="22" rx="3" fill="#2c5a45"/>
+<text x="438" y="55" class="ct">StationPair</text>
+<text x="438" y="75" class="cr">两侧工位，各记一位玩家</text>
+<text x="438" y="90" class="cm">Owners[2]  Join() Leave() Find() Full()</text><rect x="430" y="118" width="260" height="72" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="430" y="118" width="260" height="22" rx="3" fill="#2c5a45"/>
+<text x="438" y="133" class="ct">PlankRecipe</text>
+<text x="438" y="153" class="cr">三段不同木板，同一物品只计一次</text>
+<text x="438" y="168" class="cm">Consumed : set&lt;int&gt;   Required = 3</text>
+<text x="438" y="181" class="cm">Consume(id, kind)  Count()  Ready()</text><rect x="430" y="205" width="260" height="72" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="430" y="205" width="260" height="22" rx="3" fill="#2c5a45"/>
+<text x="438" y="220" class="ct">CooperativeQte</text>
+<text x="438" y="240" class="cr">两侧各 8 次、左右交替</text>
+<text x="438" y="255" class="cm">Counts[2]  LastDirection[2]  Target = 8</text>
+<text x="438" y="268" class="cm">Input(slot, dir, blade, both)  Done()</text><rect x="40" y="322" width="280" height="111" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="40" y="322" width="280" height="22" rx="3" fill="#6b7d72"/>
+<text x="48" y="337" class="ct">FPlanarWorld</text>
+<text x="48" y="357" class="cr">2D 世界：坐标、碰撞、拾放、距离</text>
+<text x="48" y="372" class="cm">Session : Forest::WorkshopSession</text>
+<text x="48" y="385" class="cm">Players[2] : FForestPlayer</text>
+<text x="48" y="398" class="cm">Items : TArray&lt;FForestItem&gt;</text>
+<text x="48" y="411" class="cm">Update(dt, inputs[2])  CanStand()</text>
+<text x="48" y="424" class="cm">Objective()  Hint()</text><rect x="400" y="322" width="150" height="59" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="400" y="322" width="150" height="22" rx="3" fill="#6b7d72"/>
+<text x="408" y="337" class="ct">FForestPlayer</text>
+<text x="408" y="357" class="cr">struct · 一位玩家</text>
+<text x="408" y="372" class="cm">Position  Facing</text><rect x="400" y="394" width="150" height="59" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="400" y="394" width="150" height="22" rx="3" fill="#6b7d72"/>
+<text x="408" y="409" class="ct">FForestItem</text>
+<text x="408" y="429" class="cr">struct · 一件物品</text>
+<text x="408" y="444" class="cm">Kind  Position</text><rect x="25" y="517" width="140" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="25" y="517" width="140" height="22" rx="3" fill="#6b7d72"/>
+<text x="33" y="532" class="ct">AForestHUD</text>
+<text x="33" y="552" class="cr">is-a AHUD</text>
+<text x="33" y="567" class="cm">DrawWorld(world)</text>
+<text x="33" y="580" class="cm">DrawOverlay()</text><rect x="215" y="517" width="140" height="59" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="215" y="517" width="140" height="22" rx="3" fill="#6b7d72"/>
+<text x="223" y="532" class="ct">AForestGameMode</text>
+<text x="223" y="552" class="cr">is-a AGameModeBase</text>
+<text x="223" y="567" class="cm">Board : FPlanarWorld</text><rect x="405" y="517" width="150" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="405" y="517" width="150" height="22" rx="3" fill="#6b7d72"/>
+<text x="413" y="532" class="ct">AForestController</text>
+<text x="413" y="552" class="cr">is-a APlayerController</text>
+<text x="413" y="567" class="cm">Replay : FOrderReplay</text>
+<text x="413" y="580" class="cm">PlayerTick() 双人输入</text><rect x="600" y="517" width="105" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="600" y="517" width="105" height="22" rx="3" fill="#6b7d72"/>
+<text x="608" y="532" class="ct">FOrderReplay</text>
+<text x="608" y="552" class="cr">演示 · 75 步</text>
+<text x="608" y="567" class="cm">Commands</text>
+<text x="608" y="580" class="cm">Tick(world, dt)</text></svg>

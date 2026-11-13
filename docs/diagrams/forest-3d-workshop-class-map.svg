@@ -1,0 +1,94 @@
+<svg viewBox="0 0 760 702" width="760" height="702" xmlns="http://www.w3.org/2000/svg"><defs><marker id="diamond" viewBox="0 0 12 8" refX="0" refY="4" markerWidth="12" markerHeight="8" orient="auto"><path d="M0,4 L6,0 L12,4 L6,8 Z" fill="#555"/></marker><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#555"/></marker><marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#fff" stroke="#555"/></marker></defs><style>.ct{font:600 11px Consolas,monospace;fill:#fff}.cr{font:10.5px "Microsoft YaHei",sans-serif;fill:#444}.cm{font:10px Consolas,monospace;fill:#333}.el{font:9.5px "Microsoft YaHei",sans-serif;fill:#444;paint-order:stroke;stroke:#f4f1ea;stroke-width:3px}.nt{font:9.5px "Microsoft YaHei",sans-serif;fill:#555}.gl{font:600 10px Consolas,monospace;fill:#a0784a;letter-spacing:.06em}</style><rect width="760" height="702" fill="#fff"/><rect x="15" y="12" width="180" height="345" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="23" y="26" class="gl">SHARED CORE · 同一头文件</text><rect x="205" y="12" width="200" height="365" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="213" y="26" class="gl">UE C++ ADAPTER</text><rect x="412" y="12" width="343" height="470" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="420" y="26" class="gl">UPSTREAM ACTORS · BLUEPRINT</text><rect x="15" y="502" width="585" height="192" rx="4" fill="#f4f1ea" stroke="#c9c3b5"/><text x="23" y="516" class="gl">QTE · C++ 子系统 + C#（未共享）</text><path d="M215,241.0 L199,241.0" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><path d="M199,69.5 L199,279.5" fill="none" stroke="#555" stroke-width="1"/><path d="M199,69.5 L185,69.5" fill="none" stroke="#555" stroke-width="1"/><path d="M199,139.5 L185,139.5" fill="none" stroke="#555" stroke-width="1"/><path d="M199,209.5 L185,209.5" fill="none" stroke="#555" stroke-width="1"/><path d="M199,279.5 L185,279.5" fill="none" stroke="#555" stroke-width="1"/><text x="25" y="330" class="el" text-anchor="start"><tspan x="25" dy="0">has-a ×4：State 的四个字段</tspan><tspan x="25" dy="11">Stations Recipe Ropes Output</tspan></text><path d="M300,177 L300,205" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="306" y="196" class="el" text-anchor="start"><tspan x="306" dy="0">has-a · State</tspan></text><path d="M300,277 L300,305" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="306" y="296" class="el" text-anchor="start"><tspan x="306" dy="0">has-a · Machine</tspan></text><path d="M445,69.5 L385,69.5" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="392" y="55" class="el" text-anchor="start"><tspan x="392" dy="0">has-a</tspan><tspan x="392" dy="11">委托规则</tspan></text><path d="M445,151.0 L385,151.0" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="392" y="137" class="el" text-anchor="start"><tspan x="392" dy="0">has-a</tspan><tspan x="392" dy="11">委托规则</tspan></text><path d="M445,436.0 L425,436.0 L425,168 L385,168" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="421" y="395" class="el" text-anchor="end"><tspan x="421" dy="0">has-a · 锯木机也委托规则</tspan></text><path d="M517,187 L517,222" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)" marker-end="url(#arrow)"/><text x="523" y="200" class="el" text-anchor="start"><tspan x="523" dy="0">has-a 弱引用</tspan><tspan x="523" dy="11">反射读拉绳标志</tspan></text><path d="M517,294 L517,322" fill="none" stroke="#555" stroke-width="1" marker-end="url(#tri)"/><text x="523" y="312" class="el" text-anchor="start"><tspan x="523" dy="0">is-a</tspan></text><path d="M590,151.0 L600,151.0" fill="none" stroke="#555" stroke-dasharray="4 3"/><path d="M590,351.5 L600,351.5" fill="none" stroke="#555" stroke-dasharray="4 3"/><path d="M590,436.0 L600,436.0" fill="none" stroke="#555" stroke-dasharray="4 3"/><path d="M600,151.0 L600,436.0" fill="none" stroke="#555" stroke-dasharray="4 3"/><path d="M600,171.0 L622,171.0" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#tri)"/><path d="M686,99 L686,135" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/><text x="691" y="113" class="el" text-anchor="start"><tspan x="691" dy="0">uses-a</tspan><tspan x="691" dy="11">调接口</tspan></text><text x="626" y="232" class="nt">can-do（实现接口）：</text><text x="626" y="244" class="nt">组装器、绳、锯木机</text><text x="626" y="256" class="nt">都实现 IInteractable；</text><text x="626" y="268" class="nt">玩家只调接口，</text><text x="626" y="280" class="nt">不认具体的 Actor 类。</text><path d="M517,472 L517,527" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/><text x="523" y="496" class="el" text-anchor="start"><tspan x="523" dy="0">uses-a · GetSubsystem</tspan></text><path d="M445,563.0 L380,563.0" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="384" y="541" class="el" text-anchor="start"><tspan x="384" dy="0">has-a</tspan><tspan x="384" dy="11">RulesBridge</tspan></text><path d="M185,556 L230,556" fill="none" stroke="#555" stroke-width="1" marker-end="url(#tri)"/><text x="195" y="550" class="el" text-anchor="start"><tspan x="195" dy="0">is-a</tspan></text><path d="M105,586 L105,612" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="111" y="603" class="el" text-anchor="start"><tspan x="111" dy="0">has-a · round</tspan></text><path d="M185,641.5 L230,641.5" fill="none" stroke="#555" stroke-width="1" marker-start="url(#diamond)"/><text x="192" y="624" class="el" text-anchor="start"><tspan x="192" dy="0">has-a</tspan><tspan x="192" dy="11">slots</tspan></text><path d="M105,671 L105,684 L517,684 L517,671" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/><text x="300" y="680" class="el" text-anchor="start"><tspan x="300" dy="0">uses-a · 调用按键判定</tspan></text><rect x="25" y="40" width="160" height="59" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="25" y="40" width="160" height="22" rx="3" fill="#2c5a45"/>
+<text x="33" y="55" class="ct">StationPair</text>
+<text x="33" y="75" class="cr">锯台/树桩两侧工位</text>
+<text x="33" y="90" class="cm">Join() Leave() Find()</text><rect x="25" y="110" width="160" height="59" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="25" y="110" width="160" height="22" rx="3" fill="#2c5a45"/>
+<text x="33" y="125" class="ct">ItemRecipe</text>
+<text x="33" y="145" class="cr">新增 · 组装器配方</text>
+<text x="33" y="160" class="cm">Reserve() Finish() Ready()</text><rect x="25" y="180" width="160" height="59" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="25" y="180" width="160" height="22" rx="3" fill="#2c5a45"/>
+<text x="33" y="195" class="ct">RopePair</text>
+<text x="33" y="215" class="cr">新增 · 两根绳的持有人</text>
+<text x="33" y="230" class="cm">Observe() CanActivate()</text><rect x="25" y="250" width="160" height="59" rx="3" fill="#fff" stroke="#2c5a45" stroke-width="1.2"/>
+<rect x="25" y="250" width="160" height="22" rx="3" fill="#2c5a45"/>
+<text x="33" y="265" class="ct">OutputGate</text>
+<text x="33" y="285" class="cr">新增 · 产出只结算一次</text>
+<text x="33" y="300" class="cm">Reserve() Finish()</text><rect x="215" y="40" width="170" height="137" rx="3" fill="#fff" stroke="#a0784a" stroke-width="1.2"/>
+<rect x="215" y="40" width="170" height="22" rx="3" fill="#a0784a"/>
+<text x="223" y="55" class="ct">UBCRWorkshopRulesBridge</text>
+<text x="223" y="75" class="cr">is-a UObject · 蓝图可调用</text>
+<text x="223" y="90" class="cm">State : TSharedPtr&lt;…&gt;</text>
+<text x="223" y="103" class="cm">InteractWithStation()</text>
+<text x="223" y="116" class="cm">ReserveIngredient()</text>
+<text x="223" y="129" class="cm">ObserveRopes()</text>
+<text x="223" y="142" class="cm">ReserveCraft()</text>
+<text x="223" y="155" class="cm">ReserveDelivery()</text>
+<text x="223" y="168" class="cm">FinishOutput()  …</text><rect x="215" y="205" width="170" height="72" rx="3" fill="#fff" stroke="#a0784a" stroke-width="1.2"/>
+<rect x="215" y="205" width="170" height="22" rx="3" fill="#a0784a"/>
+<text x="223" y="220" class="ct">FForestWorkshopRulesState</text>
+<text x="223" y="240" class="cr">struct · 适配器内部状态</text>
+<text x="223" y="255" class="cm">Stations Recipe Ropes</text>
+<text x="223" y="268" class="cm">Output  Machine  bOwnsRound</text><rect x="215" y="305" width="170" height="59" rx="3" fill="#fff" stroke="#a0784a" stroke-width="1.2"/>
+<rect x="215" y="305" width="170" height="22" rx="3" fill="#a0784a"/>
+<text x="223" y="320" class="ct">FMachineInput</text>
+<text x="223" y="340" class="cr">仅 3D · 投料箱替换与遗失</text>
+<text x="223" y="355" class="cm">Requirements  Replacement</text><rect x="445" y="40" width="145" height="59" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="445" y="40" width="145" height="22" rx="3" fill="#6b7d72"/>
+<text x="453" y="55" class="ct">ADeliveryPoint</text>
+<text x="453" y="75" class="cr">is-a AActor · 交付点</text>
+<text x="453" y="90" class="cm">WorkshopRules</text><rect x="445" y="115" width="145" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="445" y="115" width="145" height="22" rx="3" fill="#6b7d72"/>
+<text x="453" y="130" class="ct">AFurnitureAssembler</text>
+<text x="453" y="150" class="cr">is-a AActor · 组装器</text>
+<text x="453" y="165" class="cm">WorkshopRules</text>
+<text x="453" y="178" class="cm">RopeActor（弱引用）</text><rect x="445" y="222" width="145" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="445" y="222" width="145" height="22" rx="3" fill="#6b7d72"/>
+<text x="453" y="237" class="ct">BP_NewActivationRopes</text>
+<text x="453" y="257" class="cr">蓝图 · 场景里的两根绳</text>
+<text x="453" y="272" class="cm">IsActivated_L / _R</text>
+<text x="453" y="285" class="cm">PlayerOnRopeLeft/Right</text><rect x="445" y="322" width="145" height="59" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="445" y="322" width="145" height="22" rx="3" fill="#6b7d72"/>
+<text x="453" y="337" class="ct">AUniqueRope</text>
+<text x="453" y="357" class="cr">is-a AActor · C++ 绳</text>
+<text x="453" y="372" class="cm">Interact_Implementation</text><rect x="445" y="400" width="145" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="445" y="400" width="145" height="22" rx="3" fill="#6b7d72"/>
+<text x="453" y="415" class="ct">AMiniGameSystem</text>
+<text x="453" y="435" class="cr">is-a AActor · 锯木机</text>
+<text x="453" y="450" class="cm">WorkshopRules</text>
+<text x="453" y="463" class="cm">StartQTE（经子系统）</text><rect x="622" y="40" width="128" height="59" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="622" y="40" width="128" height="22" rx="3" fill="#6b7d72"/>
+<text x="630" y="55" class="ct">AMainPlayer</text>
+<text x="630" y="75" class="cr">is-a ACharacter · 玩家</text>
+<text x="630" y="90" class="cm">Execute_Interact(…)</text><rect x="622" y="135" width="128" height="72" rx="3" fill="#fff" stroke="#3d6b84" stroke-width="1.2" stroke-dasharray="5 3"/>
+<rect x="622" y="135" width="128" height="22" rx="3" fill="#3d6b84"/>
+<text x="630" y="150" class="ct">IInteractable</text>
+<text x="630" y="170" class="cr">«interface»</text>
+<text x="630" y="185" class="cm">Interact()</text>
+<text x="630" y="198" class="cm">InteractWithObject()</text><rect x="445" y="527" width="145" height="72" rx="3" fill="#fff" stroke="#6b7d72" stroke-width="1.2"/>
+<rect x="445" y="527" width="145" height="22" rx="3" fill="#6b7d72"/>
+<text x="453" y="542" class="ct">UQTE_Subsystem</text>
+<text x="453" y="562" class="cr">GameInstance 子系统</text>
+<text x="453" y="577" class="cm">RulesBridge</text>
+<text x="453" y="590" class="cm">StartQTEFromAsset()</text><rect x="230" y="527" width="150" height="72" rx="3" fill="#fff" stroke="#a0784a" stroke-width="1.2"/>
+<rect x="230" y="527" width="150" height="22" rx="3" fill="#a0784a"/>
+<text x="238" y="542" class="ct">UBCRQteRulesBridge</text>
+<text x="238" y="562" class="cr">C++ 抽象类 · Blueprintable</text>
+<text x="238" y="577" class="cm">JoinRound()</text>
+<text x="238" y="590" class="cm">OwnsRoundSlot() …</text><rect x="25" y="527" width="160" height="59" rx="3" fill="#fff" stroke="#8c8c8c" stroke-width="1.2"/>
+<rect x="25" y="527" width="160" height="22" rx="3" fill="#8c8c8c"/>
+<text x="33" y="542" class="ct">UManagedQteRules</text>
+<text x="33" y="562" class="cr">C# · UnrealSharp 子类</text>
+<text x="33" y="577" class="cm">round : QteRound</text><rect x="25" y="612" width="160" height="59" rx="3" fill="#fff" stroke="#8c8c8c" stroke-width="1.2"/>
+<rect x="25" y="612" width="160" height="22" rx="3" fill="#8c8c8c"/>
+<text x="33" y="627" class="ct">QteRound</text>
+<text x="33" y="647" class="cr">C# · QTE 回合</text>
+<text x="33" y="662" class="cm">slots : WorkstationSlots</text><rect x="230" y="612" width="150" height="59" rx="3" fill="#fff" stroke="#8c8c8c" stroke-width="1.2"/>
+<rect x="230" y="612" width="150" height="22" rx="3" fill="#8c8c8c"/>
+<text x="238" y="627" class="ct">WorkstationSlots</text>
+<text x="238" y="647" class="cr">C# · 与 StationPair 重复</text>
+<text x="238" y="662" class="cm">Join() Leave() Owner()</text><rect x="445" y="612" width="145" height="59" rx="3" fill="#fff" stroke="#8c8c8c" stroke-width="1.2"/>
+<rect x="445" y="612" width="145" height="22" rx="3" fill="#8c8c8c"/>
+<text x="453" y="627" class="ct">QteActionRules</text>
+<text x="453" y="647" class="cr">C# 静态 · 按键判定</text>
+<text x="453" y="662" class="cm">Evaluate() Progress()</text></svg>

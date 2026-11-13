@@ -1,0 +1,632 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" compressed="false">
+  <diagram id="architecture" name="当前 UE 3D 架构">
+    <mxGraphModel grid="0" page="1" pageWidth="527" pageHeight="441" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="input-ue" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="47" width="143" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="input-bridge" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="47" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="input-impl" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="91" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="input-rule" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="374" y="84" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="quest-ue" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="125" width="143" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="quest-bridge" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="125" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="quest-impl" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="169" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="quest-rule" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="374" y="162" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="qte-ue" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="203" width="143" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="qte-bridge" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="203" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="qte-impl" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="247" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="qte-rule" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="374" y="240" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="workshop-ue" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="281" width="143" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="workshop-bridge" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="281" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="workshop-impl" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="183" y="325" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="workshop-rule" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="374" y="318" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-3" parent="1">
+          <mxGeometry x="10" y="10" width="143" height="26" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=10;fontColor=#826032;fontStyle=1;" value="UE 接入" id="shape-4" parent="1">
+          <mxGeometry x="19" y="18.3" width="37.0" height="13.0" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F1F4F2;strokeColor=#A9BBB1;" value="" id="shape-5" parent="1">
+          <mxGeometry x="183" y="10" width="161" height="26" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=10;fontColor=#475A52;fontStyle=1;" value="反射契约与 C# 实现" id="shape-6" parent="1">
+          <mxGeometry x="192" y="18.3" width="92.0" height="13.0" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-7" parent="1">
+          <mxGeometry x="374" y="10" width="143" height="26" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=10;fontColor=#285645;fontStyle=1;" value="C# 游戏规则" id="shape-8" parent="1">
+          <mxGeometry x="383" y="18.3" width="57.0" height="13.0" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-9" parent="input-ue">
+          <mxGeometry x="0" y="0" width="143" height="43" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#826032;fontStyle=0;" value="UBCRGameViewportClient" id="shape-10" parent="input-ue">
+          <mxGeometry x="9" y="8.170000000000002" width="110.86132812500001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="路由按键、投递控制器" id="shape-11" parent="input-ue">
+          <mxGeometry x="9" y="24.17" width="92.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F1F4F2;strokeColor=#A9BBB1;" value="" id="shape-12" parent="input-bridge">
+          <mxGeometry x="0" y="0" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#475A52;fontStyle=0;" value="UBCRKeyboardBridge" id="shape-13" parent="input-bridge">
+          <mxGeometry x="8" y="8.170000000000002" width="91.06835937500001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-14" parent="input-impl">
+          <mxGeometry x="0" y="0" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="UManagedKeyboardInput" id="shape-15" parent="input-impl">
+          <mxGeometry x="8" y="9.170000000000002" width="105.91308593750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-16" parent="input-rule">
+          <mxGeometry x="0" y="0" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="KeyboardInputPolicy" id="shape-17" parent="input-rule">
+          <mxGeometry x="9" y="8.170000000000002" width="96.01660156250001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="维护按键与方向状态" id="shape-18" parent="input-rule">
+          <mxGeometry x="9" y="24.17" width="83.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-19" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="153" y="60" as="sourcePoint" />
+            <mxPoint x="183" y="60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-20" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="263" y="91" as="sourcePoint" />
+            <mxPoint x="263" y="72" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-21" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="344" y="104" as="sourcePoint" />
+            <mxPoint x="374" y="104" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-22" parent="quest-ue">
+          <mxGeometry x="0" y="0" width="143" height="43" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#826032;fontStyle=0;" value="UQuest_Subsystem" id="shape-23" parent="quest-ue">
+          <mxGeometry x="9" y="8.170000000000002" width="81.17187500000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="读取任务数据与通知 HUD" id="shape-24" parent="quest-ue">
+          <mxGeometry x="9" y="24.169999999999987" width="106.19873046875001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F1F4F2;strokeColor=#A9BBB1;" value="" id="shape-25" parent="quest-bridge">
+          <mxGeometry x="0" y="0" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#475A52;fontStyle=0;" value="UBCRQuestBridge" id="shape-26" parent="quest-bridge">
+          <mxGeometry x="8" y="8.170000000000002" width="76.22363281250001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-27" parent="quest-impl">
+          <mxGeometry x="0" y="0" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="UManagedQuestProgress" id="shape-28" parent="quest-impl">
+          <mxGeometry x="8" y="9.169999999999987" width="105.91308593750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-29" parent="quest-rule">
+          <mxGeometry x="0" y="0" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="QuestProgress" id="shape-30" parent="quest-rule">
+          <mxGeometry x="9" y="8.169999999999987" width="66.32714843750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="维护任务步数与事件" id="shape-31" parent="quest-rule">
+          <mxGeometry x="9" y="24.169999999999987" width="83.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-32" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="153" y="138" as="sourcePoint" />
+            <mxPoint x="183" y="138" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-33" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="263" y="169" as="sourcePoint" />
+            <mxPoint x="263" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-34" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="344" y="182" as="sourcePoint" />
+            <mxPoint x="374" y="182" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-35" parent="qte-ue">
+          <mxGeometry x="0" y="0" width="143" height="43" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#826032;fontStyle=0;" value="UQTE_Subsystem" id="shape-36" parent="qte-ue">
+          <mxGeometry x="9" y="8.169999999999987" width="71.27539062500001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="采样控制器、驱动计时" id="shape-37" parent="qte-ue">
+          <mxGeometry x="9" y="24.169999999999987" width="92.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F1F4F2;strokeColor=#A9BBB1;" value="" id="shape-38" parent="qte-bridge">
+          <mxGeometry x="0" y="0" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#475A52;fontStyle=0;" value="UBCRQteRulesBridge" id="shape-39" parent="qte-bridge">
+          <mxGeometry x="8" y="8.169999999999987" width="91.06835937500001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-40" parent="qte-impl">
+          <mxGeometry x="0" y="0" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="UManagedQteRules" id="shape-41" parent="qte-impl">
+          <mxGeometry x="8" y="9.169999999999987" width="81.17187500000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-42" parent="qte-rule">
+          <mxGeometry x="0" y="0" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="QteRound" id="shape-43" parent="qte-rule">
+          <mxGeometry x="9" y="8.169999999999987" width="41.58593750000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="维护占位与回合进度" id="shape-44" parent="qte-rule">
+          <mxGeometry x="9" y="24.169999999999987" width="83.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-45" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="153" y="216" as="sourcePoint" />
+            <mxPoint x="183" y="216" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-46" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="263" y="247" as="sourcePoint" />
+            <mxPoint x="263" y="228" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-47" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="344" y="260" as="sourcePoint" />
+            <mxPoint x="374" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-48" parent="workshop-ue">
+          <mxGeometry x="0" y="0" width="143" height="62" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.8;fontColor=#826032;fontStyle=0;" value="AMiniGameSystem" id="shape-49" parent="workshop-ue">
+          <mxGeometry x="9" y="7.343999999999994" width="74.57421875" height="11.440000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.8;fontColor=#826032;fontStyle=0;" value="AFurnitureAssembler" id="shape-50" parent="workshop-ue">
+          <mxGeometry x="9" y="19.343999999999994" width="93.92734375" height="11.440000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.8;fontColor=#826032;fontStyle=0;" value="ADeliveryPoint" id="shape-51" parent="workshop-ue">
+          <mxGeometry x="9" y="31.343999999999994" width="69.7359375" height="11.440000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.5;fontColor=#21372F;fontStyle=0;" value="工位 / 装配 / 交付" id="shape-52" parent="workshop-ue">
+          <mxGeometry x="9" y="45.60500000000002" width="70.32373046875" height="11.05" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F1F4F2;strokeColor=#A9BBB1;" value="" id="shape-53" parent="workshop-bridge">
+          <mxGeometry x="0" y="0" width="161" height="25" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#475A52;fontStyle=0;" value="UBCRWorkshopRulesBridge" id="shape-54" parent="workshop-bridge">
+          <mxGeometry x="8" y="8.170000000000016" width="115.80957031250001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-55" parent="workshop-impl">
+          <mxGeometry x="0" y="0" width="161" height="27" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="UManagedWorkshopRules" id="shape-56" parent="workshop-impl">
+          <mxGeometry x="8" y="9.170000000000016" width="105.91308593750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-57" parent="workshop-rule">
+          <mxGeometry x="0" y="0" width="143" height="37" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="MachineRunRules" id="shape-58" parent="workshop-rule">
+          <mxGeometry x="9" y="8.170000000000016" width="76.22363281250001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="判定工坊回合启停" id="shape-59" parent="workshop-rule">
+          <mxGeometry x="9" y="24.170000000000016" width="74.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-60" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="153" y="294" as="sourcePoint" />
+            <mxPoint x="183" y="294" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-61" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="263" y="325" as="sourcePoint" />
+            <mxPoint x="263" y="306" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-62" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="344" y="338" as="sourcePoint" />
+            <mxPoint x="374" y="338" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.7;fontColor=#826032;fontStyle=0;" value="AFurnitureAssembler" id="shape-63" parent="1">
+          <mxGeometry x="10" y="364.431" width="92.88271484375" height="11.309999999999999" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=1;" id="shape-64" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="123" y="368" as="sourcePoint" />
+            <mxPoint x="152" y="368" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.7;fontColor=#475A52;fontStyle=0;" value="IInteractable" id="shape-65" parent="1">
+          <mxGeometry x="159" y="364.431" width="64.18291015624999" height="11.309999999999999" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.7;fontColor=#475A52;fontStyle=0;" value="装配器通过接口接收原 UE 交互。" id="shape-66" parent="1">
+          <mxGeometry x="247" y="364.431" width="131.52719726562498" height="11.309999999999999" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#C0CDC2;strokeWidth=0.65;dashed=0;" id="shape-67" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="10" y="389" as="sourcePoint" />
+            <mxPoint x="517" y="389" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-68" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="11" y="408" as="sourcePoint" />
+            <mxPoint x="34" y="408" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.5;fontColor=#475A52;fontStyle=0;" value="has-a 持有" id="shape-69" parent="1">
+          <mxGeometry x="40" y="403.605" width="43.757080078125" height="11.05" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-70" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="137" y="408" as="sourcePoint" />
+            <mxPoint x="160" y="408" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.5;fontColor=#475A52;fontStyle=0;" value="is-a 继承" id="shape-71" parent="1">
+          <mxGeometry x="166" y="403.605" width="36.087158203125" height="11.05" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=open;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=1;" id="shape-72" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="263" y="408" as="sourcePoint" />
+            <mxPoint x="286" y="408" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.5;fontColor=#475A52;fontStyle=0;" value="uses-a 调用" id="shape-73" parent="1">
+          <mxGeometry x="292" y="403.605" width="47.8203125" height="11.05" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=1;" id="shape-74" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="389" y="408" as="sourcePoint" />
+            <mxPoint x="412" y="408" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.5;fontColor=#475A52;fontStyle=0;" value="implements 实现" id="shape-75" parent="1">
+          <mxGeometry x="418" y="403.605" width="69.381591796875" height="11.05" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="workshop" name="工坊核心 Class Map">
+    <mxGraphModel grid="0" page="1" pageWidth="527" pageHeight="420" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="managed-qte" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="10" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="managed-workshop" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="184" y="10" width="151" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="workshop-bridge" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="368" y="10" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="qte-round" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="130" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="machine-run" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="184" y="130" width="151" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="recipe" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="368" y="130" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="slots" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="10" y="248" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="ropes" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="184" y="248" width="151" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="output" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="368" y="248" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="qte-action" style="group" vertex="1" parent="1" connectable="0">
+          <mxGeometry x="55" y="215" width="104" height="24" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-3" parent="managed-qte">
+          <mxGeometry x="0" y="0" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="UManagedQteRules" id="shape-4" parent="managed-qte">
+          <mxGeometry x="9" y="8.17" width="81.17187500000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="把 QTE 操作转给回合" id="shape-5" parent="managed-qte">
+          <mxGeometry x="9" y="24.17" width="87.76806640625001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="round: QteRound" id="shape-6" parent="managed-qte">
+          <mxGeometry x="9" y="38.866" width="69.62597656249999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="JoinRound()" id="shape-7" parent="managed-qte">
+          <mxGeometry x="9" y="50.866" width="51.59238281249999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-8" parent="managed-workshop">
+          <mxGeometry x="0" y="0" width="151" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="UManagedWorkshopRules" id="shape-9" parent="managed-workshop">
+          <mxGeometry x="9" y="8.17" width="105.91308593750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="协调工位、装配与交付" id="shape-10" parent="managed-workshop">
+          <mxGeometry x="9" y="24.17" width="92.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="CanStartMachineRound()" id="shape-11" parent="managed-workshop">
+          <mxGeometry x="9" y="38.866" width="101.18476562499998" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="ReserveCraft()" id="shape-12" parent="managed-workshop">
+          <mxGeometry x="9" y="50.866" width="65.117578125" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F1F4F2;strokeColor=#A9BBB1;" value="" id="shape-13" parent="workshop-bridge">
+          <mxGeometry x="0" y="0" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#475A52;fontStyle=0;" value="UBCRWorkshopRulesBridge" id="shape-14" parent="workshop-bridge">
+          <mxGeometry x="9" y="8.17" width="115.80957031250001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="UE 可调用的抽象契约" id="shape-15" parent="workshop-bridge">
+          <mxGeometry x="9" y="24.17" width="88.33056640625001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="ReserveCraft()" id="shape-16" parent="workshop-bridge">
+          <mxGeometry x="9" y="38.866" width="65.117578125" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="ReserveDelivery()" id="shape-17" parent="workshop-bridge">
+          <mxGeometry x="9" y="50.866" width="78.6427734375" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-18" parent="qte-round">
+          <mxGeometry x="0" y="0" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="QteRound" id="shape-19" parent="qte-round">
+          <mxGeometry x="9" y="8.169999999999987" width="41.58593750000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="维护两人回合进度" id="shape-20" parent="qte-round">
+          <mxGeometry x="9" y="24.169999999999987" width="74.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="State · TimeoutSeconds" id="shape-21" parent="qte-round">
+          <mxGeometry x="9" y="38.866000000000014" width="101.18476562499998" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="RecordSuccess()" id="shape-22" parent="qte-round">
+          <mxGeometry x="9" y="50.866000000000014" width="69.62597656249999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-23" parent="machine-run">
+          <mxGeometry x="0" y="0" width="151" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="MachineRunRules" id="shape-24" parent="machine-run">
+          <mxGeometry x="9" y="8.169999999999987" width="76.22363281250001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="确认回合启动和收尾" id="shape-25" parent="machine-run">
+          <mxGeometry x="9" y="24.169999999999987" width="83.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="OwnsRound" id="shape-26" parent="machine-run">
+          <mxGeometry x="9" y="38.866000000000014" width="42.575585937499994" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="CanStart() / Finish()" id="shape-27" parent="machine-run">
+          <mxGeometry x="9" y="50.866000000000014" width="96.67636718749999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-28" parent="recipe">
+          <mxGeometry x="0" y="0" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="WorkshopRecipe" id="shape-29" parent="recipe">
+          <mxGeometry x="9" y="8.169999999999987" width="71.27539062500001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="预约并扣减材料" id="shape-30" parent="recipe">
+          <mxGeometry x="9" y="24.169999999999987" width="65.0" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="RemainingTotal" id="shape-31" parent="recipe">
+          <mxGeometry x="9" y="38.866000000000014" width="65.117578125" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="Reserve() / Finish()" id="shape-32" parent="recipe">
+          <mxGeometry x="9" y="50.866000000000014" width="92.16796874999999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-33" parent="slots">
+          <mxGeometry x="0" y="0" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="WorkstationSlots" id="shape-34" parent="slots">
+          <mxGeometry x="9" y="8.169999999999987" width="81.17187500000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="记录两个工位占用" id="shape-35" parent="slots">
+          <mxGeometry x="9" y="24.170000000000016" width="74.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="Count" id="shape-36" parent="slots">
+          <mxGeometry x="9" y="38.865999999999985" width="24.541992187499996" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="Join() / Leave()" id="shape-37" parent="slots">
+          <mxGeometry x="9" y="50.865999999999985" width="74.13437499999999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-38" parent="ropes">
+          <mxGeometry x="0" y="0" width="151" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="RopeRules" id="shape-39" parent="ropes">
+          <mxGeometry x="9" y="8.169999999999987" width="46.53417968750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="验证两名玩家各拉一侧" id="shape-40" parent="ropes">
+          <mxGeometry x="9" y="24.170000000000016" width="92.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="approvedLeft / approvedRight" id="shape-41" parent="ropes">
+          <mxGeometry x="9" y="38.865999999999985" width="128.23515625" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="Observe() / CanActivate()" id="shape-42" parent="ropes">
+          <mxGeometry x="9" y="50.865999999999985" width="114.70996093749999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-43" parent="output">
+          <mxGeometry x="0" y="0" width="149" height="75" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=9;fontColor=#285645;fontStyle=0;" value="SpawnGate" id="shape-44" parent="output">
+          <mxGeometry x="9" y="8.169999999999987" width="46.53417968750001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#21372F;fontStyle=0;" value="产物生成成功才结算" id="shape-45" parent="output">
+          <mxGeometry x="9" y="24.170000000000016" width="83.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="Completed" id="shape-46" parent="output">
+          <mxGeometry x="9" y="38.865999999999985" width="42.575585937499994" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="Reserve() / Finish()" id="shape-47" parent="output">
+          <mxGeometry x="9" y="50.865999999999985" width="92.16796874999999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#E8F2EA;strokeColor=#94AE99;" value="" id="shape-48" parent="qte-action">
+          <mxGeometry x="0" y="0" width="104" height="24" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.4;fontColor=#285645;fontStyle=0;" value="QteActionRules" id="shape-49" parent="qte-action">
+          <mxGeometry x="8" y="7.692000000000007" width="66.65703125" height="10.920000000000002" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=block;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-50" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="34" as="sourcePoint" />
+            <mxPoint x="368" y="34" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-51" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="45" y="85" as="sourcePoint" />
+            <mxPoint x="45" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=8.1;fontColor=#475A52;fontStyle=0;" value="round" id="shape-52" parent="1">
+          <mxGeometry x="54" y="104.953" width="24.26708984375" height="10.53" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-53" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="45" y="205" as="sourcePoint" />
+            <mxPoint x="45" y="248" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Consolas;fontSize=7.6;fontColor=#475A52;fontStyle=0;" value="slots" id="shape-54" parent="1">
+          <mxGeometry x="18" y="222.388" width="22.892578125" height="9.879999999999999" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=open;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=1;" id="shape-55" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="101" y="205" as="sourcePoint" />
+            <mxPoint x="101" y="215" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-56" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="261" y="85" as="sourcePoint" />
+            <mxPoint x="351" y="274" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="261" y="102" />
+              <mxPoint x="351" y="102" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-57" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="153" as="sourcePoint" />
+            <mxPoint x="368" y="153" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#475A52;strokeColor=none;" value="" id="shape-58" parent="1">
+          <mxGeometry x="349.2" y="151.2" width="3.6" height="3.6" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#475A52;strokeWidth=1;dashed=0;" id="shape-59" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="274" as="sourcePoint" />
+            <mxPoint x="368" y="274" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#475A52;strokeColor=none;" value="" id="shape-60" parent="1">
+          <mxGeometry x="349.2" y="272.2" width="3.6" height="3.6" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="字段 machineRun" id="shape-61" parent="1">
+          <mxGeometry x="184" y="112.866" width="69.54990234374999" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="字段 recipe" id="shape-62" parent="1">
+          <mxGeometry x="368" y="112.866" width="44.793749999999996" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="字段 ropes" id="shape-63" parent="1">
+          <mxGeometry x="184" y="227.866" width="42.855859374999994" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=8.2;fontColor=#475A52;fontStyle=0;" value="字段 output" id="shape-64" parent="1">
+          <mxGeometry x="368" y="227.866" width="47.4923828125" height="10.66" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=left;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#475A52;fontStyle=0;" value="工位和 QTE 分别持有各自的 WorkstationSlots 实例。" id="shape-65" parent="1">
+          <mxGeometry x="10" y="333.17" width="220.64990234375003" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=none;endFill=0;strokeColor=#C0CDC2;strokeWidth=0.65;dashed=0;" id="shape-66" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="10" y="353" as="sourcePoint" />
+            <mxPoint x="517" y="353" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-67" parent="1">
+          <mxGeometry x="10" y="364" width="114" height="29" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=center;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#826032;fontStyle=1;" value="锯木转轮与落刀" id="shape-68" parent="1">
+          <mxGeometry x="34.5" y="374.17" width="65.0" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=open;endFill=0;strokeColor=#826032;strokeWidth=1;dashed=0;" id="shape-69" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="126" y="379" as="sourcePoint" />
+            <mxPoint x="138" y="379" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-70" parent="1">
+          <mxGeometry x="141" y="364" width="114" height="29" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=center;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#826032;fontStyle=1;" value="投入三段木料" id="shape-71" parent="1">
+          <mxGeometry x="170.0" y="374.17" width="56.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=open;endFill=0;strokeColor=#826032;strokeWidth=1;dashed=0;" id="shape-72" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="257" y="379" as="sourcePoint" />
+            <mxPoint x="269" y="379" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-73" parent="1">
+          <mxGeometry x="272" y="364" width="114" height="29" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=center;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#826032;fontStyle=1;" value="两人各拉一侧" id="shape-74" parent="1">
+          <mxGeometry x="301.0" y="374.17" width="56.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+        <mxCell edge="1" style="endArrow=open;endFill=0;strokeColor=#826032;strokeWidth=1;dashed=0;" id="shape-75" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="388" y="379" as="sourcePoint" />
+            <mxPoint x="400" y="379" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell vertex="1" style="rounded=1;arcSize=12;fillColor=#F8F1E5;strokeColor=#C2A779;" value="" id="shape-76" parent="1">
+          <mxGeometry x="403" y="364" width="114" height="29" as="geometry" />
+        </mxCell>
+        <mxCell vertex="1" style="text;html=0;strokeColor=none;fillColor=none;spacing=0;verticalAlign=middle;align=center;fontFamily=Microsoft YaHei;fontSize=9;fontColor=#826032;fontStyle=1;" value="交付生成摇椅" id="shape-77" parent="1">
+          <mxGeometry x="432.0" y="374.17" width="56.00000000000001" height="11.700000000000001" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

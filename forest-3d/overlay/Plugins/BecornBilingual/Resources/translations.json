@@ -1,0 +1,76 @@
+{
+  "quests": [
+    {
+      "tag": "the_order",
+      "en": "Take Grandpa forest's order outside the workshop.",
+      "zh": "到工坊外接取 forest 爷爷的订单。",
+      "source_sha256": "f274e6c7abe9bca0fac4fcc92799f5d86f3e630d781a2f73def515f85873ed62",
+      "previous_sha256": "179ec6fadad769e45f71fc9ddf074bfeb2f41472136cf89688dc21447cec1ad6"
+    },
+    {
+      "tag": "find_the_mushroom",
+      "en": "Follow the dirt path to find wood for the chair.",
+      "zh": "沿着土路寻找制作椅子所需的木材。",
+      "source_sha256": "793ad5f48e32d4c09bb0f052a69999415475f9e466e52a37bcf72d6a33433669"
+    },
+    {
+      "tag": "cut_the_mushroom",
+      "en": "Cut the mushroom with the saw.",
+      "zh": "使用锯子切下蘑菇。",
+      "source_sha256": "ab1b938799ffb0999d412c290c96ca01c7343a34a285d4fbe770dd19b5d6fed4"
+    },
+    {
+      "tag": "bring_back_the_log",
+      "en": "Bring the log back to the workshop.",
+      "zh": "把原木带回工坊。",
+      "source_sha256": "0c93f4a09e6abaa3da1ff2dc550314c6ddc1179e97abe94d9b0532ed3bb814c7"
+    },
+    {
+      "tag": "put_the_log_in_the_machine",
+      "en": "Place the log on the machine.",
+      "zh": "把原木放到机器上。",
+      "source_sha256": "bc416cc342abc2a1a64ce8847e66733595ac6594b3a409f82801a985366a4196"
+    },
+    {
+      "tag": "cut_the_log",
+      "en": "Take a workstation each and saw the log together.",
+      "zh": "两人各就各位，一起锯开原木。",
+      "source_sha256": "5f23f86750c73d49af33ab77782393b230f50311a361abba97a52daf83f8cc07"
+    },
+    {
+      "tag": "put_the_log_in_the_assembler",
+      "en": "Bring the cut logs to the assembler flower.",
+      "zh": "把切好的木段送到组装花处。",
+      "source_sha256": "345e92e22a1a3deeb13a640ba293082d9688542aca72ede5073d937f3b1d809c"
+    },
+    {
+      "tag": "activate_the_assembler",
+      "en": "Pull the ropes to activate the assembler.",
+      "zh": "拉动绳索，启动组装机。",
+      "source_sha256": "770e72461e2c567634e9014552e2c910d7911a79b9dd542902e6e61f1b8d2d54"
+    },
+    {
+      "tag": "deliver_the_product",
+      "en": "Deliver the package to Grandpa forest.",
+      "zh": "把包裹交给 forest 爷爷。",
+      "source_sha256": "5e8c6e341fd55360032525d8ee7609c47e7dcf28ed02cb3f9722981257d8efd7",
+      "previous_sha256": "70f8efec5bcf2579fae8b85286328f3479db2cae67ec716b0b1dcd33efb97303"
+    }
+  ],
+  "return_to_game": {
+    "en": "Press H to close keyboard help.",
+    "zh": "按 H 关闭键盘帮助。"
+  },
+  "keyboard_guide": [
+    "SHARED KEYBOARD / 双人共用键盘",
+    "P1 WASD  |  P2 ARROWS / 方向键  —  Move / 移动",
+    "P1 E  |  P2 J  —  Pick up / drop / 拾取或放下",
+    "P1 F  |  P2 K  —  Interact; join / leave station / 交互；站位或退出",
+    "P1 SPACE  |  P2 RIGHT SHIFT  —  Jump; pull rope / 跳跃；拉绳",
+    "P1 Q / R  |  P2 U / O  —  Left / right hand / 左右手",
+    "TREE / 双人取材: P1 A / D; P2 LEFT / RIGHT / 左右交替",
+    "SAW / 锯木机: crank = directions; blade = jump key / 转轮用方向键，刀位用跳跃键",
+    "ROPE / 组装拉绳: take one rope each; press together / 两人各站一条绳，按跳跃键配合",
+    "TAB Objectives / 任务显示  |  P Pause / 暂停  |  H Help / 帮助"
+  ]
+}

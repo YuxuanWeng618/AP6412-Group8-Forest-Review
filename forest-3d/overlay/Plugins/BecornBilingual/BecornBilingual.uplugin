@@ -1,0 +1,16 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "forest Bilingual Hints",
+  "Description": "English and Simplified Chinese quest hints, local CJK font import and repeatable editor authoring tools.",
+  "Category": "Localization",
+  "CreatedBy": "forest local coursework",
+  "CanContainContent": true,
+  "EnabledByDefault": false,
+  "Installed": false,
+  "Plugins": [
+    { "Name": "PythonScriptPlugin", "Enabled": true, "TargetAllowList": ["Editor"] },
+    { "Name": "EditorScriptingUtilities", "Enabled": true, "TargetAllowList": ["Editor"] }
+  ]
+}

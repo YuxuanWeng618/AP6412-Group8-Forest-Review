@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 507 421" width="507" height="421" role="img">
+  <title>当前 UE 3D 架构</title>
+  <desc>四条运行路径连接 UE 接入、反射契约与托管实现、C# 规则。</desc>
+  <rect x="0" y="0" width="507" height="421" rx="0" fill="#FFFFFF" stroke="none" stroke-width="0.7" />
+  <rect x="0" y="0" width="143" height="26" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+  <text x="9" y="17" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="10" font-weight="bold" text-anchor="start">UE 接入</text>
+  <rect x="173" y="0" width="161" height="26" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+  <text x="182" y="17" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="10" font-weight="bold" text-anchor="start">反射契约与 C# 实现</text>
+  <rect x="364" y="0" width="143" height="26" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+  <text x="373" y="17" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="10" font-weight="bold" text-anchor="start">C# 游戏规则</text>
+  <g id="input-ue">
+    <rect x="0" y="37" width="143" height="43" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+    <text x="9" y="53" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UBCRGameViewportClient</text>
+    <text x="9" y="69" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">路由按键、投递控制器</text>
+  </g>
+  <g id="input-bridge">
+    <rect x="173" y="37" width="161" height="25" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="181" y="53" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UBCRKeyboardBridge</text>
+  </g>
+  <g id="input-impl">
+    <rect x="173" y="81" width="161" height="27" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="181" y="98" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UManagedKeyboardInput</text>
+  </g>
+  <g id="input-rule">
+    <rect x="364" y="74" width="143" height="37" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="373" y="90" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">KeyboardInputPolicy</text>
+    <text x="373" y="106" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">维护按键与方向状态</text>
+  </g>
+  <polyline points="143,50 173,50" fill="none" stroke="#475A52" stroke-width="1" />
+  <polyline points="253,81 253,62" fill="none" stroke="#475A52" stroke-width="1" />
+  <polygon points="256.00,68.00 253.00,62.00 250.00,68.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <polyline points="334,94 364,94" fill="none" stroke="#475A52" stroke-width="1" />
+  <g id="quest-ue">
+    <rect x="0" y="115" width="143" height="43" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+    <text x="9" y="131" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UQuest_Subsystem</text>
+    <text x="9" y="147" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">读取任务数据与通知 HUD</text>
+  </g>
+  <g id="quest-bridge">
+    <rect x="173" y="115" width="161" height="25" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="181" y="131" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UBCRQuestBridge</text>
+  </g>
+  <g id="quest-impl">
+    <rect x="173" y="159" width="161" height="27" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="181" y="176" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UManagedQuestProgress</text>
+  </g>
+  <g id="quest-rule">
+    <rect x="364" y="152" width="143" height="37" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="373" y="168" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">QuestProgress</text>
+    <text x="373" y="184" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">维护任务步数与事件</text>
+  </g>
+  <polyline points="143,128 173,128" fill="none" stroke="#475A52" stroke-width="1" />
+  <polyline points="253,159 253,140" fill="none" stroke="#475A52" stroke-width="1" />
+  <polygon points="256.00,146.00 253.00,140.00 250.00,146.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <polyline points="334,172 364,172" fill="none" stroke="#475A52" stroke-width="1" />
+  <g id="qte-ue">
+    <rect x="0" y="193" width="143" height="43" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+    <text x="9" y="209" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UQTE_Subsystem</text>
+    <text x="9" y="225" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">采样控制器、驱动计时</text>
+  </g>
+  <g id="qte-bridge">
+    <rect x="173" y="193" width="161" height="25" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="181" y="209" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UBCRQteRulesBridge</text>
+  </g>
+  <g id="qte-impl">
+    <rect x="173" y="237" width="161" height="27" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="181" y="254" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UManagedQteRules</text>
+  </g>
+  <g id="qte-rule">
+    <rect x="364" y="230" width="143" height="37" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="373" y="246" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">QteRound</text>
+    <text x="373" y="262" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">维护占位与回合进度</text>
+  </g>
+  <polyline points="143,206 173,206" fill="none" stroke="#475A52" stroke-width="1" />
+  <polyline points="253,237 253,218" fill="none" stroke="#475A52" stroke-width="1" />
+  <polygon points="256.00,224.00 253.00,218.00 250.00,224.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <polyline points="334,250 364,250" fill="none" stroke="#475A52" stroke-width="1" />
+  <g id="workshop-ue">
+    <rect x="0" y="271" width="143" height="62" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+    <text x="9" y="286" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.8" font-weight="normal" text-anchor="start">AMiniGameSystem</text>
+    <text x="9" y="298" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.8" font-weight="normal" text-anchor="start">AFurnitureAssembler</text>
+    <text x="9" y="310" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.8" font-weight="normal" text-anchor="start">ADeliveryPoint</text>
+    <text x="9" y="324" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.5" font-weight="normal" text-anchor="start">工位 / 装配 / 交付</text>
+  </g>
+  <g id="workshop-bridge">
+    <rect x="173" y="271" width="161" height="25" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="181" y="287" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UBCRWorkshopRulesBridge</text>
+  </g>
+  <g id="workshop-impl">
+    <rect x="173" y="315" width="161" height="27" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="181" y="332" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">UManagedWorkshopRules</text>
+  </g>
+  <g id="workshop-rule">
+    <rect x="364" y="308" width="143" height="37" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="373" y="324" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="start">MachineRunRules</text>
+    <text x="373" y="340" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">判定工坊回合启停</text>
+  </g>
+  <polyline points="143,284 173,284" fill="none" stroke="#475A52" stroke-width="1" />
+  <polyline points="253,315 253,296" fill="none" stroke="#475A52" stroke-width="1" />
+  <polygon points="256.00,302.00 253.00,296.00 250.00,302.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <polyline points="334,328 364,328" fill="none" stroke="#475A52" stroke-width="1" />
+  <text x="0" y="362" fill="#826032" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.7" font-weight="normal" text-anchor="start">AFurnitureAssembler</text>
+  <polyline points="113,358 142,358" fill="none" stroke="#475A52" stroke-width="1" stroke-dasharray="3 2" />
+  <polygon points="136.00,361.00 142.00,358.00 136.00,355.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <text x="149" y="362" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.7" font-weight="normal" text-anchor="start">IInteractable</text>
+  <text x="237" y="362" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.7" font-weight="normal" text-anchor="start">装配器通过接口接收原 UE 交互。</text>
+  <polyline points="0,379 507,379" fill="none" stroke="#C0CDC2" stroke-width="0.65" />
+  <polyline points="1,398 24,398" fill="none" stroke="#475A52" stroke-width="1" />
+  <text x="30" y="401" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.5" font-weight="normal" text-anchor="start">has-a 持有</text>
+  <polyline points="127,398 150,398" fill="none" stroke="#475A52" stroke-width="1" />
+  <polygon points="144.00,401.00 150.00,398.00 144.00,395.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <text x="156" y="401" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.5" font-weight="normal" text-anchor="start">is-a 继承</text>
+  <polyline points="253,398 276,398" fill="none" stroke="#475A52" stroke-width="1" stroke-dasharray="3 2" />
+  <polyline points="272.00,400.50 276.00,398.00 272.00,395.50" fill="none" stroke="#475A52" stroke-width="1" />
+  <text x="282" y="401" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.5" font-weight="normal" text-anchor="start">uses-a 调用</text>
+  <polyline points="379,398 402,398" fill="none" stroke="#475A52" stroke-width="1" stroke-dasharray="3 2" />
+  <polygon points="396.00,401.00 402.00,398.00 396.00,395.00" fill="#FFFFFF" stroke="#475A52" stroke-width="1" />
+  <text x="408" y="401" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.5" font-weight="normal" text-anchor="start">implements 实现</text>
+</svg>

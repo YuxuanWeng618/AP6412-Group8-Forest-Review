@@ -1,0 +1,3009 @@
+diff --git a/BCR.uproject b/BCR.uproject
+--- a/BCR.uproject
++++ b/BCR.uproject
+@@ -3 +3 @@
+-	"EngineAssociation": "5.4",
++	"EngineAssociation": "5.8",
+@@ -10 +10 @@
+-			"LoadingPhase": "Default",
++			"LoadingPhase": "PostDefault",
+@@ -28 +28 @@
+-			"Enabled": false
++			"Enabled": true
+@@ -36,0 +37,26 @@
++		},
++		{
++			"Name": "UnrealSharp",
++			"Enabled": true
++		},
++		{
++			"Name": "BecornBilingual",
++			"Enabled": true
++		},
++		{
++			"Name": "PythonScriptPlugin",
++			"Enabled": true,
++			"TargetAllowList": [
++				"Editor"
++			]
++		},
++		{
++			"Name": "EditorScriptingUtilities",
++			"Enabled": true,
++			"TargetAllowList": [
++				"Editor"
++			]
++		},
++		{
++			"Name": "Niagara",
++			"Enabled": true
+diff --git a/Config/DefaultEngine.ini b/Config/DefaultEngine.ini
+--- a/Config/DefaultEngine.ini
++++ b/Config/DefaultEngine.ini
+@@ -258,0 +259,3 @@
++[/Script/Engine.Engine]
++GameViewportClientClassName=/Script/BCR.BCRGameViewportClient
++
+diff --git a/Config/DefaultGame.ini b/Config/DefaultGame.ini
+--- a/Config/DefaultGame.ini
++++ b/Config/DefaultGame.ini
+@@ -12 +12 @@
+-
+++DirectoriesToAlwaysCook=(Path="/Game/Becorn/Data")
+diff --git a/Source/BCR.Target.cs b/Source/BCR.Target.cs
+--- a/Source/BCR.Target.cs
++++ b/Source/BCR.Target.cs
+@@ -9,2 +9,2 @@
+-		DefaultBuildSettings = BuildSettingsVersion.V5;
+-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
++		DefaultBuildSettings = BuildSettingsVersion.Latest;
++		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+diff --git a/Source/BCR/BCR.Build.cs b/Source/BCR/BCR.Build.cs
+--- a/Source/BCR/BCR.Build.cs
++++ b/Source/BCR/BCR.Build.cs
+@@ -0,0 +1,2 @@
++using System;
++using System.IO;
+@@ -9,3 +11,22 @@
+-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG" });
+-		
+-		PublicDependencyModuleNames.AddRange(new string[] { "UnrealEd" });
++		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "Niagara", "Json", "Slate", "SlateCore" });
++
++		if (Target.bBuildEditor)
++		{
++			PublicDependencyModuleNames.AddRange(new string[] { "UnrealEd" });
++		}
++
++		// The workshop rules are the same source file the 2D game compiles:
++		// forest-2d/Source/Forest2D/Domain/WorkshopSession.h.
++		// Point FOREST_SHARED_RULES at that folder, or link it as <project>/SharedRules.
++		string SharedRules = Environment.GetEnvironmentVariable("FOREST_SHARED_RULES");
++		if (string.IsNullOrEmpty(SharedRules))
++		{
++			SharedRules = Path.Combine(ModuleDirectory, "..", "..", "SharedRules");
++		}
++		SharedRules = Path.GetFullPath(SharedRules);
++		if (!File.Exists(Path.Combine(SharedRules, "WorkshopSession.h")))
++		{
++			throw new BuildException("Shared Forest rules not found at " + SharedRules +
++				". Set FOREST_SHARED_RULES to forest-2d/Source/Forest2D/Domain.");
++		}
++		PrivateIncludePaths.Add(SharedRules);
+diff --git a/Source/BCR/Headers/Player/MainPlayer.h b/Source/BCR/Headers/Player/MainPlayer.h
+--- a/Source/BCR/Headers/Player/MainPlayer.h
++++ b/Source/BCR/Headers/Player/MainPlayer.h
+@@ -16,0 +17 @@
++class UBCRPlayerRulesBridge;
+@@ -68,0 +70,6 @@
++private:
++	UBCRPlayerRulesBridge* GetPlayerRules();
++
++	UPROPERTY(Transient)
++	TObjectPtr<UBCRPlayerRulesBridge> PlayerRules;
++
+diff --git a/Source/BCR/Headers/System/DeliveryPoint.h b/Source/BCR/Headers/System/DeliveryPoint.h
+--- a/Source/BCR/Headers/System/DeliveryPoint.h
++++ b/Source/BCR/Headers/System/DeliveryPoint.h
+@@ -9,0 +10 @@
++class UBCRWorkshopRulesBridge;
+@@ -44 +45 @@
+-	
++
+@@ -52 +53,3 @@
+-	bool DoOnce = false;
++	UPROPERTY(Transient)
++	TObjectPtr<UBCRWorkshopRulesBridge> WorkshopRules;
++	FName DeliveryPresentation;
+diff --git a/Source/BCR/Headers/System/Event/TriggerZone.h b/Source/BCR/Headers/System/Event/TriggerZone.h
+--- a/Source/BCR/Headers/System/Event/TriggerZone.h
++++ b/Source/BCR/Headers/System/Event/TriggerZone.h
+@@ -6,0 +7,2 @@
++
++class UBCRTriggerRulesBridge;
+@@ -15 +17 @@
+-struct FTriggerData 
++struct FTriggerData
+@@ -18 +20 @@
+-	
++
+@@ -30 +32 @@
+-		
++
+@@ -39 +41 @@
+-		
++
+@@ -75,0 +78 @@
++	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+@@ -83 +86 @@
+-	
++
+@@ -87 +90 @@
+-	
++
+@@ -107 +110 @@
+-	
++
+@@ -121,5 +124,4 @@
+-	/// Player tracking
+-	UPROPERTY()
+-	TArray<AActor*> PlayersInInnerZone;
+-	UPROPERTY()
+-	TArray<AActor*> PlayersInOuterZone;
++	void HandleOverlap(bool bInner, bool bEntered, const FTriggerData& Data);
++
++	UPROPERTY(Transient)
++	TObjectPtr<UBCRTriggerRulesBridge> TriggerRules;
+diff --git a/Source/BCR/Headers/System/FurnitureAssembler.h b/Source/BCR/Headers/System/FurnitureAssembler.h
+--- a/Source/BCR/Headers/System/FurnitureAssembler.h
++++ b/Source/BCR/Headers/System/FurnitureAssembler.h
+@@ -9,0 +10,2 @@
++
++class UBCRWorkshopRulesBridge;
+@@ -24 +26 @@
+-	
++
+@@ -27 +29 @@
+-	
++
+@@ -54 +56 @@
+-	
++
+@@ -76 +78 @@
+-	
++
+@@ -86,5 +88,8 @@
+-	UDataTable* AllRecipies;
+-	TArray<FName> RowsNames;
+-	TMap<AMainPlayer*, AActor*> PlayerHolding;
+-	AActor* InMemActor;
+-	AMainPlayer* InMemPlayer;
++	UPROPERTY(Transient)
++	TObjectPtr<UBCRWorkshopRulesBridge> WorkshopRules;
++	TMap<TWeakObjectPtr<AMainPlayer>, TWeakObjectPtr<AActor>> PlayerHolding;
++	TWeakObjectPtr<AActor> RopeActor;
++	TArray<FTimerHandle> PendingMaterials;
++	void UpdateRecipeView();
++	bool IsIngredientInZone(const AActor* Item) const;
++	void ReadRopeState(int32& Left, int32& Right, bool& bLeftPulled, bool& bRightPulled);
+@@ -95 +100,2 @@
+-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
++	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
++		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+@@ -107 +113 @@
+-	void TimerElapsed(AActor* Value, AMainPlayer* Player);
++	void QueueIngredient(AActor* Item);
+diff --git a/Source/BCR/Headers/System/MainCamera.h b/Source/BCR/Headers/System/MainCamera.h
+--- a/Source/BCR/Headers/System/MainCamera.h
++++ b/Source/BCR/Headers/System/MainCamera.h
+@@ -11,0 +12,2 @@
++
++class UBCRCameraRulesBridge;
+@@ -98 +100 @@
+-	
++
+@@ -116,4 +118,2 @@
+-	//////// CONSTRAINT SYSTEM ////////
+-	/// Player position limits
+-	float MaxPlayerHorizontalDistance = MAX_FLT;
+-	float MaxPlayerDepthDistance = MAX_FLT;
++	UPROPERTY(Transient)
++	TObjectPtr<UBCRCameraRulesBridge> CameraRules;
+@@ -128,12 +127,0 @@
+-	void UpdatePosition();
+-	void UpdateArmLenght();
+-	void UpdateArmAngle();
+-	void UpdateFog(float DepthPlayerDistance);
+-	void UpdateBlur(float DepthPlayerDistance);
+-	void ConstrainPlayerPositions();
+-
+-	//////// UTILITY METHODS ////////
+-	/// Mathematical helpers
+-	FVector2D Get2DVect(FVector vect3d);
+-	float GetAlpha(float value, float min, float max);
+-	float GetValue(float alpha, float min, float max);
+diff --git a/Source/BCR/Headers/System/MiniGame/LocomotionConfigurationTypes.h b/Source/BCR/Headers/System/MiniGame/LocomotionConfigurationTypes.h
+--- a/Source/BCR/Headers/System/MiniGame/LocomotionConfigurationTypes.h
++++ b/Source/BCR/Headers/System/MiniGame/LocomotionConfigurationTypes.h
+@@ -42 +42 @@
+-	UAnimMontage* StartAnimToPlay;
++	UAnimMontage* StartAnimToPlay = nullptr;
+@@ -48 +48 @@
+-	UAnimSequence* EndAnimToPlay;
++	UAnimSequence* EndAnimToPlay = nullptr;
+diff --git a/Source/BCR/Headers/System/MiniGame/MiniGameSystem.h b/Source/BCR/Headers/System/MiniGame/MiniGameSystem.h
+--- a/Source/BCR/Headers/System/MiniGame/MiniGameSystem.h
++++ b/Source/BCR/Headers/System/MiniGame/MiniGameSystem.h
+@@ -15,0 +16 @@
++class UBCRWorkshopRulesBridge;
+@@ -33 +34 @@
+-	
++
+@@ -118,0 +120,3 @@
++	UPROPERTY(Transient)
++	TObjectPtr<UBCRWorkshopRulesBridge> WorkshopRules;
++
+@@ -127 +130,0 @@
+-	TArray<TSubclassOf<APickableItem>> itemList; /*Copy of inputItems*/
+@@ -129,0 +133 @@
++	TMap<int32, TWeakObjectPtr<APickableItem>> TrackedItems;
+@@ -139 +143 @@
+-	
++
+diff --git a/Source/BCR/Headers/System/QTE/QTE_Subsystem.h b/Source/BCR/Headers/System/QTE/QTE_Subsystem.h
+--- a/Source/BCR/Headers/System/QTE/QTE_Subsystem.h
++++ b/Source/BCR/Headers/System/QTE/QTE_Subsystem.h
+@@ -13,0 +14 @@
++class UBCRQteRulesBridge;
+@@ -71 +72,4 @@
+-    EQTEState GetCurrentState() const { return CurrentState; }
++    EQTEState GetCurrentState() const;
++    void FinishAuthoredRound();
++    /** Read-only UI view: station ownership follows the actual local player, not station number. */
++    bool GetPlayerActionInfo(const AMainPlayer* Player, FSnapPointConfig& Config, int32& SuccessCount) const;
+@@ -76,2 +79,0 @@
+-    EQTEState CurrentState;
+-    bool bIsPaused;
+@@ -83 +85 @@
+-    TMap<ESnapPointType, FQTEProgressData> ActionProgress;
++    TWeakObjectPtr<UWorld> RoundWorld;
+@@ -91,8 +93,5 @@
+-    void ProcessPlayerInput(AMainPlayer* Player, ESnapPointType SnapPoint, const FSnapPointConfig& Config, float DeltaTime);
+-    bool ValidatePlayerAction(AMainPlayer* Player, const FSnapPointConfig& Config);
+-    
+-    /// Input Validation
+-    bool ValidateHoldAction(const AMainPlayer* Player, const FSnapPointConfig& Config);
+-    bool ValidateRotateAction(const AMainPlayer* Player, const FSnapPointConfig& Config);
+-    bool ValidatePressAction(const AMainPlayer* Player, const FSnapPointConfig& Config);
+-    bool ValidateReleaseAction(const AMainPlayer* Player, const FSnapPointConfig& Config);
++    void ProcessPlayerInput(AMainPlayer* Player, ESnapPointType SnapPoint, const FSnapPointConfig& Config);
++    UBCRQteRulesBridge* GetRules();
++
++    UPROPERTY(Transient)
++    TObjectPtr<UBCRQteRulesBridge> RulesBridge;
+@@ -105,0 +105 @@
++    void PublishRoundCompletion(bool bSuccess);
+@@ -108,2 +108 @@
+-    void ResetState();
+-    void SetQTEState(EQTEState NewState);
++    void OnRoundWorldCleanup(UWorld* World, bool bSessionEnded, bool bCleanupResources);
+@@ -113,3 +111,0 @@
+-    bool IsQTEConfigValid() const;
+-    bool CanStartQTE() const;
+-    bool CheckQTECompletion();
+diff --git a/Source/BCR/Headers/System/UI_Quest/QuestData.h b/Source/BCR/Headers/System/UI_Quest/QuestData.h
+--- a/Source/BCR/Headers/System/UI_Quest/QuestData.h
++++ b/Source/BCR/Headers/System/UI_Quest/QuestData.h
+@@ -25 +25 @@
+-    int Amount;
++    int Amount = 0;
+diff --git a/Source/BCR/Headers/System/UI_Quest/UI_Subsystem.h b/Source/BCR/Headers/System/UI_Quest/UI_Subsystem.h
+--- a/Source/BCR/Headers/System/UI_Quest/UI_Subsystem.h
++++ b/Source/BCR/Headers/System/UI_Quest/UI_Subsystem.h
+@@ -6,0 +7,2 @@
++
++class UBCRQuestBridge;
+@@ -23 +25 @@
+-	
++
+@@ -39,0 +42 @@
++	void NotifyAssemblerOutput();
+@@ -58,2 +60,0 @@
+-	
+-private :
+@@ -61,5 +62,8 @@
+-	//////// STATE MANAGEMENT ////////
+-	/// Current quest tracking
+-	FQuestLineStruct CurrentQuestLine;
+-	FQuestStruct CurrentQuest;
+-	int QuestTarget;
++private:
++    friend class UBCRQuestBridge;
++
++    void OnQuestWorldCleanup(UWorld* World, bool bSessionEnded, bool bCleanupResources);
++
++    UPROPERTY(Transient)
++    TObjectPtr<UBCRQuestBridge> QuestBridge;
++    TWeakObjectPtr<UWorld> QuestWorld;
+diff --git a/Source/BCR/Sources/Player/MainPlayer.cpp b/Source/BCR/Sources/Player/MainPlayer.cpp
+--- a/Source/BCR/Sources/Player/MainPlayer.cpp
++++ b/Source/BCR/Sources/Player/MainPlayer.cpp
+@@ -1,0 +2,2 @@
++#include "BCR/Headers/Player/BCRPlayerRulesBridge.h"
++#include "Camera/PlayerCameraManager.h"
+@@ -5,0 +8 @@
++#include "GameFramework/PlayerController.h"
+@@ -8,0 +12 @@
++#include "BCR/Headers/Core/BCRGameViewportClient.h"
+@@ -90,2 +94,3 @@
+-		EnhancedInputComponent->BindAction(PickUpAction, ETriggerEvent::Triggered, this, &AMainPlayer::PickUp);
+-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMainPlayer::Interact);
++		// Toggle actions execute once per press; holding a keyboard key must not repeatedly pick up/drop.
++		EnhancedInputComponent->BindAction(PickUpAction, ETriggerEvent::Started, this, &AMainPlayer::PickUp);
++		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AMainPlayer::Interact);
+@@ -104,0 +110,11 @@
++UBCRPlayerRulesBridge* AMainPlayer::GetPlayerRules()
++{
++	if (!PlayerRules)
++	{
++		UClass* RulesClass = FindObject<UClass>(nullptr, TEXT("/Script/UnrealSharp.ManagedPlayerRules_C"));
++		if (RulesClass && RulesClass->IsChildOf(UBCRPlayerRulesBridge::StaticClass()))
++			PlayerRules = NewObject<UBCRPlayerRulesBridge>(this, RulesClass);
++	}
++	return PlayerRules;
++}
++
+@@ -107,19 +123,9 @@
+-	// input is a Vector2D
+-	FVector2D MovementVector = Value.Get<FVector2D>();
+-	if (!bCanMove)
+-	{
+-		return;
+-	}
+-
+-	if (Controller != nullptr)
+-	{
+-		// get forward vector
+-		const FVector ForwardDirection = FRotator(0, GetWorld()->GetFirstPlayerController()->PlayerCameraManager.Get()->GetCameraRotation().Yaw, 0).Vector();
+-	
+-		// get right vector 
+-		const FVector RightDirection = ForwardDirection.RotateAngleAxis(90, { 0,0,1 });
+-
+-		// add movement 
+-		AddMovementInput(ForwardDirection, MovementVector.Y);
+-		AddMovementInput(RightDirection, MovementVector.X);
+-	}
++	UBCRPlayerRulesBridge* Rules = GetPlayerRules();
++	const APlayerController* ViewController = GetWorld() ? GetWorld()->GetFirstPlayerController() : nullptr;
++	const APlayerCameraManager* Camera = ViewController ? ViewController->PlayerCameraManager.Get() : nullptr;
++	if (!Rules || !Controller || !Camera) return;
++
++	const FVector2D Input = Value.Get<FVector2D>();
++	const FVector Direction = Rules->ResolveMovement(bCanMove, Camera->GetCameraRotation().Yaw, Input.X, Input.Y);
++	if (!Direction.IsNearlyZero())
++		AddMovementInput(Direction.GetSafeNormal(), Direction.Size());
+@@ -179,3 +185,8 @@
+-	if (PickedUpSomething)
+-	{
+-		IIPickable::Execute_Drop(PickedUpObject, this, PickedUpObject);
++	UBCRPlayerRulesBridge* Rules = GetPlayerRules();
++	if (!Rules) return;
++	const EBCRPlayerAction Action = static_cast<EBCRPlayerAction>(
++		Rules->ResolveCarry(PickedUpSomething || PickedUpObject != nullptr, IsValid(PickedUpObject)));
++	if (Action == EBCRPlayerAction::Drop || Action == EBCRPlayerAction::ClearInvalidCarry)
++	{
++		if (Action == EBCRPlayerAction::Drop)
++			IIPickable::Execute_Drop(PickedUpObject, this, PickedUpObject);
+@@ -183,7 +194,37 @@
+-		PickedUpObject = __nullptr;
+-	}
+-	else
+-	{
+-		TArray<FHitResult> OutHits = Detect_Object(this);
+-
+-		for (const FHitResult OutHit : OutHits)
++		PickedUpObject = nullptr;
++		return;
++	}
++
++	const TArray<FHitResult> Hits = Detect_Object(this);
++	TArray<int32> Eligible;
++	Eligible.Reserve(Hits.Num());
++	for (const FHitResult& Hit : Hits)
++	{
++		AActor* Candidate = Hit.GetActor();
++		Eligible.Add(IsValid(Candidate) && Cast<IIPickable>(Candidate) != nullptr ? 1 : 0);
++	}
++	const int32 Selection = Rules->SelectPickupCandidate(Eligible);
++	if (Hits.IsValidIndex(Selection) && IsValid(Hits[Selection].GetActor()))
++	{
++		PickedUpSomething = true;
++		PickedUpObject = Hits[Selection].GetActor();
++	}
++}
++
++/**
++ * @brief Handles interaction with world objects
++ * @details Detects interactable objects and calls appropriate interaction methods
++ */
++void AMainPlayer::Interact()
++{
++	UBCRPlayerRulesBridge* Rules = GetPlayerRules();
++	if (!Rules) return;
++	for (const FHitResult& Hit : Detect_Object(this))
++	{
++		AActor* Candidate = Hit.GetActor();
++		if (!IsValid(Candidate)) continue;
++		const EBCRPlayerAction Action = static_cast<EBCRPlayerAction>(Rules->ResolveInteraction(
++			IsValid(PickedUpObject), Cast<IInteractable>(Candidate) != nullptr,
++			Candidate->GetClass()->GetName() == TEXT("BP_ControlLeaf_C")));
++		if (Action == EBCRPlayerAction::None) continue;
++		if (Action == EBCRPlayerAction::InteractWithItem)
+@@ -191 +232,6 @@
+-			if (Cast<IIPickable>(OutHit.GetActor()))
++			IInteractable::Execute_InteractWithObject(Candidate, this, PickedUpObject);
++			return;
++		}
++		if (Action == EBCRPlayerAction::OpenHelp)
++		{
++			if (UBCRGameViewportClient* Viewport = Cast<UBCRGameViewportClient>(GetWorld()->GetGameViewport()))
+@@ -193,2 +239,2 @@
+-				PickedUpSomething = true;
+-				PickedUpObject = OutHit.GetActor();
++				Viewport->ToggleKeyboardHelp();
++				return;
+@@ -197,26 +243,2 @@
+-	}
+-}
+-
+-/**
+- * @brief Handles interaction with world objects
+- * @details Detects interactable objects and calls appropriate interaction methods
+- */
+-void AMainPlayer::Interact()
+-{
+-	TArray<FHitResult> OutHits = Detect_Object(this);
+-	
+-	for (const FHitResult OutHit : OutHits)
+-	{
+-		
+-		if(PickedUpObject && Cast<IInteractable>(OutHit.GetActor()))
+-		{
+-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Found Interactable with object"));
+-			IInteractable::Execute_InteractWithObject(OutHit.GetActor(), this,PickedUpObject);
+-			return;
+-		}
+-		else if (Cast<IInteractable>(OutHit.GetActor()))
+-		{
+-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Found Interactable"));
+-			IInteractable::Execute_Interact(OutHit.GetActor(), this);
+-			return;
+-		}
++		IInteractable::Execute_Interact(Candidate, this);
++		return;
+diff --git a/Source/BCR/Sources/System/DeliveryPoint.cpp b/Source/BCR/Sources/System/DeliveryPoint.cpp
+--- a/Source/BCR/Sources/System/DeliveryPoint.cpp
++++ b/Source/BCR/Sources/System/DeliveryPoint.cpp
+@@ -2 +2 @@
+-
++#include "BCR/Headers/System/BCRWorkshopRulesBridge.h"
+@@ -5,4 +4,0 @@
+-/**
+- * @brief Initializes the delivery point with collision detection
+- * @details Sets up collision box and overlap events for item detection
+- */
+@@ -11 +7,2 @@
+-	PrimaryActorTick.bCanEverTick = true;
++    PrimaryActorTick.bCanEverTick = true;
++    RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
+@@ -13,6 +10,7 @@
+-	// Create Collision Box
+-	ColliderBox = CreateDefaultSubobject<UBoxComponent>(FName("Collision Zone"));
+-	ColliderBox->SetRelativeScale3D(FVector(2, 2, 2));
+-	ColliderBox->SetVisibility(true);
+-	ColliderBox->SetHiddenInGame(false);
+-	ColliderBox->SetVisibleInSceneCaptureOnly(false);
++    ColliderBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Zone"));
++    ColliderBox->SetRelativeScale3D(FVector(2, 2, 2));
++    ColliderBox->SetVisibility(true);
++    ColliderBox->SetHiddenInGame(false);
++    ColliderBox->SetVisibleInSceneCaptureOnly(false);
++    ColliderBox->SetupAttachment(RootComponent);
++    ColliderBox->OnComponentBeginOverlap.AddDynamic(this, &ADeliveryPoint::OnOverlapBegin);
+@@ -20,6 +18,2 @@
+-	// Add event to the OnComponentBeginOverlap delegate
+-	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
+-	ColliderBox->SetupAttachment(RootComponent);
+-	ColliderBox->OnComponentBeginOverlap.AddDynamic(this, &ADeliveryPoint::OnOverlapBegin);
+-	WorldPoint = CreateDefaultSubobject<UBillboardComponent>(TEXT("Snap object point"));
+-	WorldPoint->SetupAttachment(RootComponent);
++    WorldPoint = CreateDefaultSubobject<UBillboardComponent>(TEXT("Snap object point"));
++    WorldPoint->SetupAttachment(RootComponent);
+@@ -28,4 +21,0 @@
+-/**
+- * @brief Called when the delivery point is spawned in the world
+- * @details Performs initialization logic for the delivery system
+- */
+@@ -34 +24,10 @@
+-	Super::BeginPlay();
++    Super::BeginPlay();
++    WorkshopRules = UBCRWorkshopRulesBridge::Create(this);
++
++    // Only accepted deliveries start the original montage and quest callback.
++    const FName Presentation(TEXT("BndEvt__BP_DeliveryPoint_ColliderBox_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature"));
++    if (FindFunction(Presentation))
++    {
++        DeliveryPresentation = Presentation;
++        ColliderBox->OnComponentBeginOverlap.Remove(this, Presentation);
++    }
+@@ -37,12 +36,2 @@
+-/**
+- * @brief Handles item overlap detection and transformation
+- * @details Spawns output object when the correct item type is delivered
+- * 
+- * @param OverlappedComponent The component that was overlapped
+- * @param OtherActor The actor that entered the delivery zone
+- * @param OtherComp The component of the overlapping actor
+- * @param OtherBodyIndex Body index of the collision
+- * @param bFromSweep Whether this was from a sweep operation
+- * @param SweepResult Hit result from sweep if applicable
+- */
+-void ADeliveryPoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
++void ADeliveryPoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
++    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+@@ -50,6 +39,17 @@
+-	if (ItemType == OtherActor->GetClass() && !DoOnce)
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Object Deliver !"));
+-		GetWorld()->SpawnActor<APickableItem>(ObjectToSpawn, WorldPoint->GetComponentLocation(), FRotator(0.0f, 0.0f, 0.0f));
+-		DoOnce = true;
+-	}
++    if (!WorkshopRules || !IsValid(OtherActor) || !ItemType || !ObjectToSpawn ||
++        !WorkshopRules->ReserveDelivery(OtherActor->GetClass()->GetUniqueID(), ItemType->GetUniqueID())) return;
++
++    const bool bSpawned = IsValid(GetWorld()->SpawnActor<APickableItem>(ObjectToSpawn,
++        WorldPoint->GetComponentLocation(), FRotator::ZeroRotator));
++    if (!WorkshopRules->FinishOutput(bSpawned)) return;
++
++    UE_LOG(LogTemp, Display, TEXT("Workshop: accepted package and spawned delivery output"));
++    if (!DeliveryPresentation.IsNone())
++    {
++        // A sparse component delegate needs its owning component. Use its ordinary signature for this one call.
++        FComponentBeginOverlapSignature_MCSignature Playback;
++        FScriptDelegate Callback;
++        Callback.BindUFunction(this, DeliveryPresentation);
++        Playback.Add(Callback);
++        Playback.Broadcast(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
++    }
+@@ -58,6 +57,0 @@
+-/**
+- * @brief Updates the delivery point each frame
+- * @details Handles any per-frame logic for the delivery system
+- * 
+- * @param DeltaTime Time elapsed since the last frame in seconds
+- */
+@@ -66 +60 @@
+-	Super::Tick(DeltaTime);
++    Super::Tick(DeltaTime);
+diff --git a/Source/BCR/Sources/System/Event/TriggerZone.cpp b/Source/BCR/Sources/System/Event/TriggerZone.cpp
+--- a/Source/BCR/Sources/System/Event/TriggerZone.cpp
++++ b/Source/BCR/Sources/System/Event/TriggerZone.cpp
+@@ -4 +4 @@
+-#include "BCR/Headers/System/MiniGame/MiniGameSystem.h"
++#include "BCR/Headers/System/BCRWorldRulesBridge.h"
+@@ -18 +18 @@
+-    
++
+@@ -43 +43 @@
+- * 
++ *
+@@ -64 +64 @@
+-	
++
+@@ -75 +75 @@
+- * 
++ *
+@@ -99,16 +99,6 @@
+-/**
+- * @brief Handles player entering the inner trigger zone
+- * @details Tracks players and notifies listeners about inner zone entry events
+- * 
+- * @param OverlappedComp The component that was overlapped
+- * @param OtherActor The actor that entered the zone
+- * @param OtherComp The component of the entering actor
+- * @param OtherBodyIndex Body index of the collision
+- * @param bFromSweep Whether this was from a sweep operation
+- * @param SweepResult Hit result from sweep if applicable
+- */
+-void UTriggerZone::OnActorEnterInnerZone(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+-{
+-	if (!IsValid(OtherActor) || !OtherActor->IsA(AMainPlayer::StaticClass()))
+-	{
++void UTriggerZone::HandleOverlap(bool bInner, bool bEntered, const FTriggerData& Data)
++{
++	AActor* Player = Data.OtherActor;
++	AActor* Owner = GetOwner();
++	if (!Player || (bEntered && !IsValid(Player)) || !Player->IsA(AMainPlayer::StaticClass()) ||
++		!Owner || !Owner->Implements<UTriggerZoneListener>() || !GetWorld() || !GetWorld()->IsGameWorld())
+@@ -116,141 +106,58 @@
+-	}
+-
+-	if (AActor* Owner = GetOwner())
+-	{
+-		if (!Owner->Implements<UTriggerZoneListener>())
+-		{
+-			IBCR_Helper::LogConsole(this, FString::Printf(
+-				TEXT("BCR ERROR > UTriggerZone::OnActorEnterInnerZone() : Actor %s must implement TriggerZoneListener interface."),
+-				*Owner->GetName()));
+-			return;
+-		}
+-
+-		FTriggerData CurrentInnerTriggerData(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+-		PlayersInInnerZone.AddUnique(CurrentInnerTriggerData.OtherActor);
+-			
+-		if (PlayersInInnerZone.Num() == 1)
+-		{
+-			ITriggerZoneListener::Execute_OnOnePlayerEnterInnerZone(Owner, CurrentInnerTriggerData);
+-		}
+-		else if (PlayersInInnerZone.Num() == 2)
+-		{
+-			ITriggerZoneListener::Execute_OnTwoPlayersEnterInnerZone(Owner, CurrentInnerTriggerData);
+-		}
+-	}
+-}
+-
+-/**
+- * @brief Handles player entering the outer trigger zone
+- * @details Tracks players and notifies listeners about outer zone entry events
+- * 
+- * @param OverlappedComp The component that was overlapped
+- * @param OtherActor The actor that entered the zone
+- * @param OtherComp The component of the entering actor
+- * @param OtherBodyIndex Body index of the collision
+- * @param bFromSweep Whether this was from a sweep operation
+- * @param SweepResult Hit result from sweep if applicable
+- */
+-void UTriggerZone::OnActorEnterOuterZone(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+-{
+-	if (!IsValid(OtherActor) || !OtherActor->IsA(AMainPlayer::StaticClass()))
+-	{
+-		return;
+-	}
+-
+-	if (AActor* Owner = GetOwner())
+-	{
+-		if (!Owner->Implements<UTriggerZoneListener>())
+-		{
+-			IBCR_Helper::LogConsole(this, FString::Printf(
+-				TEXT("BCR ERROR > UTriggerZone::OnActorEnterOuterZone() : Actor %s must implement TriggerZoneListener interface."),
+-				*Owner->GetName()));
+-			return;
+-		}
+-
+-		FTriggerData CurrentOuterTriggerData(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+-		PlayersInOuterZone.AddUnique(CurrentOuterTriggerData.OtherActor);
+-
+-		if (PlayersInOuterZone.Num() == 1)
+-		{
+-			ITriggerZoneListener::Execute_OnOnePlayerEnterOuterZone(Owner, CurrentOuterTriggerData);
+-		}
+-		else if (PlayersInOuterZone.Num() == 2)
+-		{
+-			ITriggerZoneListener::Execute_OnTwoPlayersEnterOuterZone(Owner, CurrentOuterTriggerData);
+-		}
+-	}
+-}
+-
+-/**
+- * @brief Handles player leaving the inner trigger zone
+- * @details Removes players from tracking and notifies listeners when zone is empty
+- * 
+- * @param OverlappedComponent The component that was overlapped
+- * @param OtherActor The actor that left the zone
+- * @param OtherComp The component of the leaving actor
+- * @param OtherBodyIndex Body index of the collision
+- */
+-void UTriggerZone::OnActorExitInnerZone(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+-	int32 OtherBodyIndex)
+-{
+-	if (!IsValid(OtherActor) || !OtherActor->IsA(AMainPlayer::StaticClass()))
+-	{
+-		return;
+-	}
+-
+-	if (AActor* Owner = GetOwner())
+-	{
+-		if (!Owner->Implements<UTriggerZoneListener>())
+-		{
+-			IBCR_Helper::LogConsole(this, FString::Printf(
+-				TEXT("BCR ERROR > UTriggerZone::OnActorExitInnerZone() : Actor %s must implement TriggerZoneListener interface."),
+-				*Owner->GetName()));
+-			return;
+-		}
+-
+-		FTriggerData CurrentInnerTriggerData(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+-        PlayersInInnerZone.Remove(CurrentInnerTriggerData.OtherActor);
+-
+-        if (PlayersInInnerZone.Num() == 0)
+-        {
+-        	ITriggerZoneListener::Execute_OnPlayersExitInnerZone(Owner, CurrentInnerTriggerData);
+-        }
+-	}
+-}
+-
+-/**
+- * @brief Handles player leaving the outer trigger zone
+- * @details Removes players from tracking and notifies listeners when zone is empty
+- * 
+- * @param OverlappedComponent The component that was overlapped
+- * @param OtherActor The actor that left the zone
+- * @param OtherComp The component of the leaving actor
+- * @param OtherBodyIndex Body index of the collision
+- */
+-void UTriggerZone::OnActorExitOuterZone(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+-{
+-	if (!IsValid(OtherActor) || !OtherActor->IsA(AMainPlayer::StaticClass()))
+-	{
+-		return;
+-	}
+-
+-	if (AActor* Owner = GetOwner())
+-	{
+-		if (!Owner->Implements<UTriggerZoneListener>())
+-		{
+-			IBCR_Helper::LogConsole(this, FString::Printf(
+-				TEXT("BCR ERROR > UTriggerZone::OnActorExitOuterZone() : Actor %s must implement TriggerZoneListener interface."),
+-				*Owner->GetName()));
+-			return;
+-		}
+-		
+-		FTriggerData CurrentOuterTriggerData(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+-		PlayersInOuterZone.Remove(CurrentOuterTriggerData.OtherActor);
+-
+-		if (PlayersInOuterZone.Num() == 0)
+-		{
+-			ITriggerZoneListener::Execute_OnPlayersExitOuterZone(Owner, CurrentOuterTriggerData);
+-		}
+-	}
++
++	if (!TriggerRules)
++	{
++		UClass* RulesClass = FindObject<UClass>(nullptr, TEXT("/Script/UnrealSharp.ManagedTriggerRules_C"));
++		if (!RulesClass || !RulesClass->IsChildOf(UBCRTriggerRulesBridge::StaticClass())) return;
++		TriggerRules = NewObject<UBCRTriggerRulesBridge>(this, RulesClass);
++	}
++
++	enum class EZoneTransition { None, OneEntered, TwoEntered, Emptied };
++	const auto Transition = static_cast<EZoneTransition>(TriggerRules->ChangeOccupancy(bInner,
++		Player->GetUniqueID(), Data.OtherComp ? Data.OtherComp->GetUniqueID() : 0, Data.OtherBodyIndex, bEntered));
++	switch (Transition)
++	{
++	case EZoneTransition::OneEntered:
++		if (bInner) ITriggerZoneListener::Execute_OnOnePlayerEnterInnerZone(Owner, Data);
++		else ITriggerZoneListener::Execute_OnOnePlayerEnterOuterZone(Owner, Data);
++		break;
++	case EZoneTransition::TwoEntered:
++		if (bInner) ITriggerZoneListener::Execute_OnTwoPlayersEnterInnerZone(Owner, Data);
++		else ITriggerZoneListener::Execute_OnTwoPlayersEnterOuterZone(Owner, Data);
++		break;
++	case EZoneTransition::Emptied:
++		if (bInner) ITriggerZoneListener::Execute_OnPlayersExitInnerZone(Owner, Data);
++		else ITriggerZoneListener::Execute_OnPlayersExitOuterZone(Owner, Data);
++		break;
++	default:
++		break;
++	}
++}
++
++void UTriggerZone::OnActorEnterInnerZone(UPrimitiveComponent* Zone, AActor* Player, UPrimitiveComponent* Component,
++	int32 Body, bool bFromSweep, const FHitResult& Sweep)
++{
++	HandleOverlap(true, true, FTriggerData(Zone, Player, Component, Body, bFromSweep, Sweep));
++}
++
++void UTriggerZone::OnActorEnterOuterZone(UPrimitiveComponent* Zone, AActor* Player, UPrimitiveComponent* Component,
++	int32 Body, bool bFromSweep, const FHitResult& Sweep)
++{
++	HandleOverlap(false, true, FTriggerData(Zone, Player, Component, Body, bFromSweep, Sweep));
++}
++
++void UTriggerZone::OnActorExitInnerZone(UPrimitiveComponent* Zone, AActor* Player, UPrimitiveComponent* Component,
++	int32 Body)
++{
++	HandleOverlap(true, false, FTriggerData(Zone, Player, Component, Body));
++}
++
++void UTriggerZone::OnActorExitOuterZone(UPrimitiveComponent* Zone, AActor* Player, UPrimitiveComponent* Component,
++	int32 Body)
++{
++	HandleOverlap(false, false, FTriggerData(Zone, Player, Component, Body));
++}
++
++void UTriggerZone::EndPlay(const EEndPlayReason::Type EndPlayReason)
++{
++	Super::EndPlay(EndPlayReason);
++	TriggerRules = nullptr;
+@@ -263 +170 @@
+- * 
++ *
+@@ -272 +179 @@
+-                         
++
+diff --git a/Source/BCR/Sources/System/FurnitureAssembler.cpp b/Source/BCR/Sources/System/FurnitureAssembler.cpp
+--- a/Source/BCR/Sources/System/FurnitureAssembler.cpp
++++ b/Source/BCR/Sources/System/FurnitureAssembler.cpp
+@@ -3,11 +3,21 @@
+-
+-#define DELAY(time, block)\
+-	{\
+-	FTimerHandle TimerHandle;\
+-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()block, time, false);\
+-	}
+-
+-/**
+- * @brief Initializes the furniture assembler with collision detection
+- * @details Sets up assembler zone and overlap events for player detection
+- */
++#include "BCR/Headers/System/BCRWorkshopRulesBridge.h"
++#include "BCR/Headers/System/UI_Quest/UI_Subsystem.h"
++#include "Components/StaticMeshComponent.h"
++#include "Engine/DataTable.h"
++#include "EngineUtils.h"
++
++namespace
++{
++    UObject* ReadObject(const AActor* Actor, FName Name)
++    {
++        const FObjectPropertyBase* Property = FindFProperty<FObjectPropertyBase>(Actor->GetClass(), Name);
++        return Property ? Property->GetObjectPropertyValue_InContainer(Actor) : nullptr;
++    }
++
++    bool ReadFlag(const AActor* Actor, FName Name)
++    {
++        const FBoolProperty* Property = FindFProperty<FBoolProperty>(Actor->GetClass(), Name);
++        return Property && Property->GetPropertyValue_InContainer(Actor);
++    }
++}
++
+@@ -16,22 +26,15 @@
+-	PrimaryActorTick.bCanEverTick = true;
+-	
+-	// Create Collision Box
+-	AssemblerZone = CreateDefaultSubobject<UBoxComponent>(FName("Collision Zone"));
+-	AssemblerZone->SetRelativeScale3D(FVector(2, 2, 2));
+-	AssemblerZone->SetVisibility(true);
+-	AssemblerZone->SetHiddenInGame(false);
+-	AssemblerZone->SetVisibleInSceneCaptureOnly(false);
+-
+-	// Add event to the OnComponentBeginOverlap delegate
+-	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
+-	AssemblerZone->SetupAttachment(RootComponent);
+-	AssemblerZone->OnComponentBeginOverlap.AddDynamic(this, &AFurnitureAssembler::OnOverlapBegin);
+-
+-	PackagePosition = CreateDefaultSubobject<UStaticMeshComponent>(FName("Package Position"));
+-	PackagePosition->SetupAttachment(RootComponent);
+-}
+-
+-/**
+- * @brief Loads recipe data and initializes the first recipe
+- * @details Reads recipes from DataTable and sets up the initial crafting target
+- */
++    PrimaryActorTick.bCanEverTick = true;
++    RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
++
++    AssemblerZone = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Zone"));
++    AssemblerZone->SetRelativeScale3D(FVector(2, 2, 2));
++    AssemblerZone->SetVisibility(true);
++    AssemblerZone->SetHiddenInGame(false);
++    AssemblerZone->SetVisibleInSceneCaptureOnly(false);
++    AssemblerZone->SetupAttachment(RootComponent);
++    AssemblerZone->OnComponentBeginOverlap.AddUniqueDynamic(this, &AFurnitureAssembler::OnOverlapBegin);
++
++    PackagePosition = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Package Position"));
++    PackagePosition->SetupAttachment(RootComponent);
++}
++
+@@ -40,41 +43,48 @@
+-	Super::BeginPlay();
+-	
+-	// Keep in memory the first recipie
+-	AllRecipies = LoadObject<UDataTable>(nullptr, TEXT("/Game/Becorn/Data/DT_RecipiesList.DT_RecipiesList"));
+-	if (AllRecipies)
+-	{
+-		RowsNames = AllRecipies->GetRowNames();
+-		ActualRecipies = *AllRecipies->FindRow<FRecipiesInfo>(RowsNames[0], TEXT(""));
+-		ActualRecipiesCopy = *AllRecipies->FindRow<FRecipiesInfo>(RowsNames[0], TEXT(""));
+-		//RowsNames.RemoveAt(0, 1);
+-	}
+-}
+-
+-/**
+- * @brief Handles player entry into the assembler zone
+- * @details Tracks players and their held objects for automatic item processing
+- * 
+- * @param OverlappedComponent The component that was overlapped
+- * @param OtherActor The actor that entered the assembler zone
+- * @param OtherComp The component of the overlapping actor
+- * @param OtherBodyIndex Body index of the collision
+- * @param bFromSweep Whether this was from a sweep operation
+- * @param SweepResult Hit result from sweep if applicable
+- */
+-void AFurnitureAssembler::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+-{
+-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Enter Assembler Zone"));
+-	AActor* pick = nullptr;
+-	
+-	if (Cast<AMainPlayer>(OtherActor) && Cast<AMainPlayer>(OtherActor)->PickedUpObject)
+-	{
+-		pick = Cast<AMainPlayer>(OtherActor)->PickedUpObject;
+-		PlayerHolding.Add(Cast<AMainPlayer>(OtherActor), pick);
+-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, pick->GetName());
+-	}
+-}
+-
+-/**
+- * @brief Blueprint event triggered when an element is dropped on the assembler
+- * @details Called when a valid material is successfully added to the recipe
+- */
++    const UDataTable* Table = LoadObject<UDataTable>(nullptr, TEXT("/Game/Becorn/Data/DT_RecipiesList.DT_RecipiesList"));
++    if (Table)
++    {
++        const TArray<FName> Rows = Table->GetRowNames();
++        if (!Rows.IsEmpty())
++            if (const FRecipiesInfo* Recipe = Table->FindRow<FRecipiesInfo>(Rows[0], TEXT("Workshop recipe")))
++                ActualRecipies = *Recipe;
++    }
++    ActualRecipiesCopy = ActualRecipies;
++    WorkshopRules = UBCRWorkshopRulesBridge::Create(this);
++    ResetAssembler();
++    if (ActualRecipies.Material.IsEmpty() || !ActualRecipies.Out)
++    {
++        UE_LOG(LogTemp, Error, TEXT("Workshop: recipe data or output missing from DT_RecipiesList"));
++    }
++    else
++    {
++        UE_LOG(LogTemp, Display, TEXT("Workshop: loaded DT_RecipiesList, materials=%d"), requieredMaterials);
++    }
++    Super::BeginPlay();
++}
++
++void AFurnitureAssembler::ReadRopeState(int32& Left, int32& Right, bool& bLeftPulled, bool& bRightPulled)
++{
++    Left = Right = -1;
++    bLeftPulled = bRightPulled = false;
++    if (!RopeActor.IsValid())
++    {
++        for (TActorIterator<AActor> It(GetWorld()); It; ++It)
++            if (It->GetClass()->GetFName() == TEXT("BP_NewActivationRopes_C") &&
++                ReadObject(*It, TEXT("FurnitureAssembleur")) == this)
++            {
++                RopeActor = *It;
++                break;
++            }
++    }
++
++    if (const AActor* Ropes = RopeActor.Get())
++    {
++        if (const AMainPlayer* Player = Cast<AMainPlayer>(ReadObject(Ropes, TEXT("PlayerOnRopeLeft"))))
++            Left = Player->GetUniqueID();
++        if (const AMainPlayer* Player = Cast<AMainPlayer>(ReadObject(Ropes, TEXT("PlayerOnRopeRight"))))
++            Right = Player->GetUniqueID();
++        bLeftPulled = ReadFlag(Ropes, TEXT("IsActivated_L")) || ReadFlag(Ropes, TEXT("OneTimeInteract_L"));
++        bRightPulled = ReadFlag(Ropes, TEXT("Is Activated_R")) || ReadFlag(Ropes, TEXT("OneTimeInteract_R"));
++    }
++}
++
+@@ -83,18 +93,9 @@
+-	
+-}
+-
+-void AFurnitureAssembler::TimerElapsed(AActor* Value, AMainPlayer* Player)
+-{
+-	Value->Destroy();
+-	OnElementDropOnAssembler();
+-
+-	if (requieredMaterials == 0)
+-		PlayFlowerAnimation = true;
+-}
+-
+-/**
+- * @brief Gets the current active recipe information
+- * @details Returns the recipe data for the furniture currently being crafted
+- * 
+- * @return Current recipe information including materials and output
+- */
++}
++
++void AFurnitureAssembler::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
++    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
++{
++    if (AMainPlayer* Player = Cast<AMainPlayer>(OtherActor); Player && IsValid(Player->PickedUpObject))
++        PlayerHolding.Add(Player, Player->PickedUpObject);
++}
++
+@@ -103,7 +104,3 @@
+-	return ActualRecipies;
+-}
+-
+-/**
+- * @brief Attempts to craft furniture with the current materials
+- * @details Validates all required materials are present and spawns the output item
+- */
++    return ActualRecipies;
++}
++
+@@ -112,22 +109,19 @@
+-	int i = 0;
+-	for (auto Ingredient : ActualRecipies.Material)
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Item n°%d"),i));
+-
+-		if (Ingredient.Value != 0)
+-		{
+-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Recipie not complite")));
+-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("%d"), Ingredient.Value));
+-			
+-			return;
+-		}
+-		i++;
+-	}
+-
+-	if (!CraftOnce)
+-	{
+-		auto temp = GetWorld()->SpawnActor<APickableItem>(ActualRecipies.Out, PackagePosition->GetComponentLocation(), FRotator(0.0f, 0.0f, 0.0f));
+-		CraftOnce = true;
+-	}
+-	else
+-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString::Printf(TEXT("Recipie already realize !"), i));
++    if (!WorkshopRules || !ActualRecipies.Out) return;
++
++    int32 Left, Right;
++    bool bLeftPulled, bRightPulled;
++    ReadRopeState(Left, Right, bLeftPulled, bRightPulled);
++    if (!WorkshopRules->ReserveCraft(Left, Right, bLeftPulled, bRightPulled))
++    {
++        UE_LOG(LogTemp, Display, TEXT("Workshop: assembly blocked remaining=%d holders=%d/%d pulls=%d/%d"),
++            requieredMaterials, Left >= 0, Right >= 0, bLeftPulled, bRightPulled);
++        return;
++    }
++
++    const bool bSpawned = IsValid(GetWorld()->SpawnActor<APickableItem>(ActualRecipies.Out,
++        PackagePosition->GetComponentLocation(), FRotator::ZeroRotator));
++    CraftOnce = WorkshopRules->FinishOutput(bSpawned);
++    UE_LOG(LogTemp, Display, TEXT("Workshop: assembly output spawned=%d"), CraftOnce);
++    if (CraftOnce)
++        if (UQuest_Subsystem* Quest = GetGameInstance()->GetSubsystem<UQuest_Subsystem>())
++            Quest->NotifyAssemblerOutput();
+@@ -138,59 +132,65 @@
+-	ActualRecipies = ActualRecipiesCopy;
+-	requieredMaterials = 3;
+-}
+-
+-/**
+- * @brief Handles player interaction without held objects
+- * @details Provides feedback when player approaches without required items
+- * 
+- * @param Player The player interacting with the assembler
+- */
+-//void AFurnitureAssembler::Interact_Implementation(AMainPlayer* Player)
+-//{
+-//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("No Item in Hand, Please grab an item")));
+-//}
+-
+-/**
+- * @brief Handles player interaction with held objects
+- * @details Validates and processes material deposits for crafting
+- * 
+- * @param Player The player interacting with the assembler
+- * @param Object The object the player is holding
+- */
+-//void AFurnitureAssembler::InteractWithObject_Implementation(AMainPlayer* Player, AActor* Object)
+-//{
+-//	if (Cast<IIPickable>(Object))
+-//	{
+-//		requieredMaterials = ActualRecipies.Material.FindRef(Object->GetClass());
+-//		if (requieredMaterials != 0)
+-//		{
+-//			requieredMaterials--;
+-//
+-//			ActualRecipies.Material.Emplace(Object->GetClass(), requieredMaterials);
+-//
+-//			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("requiered = %d"), ActualRecipies.Material.FindRef(Object->GetClass())));
+-//			Player->PickUp();
+-//			Object->Destroy();
+-//
+-//			OnElementDropOnAssembler();
+-//			
+-//			if (requieredMaterials == 0)
+-//			{
+-//				PlayFlowerAnimation = true;
+-//			}
+-//		}
+-//		else
+-//		{
+-//			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Bad item given to the assembler")));
+-//			Player->PickUp();
+-//			Object->Destroy();
+-//		}
+-//	}
+-//}
+-
+-/**
+- * @brief Updates the assembler and processes automatic item deposits
+- * @details Monitors dropped items in the zone and processes valid materials
+- * 
+- * @param DeltaTime Time elapsed since the last frame in seconds
+- */
++    for (FTimerHandle Handle : PendingMaterials) GetWorldTimerManager().ClearTimer(Handle);
++    PendingMaterials.Reset();
++    PlayerHolding.Reset();
++    ActualRecipies = ActualRecipiesCopy;
++    CraftOnce = PlayFlowerAnimation = false;
++    if (!WorkshopRules) return;
++
++    WorkshopRules->ResetRecipe();
++    for (const auto& Ingredient : ActualRecipies.Material)
++        if (const UClass* Type = Ingredient.Key.Get())
++            WorkshopRules->AddIngredient(Type->GetUniqueID(), Ingredient.Value);
++    UpdateRecipeView();
++}
++
++void AFurnitureAssembler::UpdateRecipeView()
++{
++    for (auto& Ingredient : ActualRecipies.Material)
++        if (const UClass* Type = Ingredient.Key.Get())
++            Ingredient.Value = WorkshopRules->RemainingIngredient(Type->GetUniqueID());
++    requieredMaterials = WorkshopRules->RemainingTotal();
++}
++
++bool AFurnitureAssembler::IsIngredientInZone(const AActor* Item) const
++{
++    if (IsOverlappingActor(Item)) return true;
++
++    // A Blueprint drop can restore collision after moving its mesh, without a cached overlap in the same frame.
++    const FVector Extent = AssemblerZone->GetUnscaledBoxExtent();
++    const FBox LocalZone(-Extent, Extent);
++    const FTransform& Transform = AssemblerZone->GetComponentTransform();
++    TInlineComponentArray<UPrimitiveComponent*> Components(Item);
++    for (const UPrimitiveComponent* Component : Components)
++        if (Component->IsRegistered() && Component->IsQueryCollisionEnabled() &&
++            LocalZone.IsInsideOrOn(Transform.InverseTransformPosition(Component->Bounds.Origin)))
++            return true;
++    return false;
++}
++
++void AFurnitureAssembler::QueueIngredient(AActor* Item)
++{
++    const int32 Id = Item->GetUniqueID();
++    if (!WorkshopRules->ReserveIngredient(Id, Item->GetClass()->GetUniqueID())) return;
++
++    FTimerHandle& Handle = PendingMaterials.AddDefaulted_GetRef();
++    GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateWeakLambda(this,
++        [this, Id, Material = TWeakObjectPtr<AActor>(Item)]()
++        {
++            PendingMaterials.RemoveAll([this](FTimerHandle Timer) { return !GetWorldTimerManager().IsTimerActive(Timer); });
++            AActor* Actor = Material.Get();
++            bool bConsumed = false;
++            if (IsValid(Actor))
++            {
++                const bool bAttached = Actor->GetAttachParentActor() != nullptr;
++                if (WorkshopRules->CanConsumeIngredient(bAttached, !bAttached && IsIngredientInZone(Actor)))
++                    bConsumed = Actor->Destroy();
++            }
++            if (!WorkshopRules->FinishIngredient(Id, bConsumed)) return;
++
++            UpdateRecipeView();
++            UE_LOG(LogTemp, Display, TEXT("Workshop: plank consumed, remaining=%d"), requieredMaterials);
++            OnElementDropOnAssembler();
++            if (requieredMaterials == 0) PlayFlowerAnimation = true;
++        }), 2.f, false);
++}
++
+@@ -199,31 +199,38 @@
+-	Super::Tick(DeltaTime);
+-
+-	for (auto It = PlayerHolding.CreateConstIterator(); It; ++It)
+-	{
+-		if (!It.Key()->PickedUpObject && IsOverlappingActor(It.Value()))
+-		{
+-			requieredMaterials = ActualRecipies.Material.FindRef(It.Value()->GetClass());
+-			if (requieredMaterials != 0)
+-			{
+-				requieredMaterials--;
+-
+-				ActualRecipies.Material.Emplace(It.Value()->GetClass(), requieredMaterials);
+-
+-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("requiered = %d"), ActualRecipies.Material.FindRef(It.Value()->GetClass())));
+-				PlayerHolding.Remove(It.Key());
+-				InMemActor = It.Value();
+-				InMemPlayer = It.Key();
+-				DELAY(2.0f, {
+-					AFurnitureAssembler::TimerElapsed(InMemActor, InMemPlayer);
+-					})
+-
+-			}
+-			else
+-			{
+-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FString::Printf(TEXT("Bad item given to the assembler")));
+-				It.Value()->Destroy();
+-				PlayerHolding.Remove(It.Key());
+-			}
+-		}
+-	}
+-}
++    Super::Tick(DeltaTime);
++    if (!WorkshopRules) return;
++
++    if (requieredMaterials == 0 && !CraftOnce)
++    {
++        int32 Left, Right;
++        bool bLeftPulled, bRightPulled;
++        ReadRopeState(Left, Right, bLeftPulled, bRightPulled);
++        WorkshopRules->ObserveRopes(Left, Right, bLeftPulled, bRightPulled);
++    }
++
++    TArray<AActor*> Players;
++    AssemblerZone->GetOverlappingActors(Players, AMainPlayer::StaticClass());
++    for (AActor* Actor : Players)
++    {
++        auto* Player = CastChecked<AMainPlayer>(Actor);
++        if (IsValid(Player->PickedUpObject)) PlayerHolding.Add(Player, Player->PickedUpObject);
++    }
++
++    for (auto It = PlayerHolding.CreateIterator(); It; ++It)
++    {
++        AMainPlayer* Player = It.Key().Get();
++        AActor* Item = It.Value().Get();
++        if (!IsValid(Player) || !IsValid(Item))
++        {
++            It.RemoveCurrent();
++        }
++        else
++        {
++            const bool bStillHeld = Player->PickedUpObject == Item;
++            if (WorkshopRules->ShouldQueueIngredient(bStillHeld, !bStillHeld && IsIngredientInZone(Item)))
++            {
++                QueueIngredient(Item);
++                It.RemoveCurrent();
++            }
++        }
++    }
++}
+diff --git a/Source/BCR/Sources/System/MainCamera.cpp b/Source/BCR/Sources/System/MainCamera.cpp
+--- a/Source/BCR/Sources/System/MainCamera.cpp
++++ b/Source/BCR/Sources/System/MainCamera.cpp
+@@ -2 +2 @@
+-#include "Kismet/KismetMathLibrary.h"
++#include "BCR/Headers/System/BCRWorldRulesBridge.h"
+@@ -13 +13 @@
+- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
++	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+@@ -45 +45 @@
+- * 
++ *
+@@ -51,2 +51,2 @@
+-
+-	if (!IsValid(Players[0]) || !IsValid(Players[1]))
++	if (Players.Num() != 2 || !IsValid(Players[0]) || !IsValid(Players[1])) return;
++	if (!CameraRules)
+@@ -54 +54,3 @@
+-		return;
++		UClass* RulesClass = FindObject<UClass>(nullptr, TEXT("/Script/UnrealSharp.ManagedCameraRules_C"));
++		if (!RulesClass || !RulesClass->IsChildOf(UBCRCameraRulesBridge::StaticClass())) return;
++		CameraRules = NewObject<UBCRCameraRulesBridge>(this, RulesClass);
+@@ -57,4 +59,36 @@
+-	UpdatePosition();
+-	UpdateArmLenght();
+-	UpdateArmAngle();
+-	ConstrainPlayerPositions();
++	const FVector First = Players[0]->GetActorLocation();
++	const FVector Second = Players[1]->GetActorLocation();
++	const FVector Separation = Second - First;
++	SetActorLocation(CameraRules->CameraCenter(First, Second, EnableVerticalMovement, VerticalOffset));
++	const FBCRCameraFraming Frame = CameraRules->FramePlayers(Separation, GetActorRightVector(), GetActorForwardVector(),
++		GetActorRotation().Pitch, FollowCamera->GetHorizontalFieldOfView(), FollowCamera->GetVerticalFieldOfView(),
++		MinimumArmLength, MaximumArmLength, HorizontalBuffer, DepthBuffer, MinAngleReachedAtArmLength,
++		MaxAngleReachedAtArmLength, MinArmAngle, MaxArmAngle, EasingAngleExp, FogDistanceToPlayer,
++		MaxBlurAtDistance, MinBlurAtDistance, MinFStop, MaxFStop, BlurMultiplier);
++	CameraBoom->TargetArmLength = Frame.ArmLength;
++	if (IsValid(FogComp))
++	{
++		FogComp->VolumetricFogStartDistance = Frame.FogDistance;
++		FogComp->MarkRenderStateDirty();
++	}
++	FollowCamera->CurrentAperture = Frame.Aperture;
++	if (UseAngleChange) SetActorRotation(FRotator(Frame.Pitch, 0, 0));
++
++	const FVector Right = GetActorRightVector();
++	const FVector Forward = GetActorForwardVector();
++	const FVector Locations[] = {First, Second};
++	const FVector Corrections[] = {
++		CameraRules->ConstrainDisplacement(Separation, Players[0]->GetVelocity() * DeltaTime,
++			Right, Forward, Frame.HorizontalLimit, Frame.DepthLimit),
++		CameraRules->ConstrainDisplacement(Separation, Players[1]->GetVelocity() * DeltaTime,
++			Right, Forward, Frame.HorizontalLimit, Frame.DepthLimit)
++	};
++	for (int32 Index = 0; Index < 2; ++Index)
++	{
++		if (Corrections[Index] != FVector::ZeroVector)
++			Players[Index]->SetActorLocation(Locations[Index] + Corrections[Index], true);
++	}
++	if (DebugVariables && GEngine)
++		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange,
++			FString::Printf(TEXT("Arm %.1f, pitch %.1f, horizontal %.1f, depth %.1f"),
++				Frame.ArmLength, GetActorRotation().Pitch, Frame.HorizontalDistance, Frame.DepthDistance));
+@@ -66 +100 @@
+- * 
++ *
+@@ -90 +124 @@
+-	if (IsValid(Fogs[0]))
++	if (!Fogs.IsEmpty() && IsValid(Fogs[0]))
+@@ -95,241 +128,0 @@
+-
+-/**
+- * @brief Updates camera position to maintain both players in frame
+- * @details Calculates average position between players and applies vertical offset
+- */
+-void AMainCamera::UpdatePosition()
+-{
+-	FVector AveragePosition;
+-	for (ACharacter* player : Players)
+-	{
+-		if (!player)
+-		{
+-			return;
+-		}
+-		AveragePosition += player->GetActorLocation();
+-	}
+-	AveragePosition = AveragePosition / Players.Num();
+-
+-	if (EnableVerticalMovement)
+-	{
+-		AveragePosition.Z += VerticalOffset;
+-	}
+-	else
+-	{
+-		AveragePosition.Z = VerticalOffset;
+-	}
+-
+-	SetActorLocation(AveragePosition);
+-}
+-
+-/**
+- * @brief Dynamically adjusts camera distance based on player separation
+- * @details Calculates optimal spring arm length using FOV and player distance math
+- */
+-void AMainCamera::UpdateArmLenght()
+-{
+-	/** TESTS
+-	float PlayerDist = (Players[0]->GetActorLocation() - Players[1]->GetActorLocation()).Size();
+-
+-	CameraBoom->TargetArmLength = MinimumArmLength + (PlayerDist / 2);
+-	CameraBoom->TargetArmLength = MinimumArmLength + (PlayerDist * (90 / FollowCamera->GetHorizontalFieldOfView()) / 2);
+-	CameraBoom->TargetArmLength = MinimumArmLength + (PlayerDist / 2 / FollowCamera->AspectRatio) / FMath::Tan(FMath::DegreesToRadians(FollowCamera->GetHorizontalFieldOfView() / 2));
+-	
+-	FIntVector2 ScreenSize;
+-	GetWorld()->GetFirstPlayerController()->GetViewportSize(ScreenSize.X, ScreenSize.Y);
+-	for (AMainPlayer* player : Players)
+-	{
+-		FVector2D ScreenPosition;
+-		GetWorld()->GetFirstPlayerController()->ProjectWorldLocationToScreen(player->GetActorLocation(), ScreenPosition);
+-
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Screen position X = %f"), ScreenPosition.X));
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Screen position Y = %f"), ScreenPosition.Y));
+-	}
+-	*/
+-
+-	FVector PlayerDistVec = Players[0]->GetActorLocation() - Players[1]->GetActorLocation();
+-
+-	//HORIZONTAL
+-	float PlayerDistHor = FMath::Abs(UKismetMathLibrary::DotProduct2D(Get2DVect(GetActorRightVector()).GetSafeNormal(), Get2DVect(PlayerDistVec)));
+-	float EdgeDistHor = (PlayerDistHor / 2) + HorizontalBuffer;
+-	float TanDemiAngleHor = UKismetMathLibrary::DegTan(FollowCamera->GetHorizontalFieldOfView() / 2);
+-
+-	float TotalArmLengthHor = EdgeDistHor / TanDemiAngleHor;
+-
+-	//DEPTH
+-	FVector BackVector = UKismetMathLibrary::RotateAngleAxis(-GetActorForwardVector(), GetActorRotation().Pitch, GetActorRightVector());
+-	float PlayerDistDepth = FMath::Abs(UKismetMathLibrary::DotProduct2D(Get2DVect(BackVector).GetSafeNormal(), Get2DVect(PlayerDistVec)));
+-	float EdgeDistDepth = (PlayerDistDepth / 2) + DepthBuffer;
+-	float TanDemiAngleDepth = UKismetMathLibrary::DegTan(FollowCamera->GetVerticalFieldOfView() / 2);
+-
+-	float TotalArmLengthDepth = (UKismetMathLibrary::DegSin(-GetActorRotation().Pitch) * EdgeDistDepth / TanDemiAngleDepth) +
+-		(UKismetMathLibrary::DegCos(-GetActorRotation().Pitch) * EdgeDistDepth);
+-
+-	float UnclampedDistance = FMath::Max(TotalArmLengthHor, TotalArmLengthDepth);
+-	float FinalArmLength = FMath::Clamp(UnclampedDistance, MinimumArmLength, MaximumArmLength);
+-	CameraBoom->TargetArmLength = FinalArmLength;
+-
+-	MaxPlayerHorizontalDistance = MaximumArmLength * TanDemiAngleHor * 2;
+-	MaxPlayerDepthDistance = (MaximumArmLength * TanDemiAngleDepth) / (UKismetMathLibrary::DegCos(-GetActorRotation().Pitch) * TanDemiAngleDepth + UKismetMathLibrary::DegSin(-GetActorRotation().Pitch));
+-
+-	UpdateFog(PlayerDistDepth);
+-	UpdateBlur(PlayerDistDepth);
+-
+-	if (DebugVariables)
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Horizontal FOV = %f"), FollowCamera->GetHorizontalFieldOfView()));
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Vertical FOV = %f"), FollowCamera->GetVerticalFieldOfView()));
+-
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Player distance vertical = %f"), PlayerDistDepth));
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Player distance horizontal = %f"), PlayerDistHor));
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Player distance = %f"), PlayerDistVec.Size()));
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Spring arm length offset = %f"), CameraBoom->TargetArmLength - MinimumArmLength));
+-
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("DISTANCE VARIABLES")));
+-	}
+-}
+-
+-/**
+- * @brief Adjusts camera angle based on distance from players
+- * @details Interpolates between min/max angles based on current arm length
+- */
+-void AMainCamera::UpdateArmAngle()
+-{
+-	if (!UseAngleChange)
+-	{
+-		return;
+-	}
+-
+-	float Alpha = (CameraBoom->TargetArmLength - MinAngleReachedAtArmLength) / (MaxAngleReachedAtArmLength - MinAngleReachedAtArmLength);
+-	Alpha = FMath::Clamp(Alpha, 0.f, 1.f);
+-	SetActorRotation({ -FMath::InterpEaseInOut(MinArmAngle, MaxArmAngle, Alpha, EasingAngleExp), 0.f, 0.f});
+-
+-	if (DebugVariables)
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Camera angle = %f"), GetActorRotation().Pitch));
+-
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("ANGLE VARIABLES")));
+-	}
+-}
+-
+-/**
+- * @brief Updates fog distance to maintain visual consistency
+- * @details Adjusts volumetric fog start distance relative to camera and players
+- * 
+- * @param DepthPlayerDistance Distance between players along the depth axis
+- */
+-void AMainCamera::UpdateFog(float DepthPlayerDistance)
+-{
+-	float FogDist = CameraBoom->TargetArmLength + FogDistanceToPlayer + DepthPlayerDistance / 2;
+-	FogComp->VolumetricFogStartDistance = FogDist;
+-	FogComp->MarkRenderStateDirty();
+-
+-	if (DebugVariables)
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::Orange, FString::Printf(TEXT("Fog distance = %f"), FogComp->StartDistance));
+-	}
+-}
+-
+-/**
+- * @brief Updates depth of field blur for tilt-shift effect
+- * @details Adjusts camera aperture based on player distance for cinematic effect
+- * 
+- * @param DepthPlayerDistance Distance between players along the depth axis
+- */
+-void AMainCamera::UpdateBlur(float DepthPlayerDistance)
+-{
+-	float FStopAlpha = GetAlpha(DepthPlayerDistance, MaxBlurAtDistance, MinBlurAtDistance);
+-	float Aperture = GetValue(FStopAlpha, MinFStop, MaxFStop);
+-	FollowCamera->CurrentAperture = Aperture / BlurMultiplier;
+-}
+-
+-/**
+- * @brief Constrains player movement to keep them within camera frame
+- * @details Prevents players from moving outside the viewable area by limiting their positions
+- */
+-void AMainCamera::ConstrainPlayerPositions()
+-{
+-	FVector player1Pos = Players[0]->GetActorLocation();
+-	FVector player2Pos = Players[1]->GetActorLocation();
+-
+-	// Get camera's right and forward vectors (normalized)
+-	FVector rightVector = GetActorRightVector();
+-	FVector forwardVector = GetActorForwardVector();
+-
+-	// Calculate the delta vector between players
+-	FVector deltaVector = player2Pos - player1Pos;
+-
+-	// Project the delta onto right and forward vectors
+-	float horizontalDist = FMath::Abs(FVector::DotProduct(deltaVector, rightVector));
+-	float depthDist = FMath::Abs(FVector::DotProduct(deltaVector, forwardVector));
+-
+-	// Get player displacements
+-	FVector player1Displacement = Players[0]->GetVelocity() * GetWorld()->GetDeltaSeconds();
+-	FVector player2Displacement = Players[1]->GetVelocity() * GetWorld()->GetDeltaSeconds();
+-
+-	// Store original positions
+-	FVector newPos1 = player1Pos;
+-	FVector newPos2 = player2Pos;
+-
+-	// Handle constraints
+-	if (horizontalDist > MaxPlayerHorizontalDistance)
+-	{
+-		newPos1 += -FVector::DotProduct(player1Displacement, rightVector) * rightVector;
+-		newPos2 += -FVector::DotProduct(player2Displacement, rightVector) * rightVector;
+-	}
+-	if (depthDist > MaxPlayerDepthDistance)
+-	{
+-		newPos1 += -FVector::DotProduct(player1Displacement, forwardVector) * forwardVector;
+-		newPos2 += -FVector::DotProduct(player2Displacement, forwardVector) * forwardVector;
+-	}
+-
+-	// Apply the new positions
+-	if (newPos1 != player1Pos)
+-	{
+-		Players[0]->SetActorLocation(newPos1, true);
+-	}
+-	if (newPos2 != player2Pos)
+-	{
+-		Players[1]->SetActorLocation(newPos2, true);
+-	}
+-}
+-
+-/**
+- * @brief Converts 3D vector to 2D by removing Z component
+- * @details Utility function for 2D distance calculations
+- * 
+- * @param vect3d 3D vector to convert
+- * @return 2D vector with X and Y components
+- */
+-FVector2D AMainCamera::Get2DVect(FVector vect3d)
+-{
+-	return { vect3d.X, vect3d.Y };
+-}
+-
+-/**
+- * @brief Calculates normalized alpha value between min and max
+- * @details Linear interpolation utility function
+- * 
+- * @param value Current value to normalize
+- * @param min Minimum value in range
+- * @param max Maximum value in range
+- * @return Alpha value between 0 and 1
+- */
+-float AMainCamera::GetAlpha(float value, float min, float max)
+-{
+-	return (value - min) / (max - min);
+-}
+-
+-/**
+- * @brief Calculates interpolated value using alpha
+- * @details Reverse interpolation utility function
+- * 
+- * @param alpha Normalized value between 0 and 1
+- * @param min Minimum value in range
+- * @param max Maximum value in range
+- * @return Interpolated value between min and max
+- */
+-float AMainCamera::GetValue(float alpha, float min, float max)
+-{
+-	return alpha * (max - min) + min;
+-}
+diff --git a/Source/BCR/Sources/System/MiniGame/MiniGameSystem.cpp b/Source/BCR/Sources/System/MiniGame/MiniGameSystem.cpp
+--- a/Source/BCR/Sources/System/MiniGame/MiniGameSystem.cpp
++++ b/Source/BCR/Sources/System/MiniGame/MiniGameSystem.cpp
+@@ -1,0 +2 @@
++#include "BCR/Headers/System/BCRWorkshopRulesBridge.h"
+@@ -5,0 +7 @@
++#include "Kismet/GameplayStatics.h"
+@@ -14,0 +17,5 @@
++namespace
++{
++enum class EMachineDeposit : int32 { Rejected, Accepted, AlreadyPresent };
++}
++
+@@ -42 +49 @@
+- * 
++ *
+@@ -48 +55 @@
+-	IBCR_Helper::LogConsole(this, FString::Printf(TEXT("Player 1 action: %s"), 
++	IBCR_Helper::LogConsole(this, FString::Printf(TEXT("Player 1 action: %s"),
+@@ -55 +62 @@
+- * 
++ *
+@@ -61 +68 @@
+-	IBCR_Helper::LogConsole(this, FString::Printf(TEXT("Player 2 action: %s"), 
++	IBCR_Helper::LogConsole(this, FString::Printf(TEXT("Player 2 action: %s"),
+@@ -68 +75 @@
+- * 
++ *
+@@ -79 +86 @@
+- * 
++ *
+@@ -90 +97 @@
+- * 
++ *
+@@ -95 +102 @@
+-	IBCR_Helper::LogConsole(this, FString::Printf(TEXT("QTE Complete for : %s with result : %s"), 
++	IBCR_Helper::LogConsole(this, FString::Printf(TEXT("QTE Complete for : %s with result : %s"),
+@@ -107,2 +114,6 @@
+-	
+-	itemList = inputItems;
++
++	WorkshopRules = UBCRWorkshopRulesBridge::Create(this);
++	Reset();
++	for (const auto& Entry : presentItem)
++		if (IsValid(Entry.Key) && WorkshopRules && WorkshopRules->RegisterMachineReplacement(Entry.Key->GetUniqueID()))
++			TrackedItems.Add(Entry.Key->GetUniqueID(), Entry.Key);
+@@ -115 +126 @@
+- * 
++ *
+@@ -120,0 +132,12 @@
++
++	if (!WorkshopRules || GetClass()->GetFName() != TEXT("BP_SawMachine_C") || !WorkshopRules->OwnsMachineRound()) return;
++	const auto* LogProperty = FindFProperty<FObjectPropertyBase>(GetClass(), TEXT("BP_Log"));
++	UObject* Log = LogProperty ? LogProperty->GetObjectPropertyValue_InContainer(this) : nullptr;
++	if (!IsValid(Log)) return;
++	const auto* Cut = FindFProperty<FBoolProperty>(Log->GetClass(), TEXT("cut"));
++	if (!WorkshopRules->ShouldFinishSawRound(Cut && Cut->GetPropertyValue_InContainer(Log))) return;
++
++	// Wait for the original log's latent cut callback before finishing the managed round.
++	// The Blueprint still handles the presentation and advances the order when players leave.
++	if (UQTE_Subsystem* QTE = GetGameInstance()->GetSubsystem<UQTE_Subsystem>())
++		QTE->FinishAuthoredRound();
+@@ -126 +149 @@
+- * 
++ *
+@@ -132 +155 @@
+-	itemList = _items;
++	Reset();
+@@ -138 +161 @@
+- * 
++ *
+@@ -149 +172 @@
+- * 
++ *
+@@ -163,44 +186,62 @@
+-	if (itemList.IsEmpty())
+-	{
+-		if (!QTEConfig)
+-		{
+-			// technical log
+-			IBCR_Helper::LogConsole(this, "No QTE Configuration assigned!");
+-			return;
+-		}
+-
+-		if (UGameInstance* GameInstance = GetGameInstance())
+-		{
+-			if (UQTE_Subsystem* QTESystem = GameInstance->GetSubsystem<UQTE_Subsystem>())
+-			{
+-				if (QTESystem->GetCurrentState() != EQTEState::Running && QTESystem->GetCurrentState() != EQTEState::WaitingForPlayers)
+-				{
+-					// technical log
+-					IBCR_Helper::LogConsole(this, "Setting up QTE");
+-					
+-					// Binding callbacks
+-					QTESystem->OnQTEComplete.AddDynamic(this, &AMiniGameSystem::FinishExecute);
+-					
+-					QTESystem->OnSnapPointFirstResult.AddDynamic(this, &AMiniGameSystem::OnFirstSnapPointResult);
+-					QTESystem->OnSnapPointSecondResult.AddDynamic(this, &AMiniGameSystem::OnSecondSnapPointResult);
+-
+-					QTESystem->OnSnapPointFirstProgress.AddDynamic(this, &AMiniGameSystem::OnFirstSnapPointProgress);
+-					QTESystem->OnSnapPointSecondProgress.AddDynamic(this, &AMiniGameSystem::OnSecondSnapPointProgress);
+-
+-					QTESystem->OnQTEComplete.AddDynamic(this, &AMiniGameSystem::OnQTEComplete);
+-
+-					CallQTEReader();
+-				}
+-				
+-				if (snapPointMap[snapPlayerPoint1])
+-				{
+-					QTESystem->OnPlayerEnterSnapPoint(snapPointMap[snapPlayerPoint1], ESnapPointType::First);
+-				}
+-				if (snapPointMap[snapPlayerPoint2])
+-				{
+-					QTESystem->OnPlayerEnterSnapPoint(snapPointMap[snapPlayerPoint2], ESnapPointType::Second);
+-				}
+-			}
+-		}
+-	}
+-	else
++    if (!QTEConfig || !WorkshopRules) return;
++    checkItemPresent();
++    UQTE_Subsystem* QTE = GetGameInstance()->GetSubsystem<UQTE_Subsystem>();
++    if (!QTE || !WorkshopRules->CanStartMachineRound(static_cast<int32>(QTE->GetCurrentState()))) return;
++
++    CallQTEReader();
++    if (!WorkshopRules->ConfirmMachineRound(static_cast<int32>(QTE->GetCurrentState()))) return;
++    QTE->OnQTEComplete.AddUniqueDynamic(this, &AMiniGameSystem::FinishExecute);
++    QTE->OnSnapPointFirstResult.AddUniqueDynamic(this, &AMiniGameSystem::OnFirstSnapPointResult);
++    QTE->OnSnapPointSecondResult.AddUniqueDynamic(this, &AMiniGameSystem::OnSecondSnapPointResult);
++    QTE->OnSnapPointFirstProgress.AddUniqueDynamic(this, &AMiniGameSystem::OnFirstSnapPointProgress);
++    QTE->OnSnapPointSecondProgress.AddUniqueDynamic(this, &AMiniGameSystem::OnSecondSnapPointProgress);
++    QTE->OnPlayerEnterSnapPoint(snapPointMap.FindRef(snapPlayerPoint1), ESnapPointType::First);
++    QTE->OnPlayerEnterSnapPoint(snapPointMap.FindRef(snapPlayerPoint2), ESnapPointType::Second);
++}
++
++/**
++ * @brief Starts the QTE sequence using the configured asset
++ * @details Initializes the QTE subsystem with the assigned configuration
++ */
++void AMiniGameSystem::CallQTEReader()
++{
++	if (UGameInstance* GameInstance = GetGameInstance())
++	{
++		if (UQTE_Subsystem* QTESystem = GameInstance->GetSubsystem<UQTE_Subsystem>())
++		{
++			QTESystem->StartQTEFromAsset(QTEConfig);
++		}
++	}
++}
++
++/**
++ * @brief Handles QTE completion and triggers item production
++ * @details Cleans up QTE callbacks and spawns output items on success
++ *
++ * @param _success Whether the QTE was completed successfully
++ */
++void AMiniGameSystem::FinishExecute(bool _success)
++{
++	if (WorkshopRules) WorkshopRules->ReleaseMachineRound();
++	if (UGameInstance* GameInstance = GetGameInstance())
++	{
++		if (UQTE_Subsystem* QTESystem = GameInstance->GetSubsystem<UQTE_Subsystem>())
++		{
++			QTESystem->OnQTEComplete.RemoveDynamic(this, &AMiniGameSystem::FinishExecute);
++
++			QTESystem->OnSnapPointFirstResult.RemoveDynamic(this, &AMiniGameSystem::OnFirstSnapPointResult);
++			QTESystem->OnSnapPointSecondResult.RemoveDynamic(this, &AMiniGameSystem::OnSecondSnapPointResult);
++
++			QTESystem->OnSnapPointFirstProgress.RemoveDynamic(this, &AMiniGameSystem::OnFirstSnapPointProgress);
++			QTESystem->OnSnapPointSecondProgress.RemoveDynamic(this, &AMiniGameSystem::OnSecondSnapPointProgress);
++		}
++	}
++
++	OnQTEComplete(_success);
++
++	// technical log
++	IBCR_Helper::LogConsole(this,
++		FString::Printf(TEXT("QTE Execution finished with result: %s"),
++			_success ? TEXT("Success") : TEXT("Failure")));
++
++	if (_success)
+@@ -211,48 +252,4 @@
+-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Need more resources!"));
+-		}
+-	}
+-}
+-
+-/**
+- * @brief Starts the QTE sequence using the configured asset
+- * @details Initializes the QTE subsystem with the assigned configuration
+- */
+-void AMiniGameSystem::CallQTEReader()
+-{
+-	if (UGameInstance* GameInstance = GetGameInstance())
+-	{
+-		if (UQTE_Subsystem* QTESystem = GameInstance->GetSubsystem<UQTE_Subsystem>())
+-		{
+-			QTESystem->StartQTEFromAsset(QTEConfig);
+-		}
+-	}
+-}
+-
+-/**
+- * @brief Handles QTE completion and triggers item production
+- * @details Cleans up QTE callbacks and spawns output items on success
+- * 
+- * @param _success Whether the QTE was completed successfully
+- */
+-void AMiniGameSystem::FinishExecute(bool _success)
+-{
+-	if (UGameInstance* GameInstance = GetGameInstance())
+-	{
+-		if (UQTE_Subsystem* QTESystem = GameInstance->GetSubsystem<UQTE_Subsystem>())
+-		{
+-			QTESystem->OnQTEComplete.RemoveDynamic(this, &AMiniGameSystem::FinishExecute);
+-			
+-			QTESystem->OnSnapPointFirstResult.RemoveDynamic(this, &AMiniGameSystem::OnFirstSnapPointResult);
+-			QTESystem->OnSnapPointSecondResult.RemoveDynamic(this, &AMiniGameSystem::OnSecondSnapPointResult);
+-
+-			QTESystem->OnSnapPointFirstProgress.RemoveDynamic(this, &AMiniGameSystem::OnFirstSnapPointProgress);
+-			QTESystem->OnSnapPointSecondProgress.RemoveDynamic(this, &AMiniGameSystem::OnSecondSnapPointProgress);
+-		}
+-	}
+-
+-	// technical log
+-	IBCR_Helper::LogConsole(this, 
+-		FString::Printf(TEXT("QTE Execution finished with result: %s"), 
+-			_success ? TEXT("Success") : TEXT("Failure")));
+-	
+-	if (_success)
++			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("Machine active!"));
++		}
++	}
++	else
+@@ -263,4 +260,14 @@
+-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("Machine active!"));
+-		}
+-	}
+-	else
++			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Machine failed!"));
++		}
++	}
++}
++
++/**
++ * @brief Spawns output items sequentially with delays
++ * @details Recursively spawns items from the output list with timed intervals
++ *
++ * @param i Index of the item to spawn in the output array
++ */
++void AMiniGameSystem::SpawnItem(int i)
++{
++	if (i >= outputItems.Num())
+@@ -271,18 +277,0 @@
+-			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Machine failed!"));
+-		}
+-	}
+-}
+-
+-/**
+- * @brief Spawns output items sequentially with delays
+- * @details Recursively spawns items from the output list with timed intervals
+- * 
+- * @param i Index of the item to spawn in the output array
+- */
+-void AMiniGameSystem::SpawnItem(int i)
+-{
+-	if (i >= outputItems.Num())
+-	{
+-		// visual log for demonstration
+-		if (GEngine)
+-		{
+@@ -293 +282 @@
+-	
++
+@@ -312 +301,3 @@
+-	itemList = inputItems;
++	if (!WorkshopRules) return;
++	WorkshopRules->ResetMachineRequirements();
++	for (const auto& Type : inputItems) PartialReset(Type);
+@@ -318 +309 @@
+- * 
++ *
+@@ -323 +314 @@
+-	itemList.Add(itemClass);
++	if (WorkshopRules && itemClass) WorkshopRules->AddMachineRequirement(itemClass.GetDefaultObject()->GetItemName());
+@@ -329 +320 @@
+- * 
++ *
+@@ -342 +333 @@
+-		
++
+@@ -356 +347 @@
+- * 
++ *
+@@ -361,86 +352,48 @@
+-	checkItemPresent();
+-
+-	if (!itemList.IsEmpty() && (snapPointMap.Find(snapPlayerPoint1)[0] != Player && snapPointMap.Find(snapPlayerPoint2)[0] != Player))
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Need more resources!"));
+-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("%i"),itemList.Num()));
+-		return;
+-	}
+-
+-	if (UGameInstance* GameInstance = GetGameInstance())
+-	{
+-		UQTE_Subsystem* QTESystem;
+-		QTESystem = GameInstance->GetSubsystem<UQTE_Subsystem>();
+-
+-		if (snapPointMap.Find(snapPlayerPoint1)[0] == Player)
+-		{
+-			snapPointMap.Add(snapPlayerPoint1, nullptr);
+-			QTESystem->OnPlayerLeaveSnapPoint(Player, ESnapPointType::First);
+-
+-			if (Cast<ILocomotional>(Player))
+-			{
+-				if (locomotionConfigs.Num() > 0)
+-				{
+-					ILocomotional::Execute_ResetLocomotionConfig(Player);
+-				}
+-			}
+-			
+-			//set state machine to liberate the player
+-			Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+-			return;
+-		}
+-		if (snapPointMap.Find(snapPlayerPoint2)[0] == Player)
+-		{
+-			snapPointMap.Add(snapPlayerPoint2, nullptr);
+-			QTESystem->OnPlayerLeaveSnapPoint(Player, ESnapPointType::Second);
+-
+-			if (Cast<ILocomotional>(Player))
+-			{
+-				if (locomotionConfigs.Num() > 0)
+-				{
+-					ILocomotional::Execute_ResetLocomotionConfig(Player);
+-				}
+-			}
+-			
+-			//set state machine to liberate the player
+-			Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+-			return;
+-		}
+-	}
+-	
+-	TArray<UBillboardComponent*> SnapArray;
+-	SnapArray.Add(snapPlayerPoint1);
+-	SnapArray.Add(snapPlayerPoint2);
+-
+-	UBillboardComponent* closestBillBoard = GetNearestComponent(Player->GetActorLocation(), SnapArray);
+-
+-	if (snapPointMap.Find(closestBillBoard)[0] == nullptr)
+-	{
+-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Found a SnapPoint"));
+-		snapPointMap.Add(closestBillBoard, Player);
+-
+-		if (Cast<ILocomotional>(Player))
+-		{
+-			if (locomotionConfigs.Num() > 0)
+-			{
+-				int32 configIndex = (closestBillBoard == snapPlayerPoint1) ? 0 : 1;
+-				locomotionConfigs[configIndex]->Configuration.PositionToGo.SetLocation(closestBillBoard->GetComponentLocation());
+-				locomotionConfigs[configIndex]->Configuration.PositionToGo.SetRotation(closestBillBoard->GetComponentRotation().Quaternion());
+-				IBCR_Helper::LogConsole(this,FString::Printf(TEXT("Setting locomotion config %d for player at snap point %d"), configIndex, configIndex + 1));
+-            
+-				if (locomotionConfigs.IsValidIndex(configIndex))
+-				{
+-					ILocomotional::Execute_SetLocomotionConfig(Player, locomotionConfigs[configIndex]);
+-				}
+-			}
+-			else
+-			{
+-				Player->GetCharacterMovement()->SetMovementMode(MOVE_None);
+-				Player->SetActorLocation(closestBillBoard->GetComponentLocation());
+-			}
+-		}
+-	}
+-	if (snapPointMap.FindRef(snapPlayerPoint1) != nullptr && snapPointMap.FindRef(snapPlayerPoint2) != nullptr)
+-	{
+-		StartExecute();
+-	}
++    if (!WorkshopRules || !IsValid(Player)) return;
++    checkItemPresent();
++
++    const FVector Position = Player->GetActorLocation();
++    // The shared station rules identify the two local players as 0 and 1.
++    APlayerController* Controller = Cast<APlayerController>(Player->GetController());
++    const int32 PlayerIndex = Controller ? UGameplayStatics::GetPlayerControllerID(Controller) : INDEX_NONE;
++    const int32 Change = WorkshopRules->InteractWithStation(PlayerIndex, WorkshopRules->IsMachineSupplied(),
++        FVector::DistSquared(Position, snapPlayerPoint1->GetComponentLocation()),
++        FVector::DistSquared(Position, snapPlayerPoint2->GetComponentLocation()));
++    if (Change < 0) return;
++
++    const int32 Slot = Change % 2;
++    UBillboardComponent* Point = Slot == 0 ? snapPlayerPoint1 : snapPlayerPoint2;
++    if (Change >= 2)
++    {
++        snapPointMap.Add(Point, nullptr);
++        if (UQTE_Subsystem* QTE = GetGameInstance()->GetSubsystem<UQTE_Subsystem>())
++        {
++            if (GetClass()->GetFName() == TEXT("BP_Tree_C"))
++                if (const auto* Remaining = FindFProperty<FIntProperty>(GetClass(), TEXT("nbOfCut"));
++                    Remaining && WorkshopRules->ShouldFinishTreeRound(Remaining->GetPropertyValue_InContainer(this)))
++                    QTE->FinishAuthoredRound();
++            QTE->OnPlayerLeaveSnapPoint(Player, static_cast<ESnapPointType>(Slot));
++        }
++        if (Cast<ILocomotional>(Player) && !locomotionConfigs.IsEmpty())
++            ILocomotional::Execute_ResetLocomotionConfig(Player);
++        Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
++        return;
++    }
++
++    snapPointMap.Add(Point, Player);
++    if (Cast<ILocomotional>(Player))
++    {
++        if (locomotionConfigs.IsValidIndex(Slot) && locomotionConfigs[Slot])
++        {
++            auto* Config = locomotionConfigs[Slot];
++            Config->Configuration.PositionToGo.SetLocation(Point->GetComponentLocation());
++            Config->Configuration.PositionToGo.SetRotation(Point->GetComponentQuat());
++            ILocomotional::Execute_SetLocomotionConfig(Player, Config);
++        }
++        else
++        {
++            Player->GetCharacterMovement()->SetMovementMode(MOVE_None);
++            Player->SetActorLocation(Point->GetComponentLocation());
++        }
++    }
++    if (WorkshopRules->AreStationsFilled()) StartExecute();
+@@ -452 +405 @@
+- * 
++ *
+@@ -458,30 +411,20 @@
+-	APickableItem* item = Cast<APickableItem>(Object);
+-	
+-	if (item)
+-	{
+-		if (presentItem.Contains(item))
+-		{
+-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Player Already Deposited the Item"));
+-			Player->PickUp();
+-			IInteractable::Execute_Interact(this, Player);
+-			return;
+-		}
+-		if (PlayerIsInBox(Player))
+-		{
+-			int i = checkItemInRecipe(item);
+-			
+-			if (i != -1)
+-			{
+-				itemList.RemoveAt(i);
+-				presentItem.Add(item, item->GetClass());
+-				Player->PickUp();
+-				return;
+-			}
+-			else if (itemList.Num() == 0)
+-			{
+-				presentItem.Add(item, item->GetClass());
+-				Player->PickUp();
+-				return;
+-			}
+-			IBCR_Helper::LogScreen(this, "Item not in itemList");
+-		}
++	APickableItem* Item = Cast<APickableItem>(Object);
++	if (!WorkshopRules || !IsValid(Player) || !IsValid(Item)) return;
++	checkItemPresent();
++	const int32 ItemId = Item->GetUniqueID();
++	const bool bInside = PlayerIsInBox(Player);
++	const auto Deposit = static_cast<EMachineDeposit>(WorkshopRules->DepositMachineItem(ItemId, Item->GetItemName(), bInside));
++	if (Deposit == EMachineDeposit::Accepted)
++	{
++		TrackedItems.Add(ItemId, Item);
++		Player->PickUp();
++	}
++	else if (Deposit == EMachineDeposit::AlreadyPresent)
++	{
++		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Player Already Deposited the Item"));
++		Player->PickUp();
++		IInteractable::Execute_Interact(this, Player);
++	}
++	else if (bInside)
++	{
++		IBCR_Helper::LogScreen(this, "Item not in recipe");
+@@ -494 +437 @@
+- * 
++ *
+@@ -499,13 +442,10 @@
+-	for (auto [item,CLASS] : presentItem)
+-	{
+-		if(!IsValid(item))
+-		{
+-			presentItem.Remove(item);
+-			PartialReset(CLASS);
+-		}
+-	}
+-	if (presentItem.IsEmpty())
+-	{
+-		return false;
+-	}
+-	return true;
++	if (!WorkshopRules) return false;
++	for (auto It = TrackedItems.CreateIterator(); It; ++It)
++	{
++		if (!It.Value().IsValid())
++		{
++			WorkshopRules->ForgetMachineItem(It.Key());
++			It.RemoveCurrent();
++		}
++	}
++	return WorkshopRules->HasMachineItems();
+@@ -517 +457 @@
+- * 
++ *
+@@ -523,9 +463,3 @@
+-	for (int i = 0; i < itemList.Num(); i++)
+-	{
+-		if (itemList[i].GetDefaultObject()->GetItemName() == item->GetItemName())
+-		{
+-			/* Get the name of the Object (name is given by the class of the pickable */
+-			return i;
+-		}
+-	}
+-	return -1;
++	if (!WorkshopRules || !IsValid(item)) return INDEX_NONE;
++	checkItemPresent();
++	return WorkshopRules->FindMachineRequirement(item->GetItemName());
+@@ -537 +471 @@
+- * 
++ *
+@@ -542 +476,19 @@
+-	presentItem.Add(item, item->GetClass());
++	if (!WorkshopRules) return;
++	const int32 ItemId = IsValid(item) ? item->GetUniqueID() : INDEX_NONE;
++	if (!WorkshopRules->RegisterMachineReplacement(ItemId) || !IsValid(item)) return;
++	TrackedItems.Add(ItemId, item);
++
++	if (GetClass()->GetFName() != TEXT("BP_SawMachine_C") ||
++		item->GetClass()->GetFName() != TEXT("BP_Log_C")) return;
++
++	// The saw replaces the carried log immediately. Its drop animation can no longer unlock the hands.
++	for (int32 Index = 0; Index < 2; ++Index)
++	{
++		AMainPlayer* Player = Cast<AMainPlayer>(UGameplayStatics::GetPlayerPawn(this, Index));
++		AActor* Held = Player ? Player->PickedUpObject : nullptr;
++		const bool bHeldIsValid = IsValid(Held);
++		if (!Player || !WorkshopRules->ShouldUnlockReplacementCarry(bHeldIsValid,
++			bHeldIsValid && Held->GetClass()->GetFName() == TEXT("BP_LogTEST_C"))) continue;
++		if (const auto* CanPickUp = FindFProperty<FBoolProperty>(Player->GetClass(), TEXT("CanPickUp")))
++			CanPickUp->SetPropertyValue_InContainer(Player, true);
++	}
+@@ -548 +500 @@
+- * 
++ *
+@@ -553 +505,2 @@
+-	itemList.RemoveAt(i);
++	// The original Blueprint supplies the spawned replacement in SetPresentItem.
++	if (WorkshopRules) WorkshopRules->StageMachineReplacement(i);
+@@ -559 +512 @@
+- * 
++ *
+@@ -564,0 +518 @@
++	if (!IsValid(Player)) return false;
+@@ -569 +523 @@
+-	
++
+diff --git a/Source/BCR/Sources/System/QTE/QTE_Subsystem.cpp b/Source/BCR/Sources/System/QTE/QTE_Subsystem.cpp
+--- a/Source/BCR/Sources/System/QTE/QTE_Subsystem.cpp
++++ b/Source/BCR/Sources/System/QTE/QTE_Subsystem.cpp
+@@ -2,0 +3 @@
++#include "BCR/Headers/System/QTE/BCRQteRulesBridge.h"
+@@ -3,0 +5 @@
++#include "Engine/World.h"
+@@ -14,2 +16 @@
+-    ResetState();
+-    CurrentState = EQTEState::Inactive;
++    FWorldDelegates::OnWorldCleanup.AddUObject(this, &UQTE_Subsystem::OnRoundWorldCleanup);
+@@ -23,0 +25 @@
++    FWorldDelegates::OnWorldCleanup.RemoveAll(this);
+@@ -27,0 +30,15 @@
++void UQTE_Subsystem::OnRoundWorldCleanup(UWorld* World, bool bSessionEnded, bool bCleanupResources)
++{
++    if (RoundWorld.Get() != World) return;
++    World->GetTimerManager().ClearTimer(GlobalTimerHandle);
++    if (RulesBridge) RulesBridge->FinishRound(false, true);
++    ActivePlayers.Reset();
++    CurrentConfig = FQTEConfiguration();
++    OnSnapPointFirstResult.Clear();
++    OnSnapPointSecondResult.Clear();
++    OnSnapPointFirstProgress.Clear();
++    OnSnapPointSecondProgress.Clear();
++    OnQTEComplete.Clear();
++    RoundWorld.Reset();
++}
++
+@@ -36 +53 @@
+-    if (CurrentState == EQTEState::Running && !bIsPaused)
++    if (GetCurrentState() == EQTEState::Running)
+@@ -50 +67 @@
+-    return IsQTERunning() && !bIsPaused;
++    return GetCurrentState() == EQTEState::Running;
+@@ -74,0 +92 @@
++        return;
+@@ -94,5 +112,12 @@
+-    if (IsQTERunning())
+-    {
+-        return;
+-    }
+-
++    UBCRQteRulesBridge* Rules = GetRules();
++    if (!Rules || Config.SnapPoints.IsEmpty() || Config.SnapPoints.Num() > 2) return;
++
++    const FSnapPointConfig& First = Config.SnapPoints[0];
++    const FSnapPointConfig* Second = Config.SnapPoints.Num() == 2 ? &Config.SnapPoints[1] : nullptr;
++    if (!Rules->StartRound(static_cast<int32>(First.SnapPointType), First.RepeatCount,
++        Second ? static_cast<int32>(Second->SnapPointType) : INDEX_NONE,
++        Second ? Second->RepeatCount : 0, Config.TotalTime))
++        return;
++
++    ClearTimers();
++    ActivePlayers.Reset();
+@@ -100,24 +125,2 @@
+-    ActionProgress.Empty();
+-    
+-    if (!IsQTEConfigValid())
+-    {
+-        return;
+-    }
+-
+-    ////////////////////////////////////////////////
+-    // Log technical details
+-    IBCR_Helper::LogConsole(this, TEXT("QTE Configuration loaded and validated"));
+-
+-    // visual log for demonstration
+-    if (GEngine)
+-    {
+-        GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Get ready!"));
+-    }
+-    ////////////////////////////////////////////////
+-    
+-    SetQTEState(EQTEState::WaitingForPlayers);
+-    
+-    if (CurrentConfig.TotalTime > 0.0f)
+-    {
+-        SetupTimers();
+-    }
++    RoundWorld = GetWorld();
++    SetupTimers();
+@@ -135,26 +138,19 @@
+-    if (!Player || CurrentState != EQTEState::WaitingForPlayers)
+-    {
+-        return;
+-    }
+-
+-    ActivePlayers.Add(SnapPoint, Player);
+-
+-    ////////////////////////////////////////////////
+-    // Log technical details
+-    IBCR_Helper::LogConsole(this, 
+-        FString::Printf(TEXT("Player registered at %s"), 
+-        *UEnum::GetValueAsString(SnapPoint)));
+-    ////////////////////////////////////////////////
+-    
+-    if (GEngine)
+-    {
+-        FString PlayerText = (SnapPoint == ESnapPointType::First) ? TEXT("Player 1") : TEXT("Player 2");
+-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan,
+-            FString::Printf(TEXT("%s ready"), *PlayerText));
+-        
+-        if (ActivePlayers.Num() == 2)
+-        {
+-            GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Play the QTE !"));
+-            SetQTEState(EQTEState::Running);
+-        }
+-    }
++    if (Player && RulesBridge && RulesBridge->JoinRound(static_cast<int32>(SnapPoint), Player->GetUniqueID()))
++        ActivePlayers.Add(SnapPoint, Player);
++}
++
++bool UQTE_Subsystem::GetPlayerActionInfo(const AMainPlayer* Player, FSnapPointConfig& OutConfig, int32& SuccessCount) const
++{
++    SuccessCount = 0;
++    if (!Player || (GetCurrentState() != EQTEState::WaitingForPlayers && GetCurrentState() != EQTEState::Running)) return false;
++    for (const auto& Entry : ActivePlayers)
++    {
++        if (Entry.Value.Get() != Player) continue;
++        const FSnapPointConfig* Config = CurrentConfig.SnapPoints.FindByPredicate(
++            [&Entry](const FSnapPointConfig& Item) { return Item.SnapPointType == Entry.Key; });
++        if (!Config) return false;
++        OutConfig = *Config;
++        SuccessCount = RulesBridge->SuccessCount(static_cast<int32>(Entry.Key));
++        return true;
++    }
++    return false;
+@@ -172,8 +168,2 @@
+-    if (!Player)
+-    {
+-        return;
+-    }
+-
+-    ActivePlayers.Remove(SnapPoint);
+-    StopQTE();
+-    CompleteQTE(false);
++    if (Player && RulesBridge && RulesBridge->OwnsRoundSlot(static_cast<int32>(SnapPoint), Player->GetUniqueID()))
++        StopQTE();
+@@ -190,10 +180,6 @@
+-    if (CurrentState != EQTEState::Running || bIsPaused)
+-    {
+-        return;
+-    }
+-    
+-    for (const auto& PlayerPair : ActivePlayers)
+-    {
+-        ESnapPointType SnapPoint = PlayerPair.Key;
+-        AMainPlayer* Player = PlayerPair.Value.Get();
+-        
++    // Blueprint callbacks can stop the round and clear its UE controller references.
++    const auto Players = ActivePlayers;
++    for (const auto& Entry : Players)
++    {
++        if (GetCurrentState() != EQTEState::Running) return;
++        AMainPlayer* Player = Entry.Value.Get();
+@@ -202,2 +188,2 @@
+-            IBCR_Helper::LogAll(this, TEXT("Invalid player reference!"), 1.0f, FColor::Red);
+-            continue;
++            CompleteQTE(false);
++            return;
+@@ -205 +190,0 @@
+-        
+@@ -207 +192 @@
+-            [SnapPoint](const FSnapPointConfig& Cfg) { return Cfg.SnapPointType == SnapPoint; }))
++            [&Entry](const FSnapPointConfig& Point) { return Point.SnapPointType == Entry.Key; }))
+@@ -209,5 +194,2 @@
+-            ProcessPlayerInput(Player, SnapPoint, *Config, DeltaTime);
+-        }
+-        else
+-        {
+-            IBCR_Helper::LogAll(this, TEXT("No config found for snap point!"), 1.0f, FColor::Red);
++            const FSnapPointConfig InputConfig = *Config;
++            ProcessPlayerInput(Player, Entry.Key, InputConfig);
+@@ -225,55 +207,36 @@
+- * @param DeltaTime Time elapsed since the last frame in seconds
+- */
+-void UQTE_Subsystem::ProcessPlayerInput(AMainPlayer* Player, ESnapPointType SnapPoint, const FSnapPointConfig& Config, float DeltaTime)
+-{
+-    if (CurrentState != EQTEState::Running)
+-    {
+-        return;
+-    }
+-    
+-    FQTEProgressData* Progress = ActionProgress.Find(SnapPoint);
+-
+-    if (CurrentConfig.ActionShouldWaitOtherPlayer)
+-    {
+-        ESnapPointType OtherPoint = (SnapPoint == ESnapPointType::First) ? ESnapPointType::Second : ESnapPointType::First;
+-                                  
+-        const FQTEProgressData* OtherProgress = ActionProgress.Find(OtherPoint);
+-        
+-        if (Progress && Progress->SuccessCount > 0 && (!OtherProgress || OtherProgress->SuccessCount < Progress->SuccessCount))
+-        {
+-            IBCR_Helper::LogConsole(this, FString::Printf(TEXT("Waiting for other player. Current: %d, Other: %d"), Progress->SuccessCount, OtherProgress ? OtherProgress->SuccessCount : 0));
+-            return;
+-        }
+-    }
+-
+-    // Vérifie d'abord si le joueur fait une action
+-    bool isActing = false;
+-    if (auto PC = Player->GetController<APlayerController>())
+-    {
+-        switch(Config.ActionType)
+-        {
+-            case EQTEActionType::Press:
+-            case EQTEActionType::Release:
+-                isActing = PC->WasInputKeyJustPressed(Config.RequiredInput) || 
+-                          PC->WasInputKeyJustReleased(Config.RequiredInput);
+-                break;
+-            case EQTEActionType::Hold:
+-                isActing = PC->IsInputKeyDown(Config.RequiredInput);
+-                break;
+-            case EQTEActionType::Rotate:
+-                float X = 0.0f, Y = 0.0f;
+-                PC->GetInputAnalogStickState(EControllerAnalogStick::CAS_LeftStick, X, Y);
+-                isActing = FVector2D(X, Y).Size() > 0;
+-                break;
+-        }
+-    }
+-
+-    // Détermine le résultat
+-    EQTEResult result = EQTEResult::None;
+-    if (isActing)
+-    {
+-        bool bSuccess = ValidatePlayerAction(Player, Config);
+-        result = bSuccess ? EQTEResult::Success : EQTEResult::Failure;
+-    }
+-
+-    // Broadcast le résultat
++ */
++UBCRQteRulesBridge* UQTE_Subsystem::GetRules()
++{
++    if (!RulesBridge)
++    {
++        UClass* Class = FindObject<UClass>(nullptr, TEXT("/Script/UnrealSharp.ManagedQteRules_C"));
++        if (Class && Class->IsChildOf(UBCRQteRulesBridge::StaticClass()))
++            RulesBridge = NewObject<UBCRQteRulesBridge>(this, Class);
++    }
++    return RulesBridge;
++}
++
++void UQTE_Subsystem::ProcessPlayerInput(AMainPlayer* Player, ESnapPointType SnapPoint, const FSnapPointConfig& Config)
++{
++    if (GetCurrentState() != EQTEState::Running) return;
++    UBCRQteRulesBridge* Rules = GetRules();
++    if (!Rules) return;
++
++    const ESnapPointType OtherPoint = SnapPoint == ESnapPointType::First ? ESnapPointType::Second : ESnapPointType::First;
++    const int32 Slot = static_cast<int32>(SnapPoint);
++    if (Rules->ShouldWait(CurrentConfig.ActionShouldWaitOtherPlayer,
++        Rules->SuccessCount(Slot), Rules->SuccessCount(static_cast<int32>(OtherPoint))))
++        return;
++
++    EQTEResult Result = EQTEResult::None;
++    if (const APlayerController* Controller = Player->GetController<APlayerController>())
++    {
++        float X = 0, Y = 0;
++        if (Config.ActionType == EQTEActionType::Rotate)
++            Controller->GetInputAnalogStickState(EControllerAnalogStick::CAS_LeftStick, X, Y);
++        Result = static_cast<EQTEResult>(Rules->EvaluateAction(static_cast<int32>(Config.ActionType),
++            Controller->WasInputKeyJustPressed(Config.RequiredInput),
++            Controller->WasInputKeyJustReleased(Config.RequiredInput),
++            Controller->IsInputKeyDown(Config.RequiredInput), X, Y, Config.MinRotationSpeed));
++    }
++
+@@ -283 +246 @@
+-            OnSnapPointFirstResult.Broadcast(result);
++            OnSnapPointFirstResult.Broadcast(Result);
+@@ -286 +249 @@
+-            OnSnapPointSecondResult.Broadcast(result);
++            OnSnapPointSecondResult.Broadcast(Result);
+@@ -289,31 +252,6 @@
+-    
+-    if (result == EQTEResult::Success)
+-    {
+-        FQTEProgressData& NewProgress = ActionProgress.FindOrAdd(SnapPoint);
+-        NewProgress.SuccessCount++;
+-
+-        ////////////////////////////////////////////////
+-        // Log technical details
+-        IBCR_Helper::LogConsole(this, 
+-            FString::Printf(TEXT("Action validated for %s"), 
+-            *UEnum::GetValueAsString(SnapPoint)));
+-
+-        // visual log for demonstration
+-        if (GEngine)
+-        {
+-            FString PlayerText = (SnapPoint == ESnapPointType::First) ? TEXT("Player 1") : TEXT("Player 2");
+-            // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green,
+-            //     FString::Printf(TEXT("%s: Success!"), *PlayerText));
+-        }
+-        ////////////////////////////////////////////////
+-        
+-        if (Config.RepeatCount != -1 && NewProgress.SuccessCount >= Config.RepeatCount)
+-        {
+-            NewProgress.bIsComplete = true;
+-
+-            if (CheckQTECompletion())
+-            {
+-                CompleteQTE(true);
+-                return;
+-            }
+-        }        
++
++    if (GetCurrentState() != EQTEState::Running) return;
++    if (Result == EQTEResult::Success && Rules->RecordSuccess(Slot))
++    {
++        CompleteQTE(true);
++        return;
+@@ -323,102 +260,0 @@
+-}
+-
+-/**
+- * @brief Validates a player's action based on the required input type
+- * @details Routes to the appropriate validation method based on action type
+- * 
+- * @param Player The player performing the action
+- * @param Config The snap point configuration with action requirements
+- * @return True if the action is valid, false otherwise
+- */
+-bool UQTE_Subsystem::ValidatePlayerAction(AMainPlayer* Player, const FSnapPointConfig& Config)
+-{
+-    bool result = false;
+-    
+-    switch (Config.ActionType)
+-    {
+-    case EQTEActionType::Press:
+-        result = ValidatePressAction(Player, Config);
+-        break;
+-    case EQTEActionType::Hold:
+-        result = ValidateHoldAction(Player, Config);
+-        break;
+-    case EQTEActionType::Release:
+-        result = ValidateReleaseAction(Player, Config);
+-        break;
+-    case EQTEActionType::Rotate:
+-        result = ValidateRotateAction(Player, Config);
+-        break;
+-    }
+-    return result;
+-}
+-
+-/**
+- * @brief Validates a hold action input
+- * @details Checks if the required key is currently being held down
+- * 
+- * @param Player The player performing the action
+- * @param Config The snap point configuration
+- * @return True if the key is being held, false otherwise
+- */
+-bool UQTE_Subsystem::ValidateHoldAction(const AMainPlayer* Player, const FSnapPointConfig& Config)
+-{
+-    if (auto PC = Player->GetController<APlayerController>())
+-    {
+-        return PC->IsInputKeyDown(Config.RequiredInput);
+-    }
+-    return false;
+-}
+-
+-/**
+- * @brief Validates a rotate action input
+- * @details Checks if the analog stick movement meets the minimum rotation speed
+- * 
+- * @param Player The player performing the action
+- * @param Config The snap point configuration with minimum rotation speed
+- * @return True if rotation speed is sufficient, false otherwise
+- */
+-bool UQTE_Subsystem::ValidateRotateAction(const AMainPlayer* Player, const FSnapPointConfig& Config)
+-{
+-    if (auto PC = Player->GetController<APlayerController>())
+-    {
+-        float X = 0.0f, Y = 0.0f;
+-        PC->GetInputAnalogStickState(EControllerAnalogStick::CAS_LeftStick, X, Y);
+-        float RotationSpeed = FVector2D(X, Y).Size();
+-        return RotationSpeed >= Config.MinRotationSpeed;
+-    }
+-    return false;
+-}
+-
+-/**
+- * @brief Validates a press action input
+- * @details Checks if the required key was just pressed this frame
+- * 
+- * @param Player The player performing the action
+- * @param Config The snap point configuration
+- * @return True if the key was just pressed, false otherwise
+- */
+-bool UQTE_Subsystem::ValidatePressAction(const AMainPlayer* Player, const FSnapPointConfig& Config)
+-{
+-    if (auto PC = Player->GetController<APlayerController>())
+-    {
+-        bool bWasPressed = PC->WasInputKeyJustPressed(Config.RequiredInput);
+-        return bWasPressed;
+-    }
+-    return false;
+-}
+-
+-/**
+- * @brief Validates a release action input
+- * @details Checks if the required key was just released this frame
+- * 
+- * @param Player The player performing the action
+- * @param Config The snap point configuration
+- * @return True if the key was just released, false otherwise
+- */
+-bool UQTE_Subsystem::ValidateReleaseAction(const AMainPlayer* Player, const FSnapPointConfig& Config)
+-{
+-    if (auto PC = Player->GetController<APlayerController>())
+-    {
+-        return PC->WasInputKeyJustReleased(Config.RequiredInput);
+-    }
+-    return false;
+@@ -439,3 +275,4 @@
+-    if (auto PC = Player->GetController<APlayerController>())
+-    {
+-        switch (Config.ActionType)
++    if (const APlayerController* PC = Player->GetController<APlayerController>(); PC && RulesBridge)
++    {
++        float X = 0.f, Y = 0.f;
++        if (Config.ActionType == EQTEActionType::Rotate)
+@@ -443,36 +280,2 @@
+-            case EQTEActionType::Rotate:
+-            {
+-                float X = 0.0f, Y = 0.0f;
+-                PC->GetInputAnalogStickState(EControllerAnalogStick::CAS_LeftStick, X, Y);
+-                Progress.StickPosition = FVector2D(X, Y);
+-
+-                const float MIN_STICK_THRESHOLD = 0.1f;
+-                float stickMagnitude = Progress.StickPosition.Size();
+-
+-
+-                if (stickMagnitude > MIN_STICK_THRESHOLD)
+-                {
+-                    Progress.Progress = Progress.StickPosition.Size() / Config.MinRotationSpeed;
+-                    Progress.bIsActive = Progress.Progress > 0.0f;
+-                }
+-                else
+-                {
+-                    Progress.Progress = 0.0f;
+-                    Progress.bIsActive = false;
+-                }
+-
+-                break;
+-            }
+-            case EQTEActionType::Hold:
+-            case EQTEActionType::Press:
+-            case EQTEActionType::Release:
+-            {
+-                Progress.bIsActive = PC->IsInputKeyDown(Config.RequiredInput);
+-                Progress.Progress = Progress.bIsActive ? 1.0f : 0.0f;
+-                break;
+-            }
+-            case EQTEActionType::None:
+-            default:
+-            {
+-                break;
+-            }
++            PC->GetInputAnalogStickState(EControllerAnalogStick::CAS_LeftStick, X, Y);
++            Progress.StickPosition = FVector2D(X, Y);
+@@ -479,0 +283,3 @@
++        Progress.Progress = RulesBridge->CalculateActionProgress(static_cast<int32>(Config.ActionType),
++            PC->IsInputKeyDown(Config.RequiredInput), X, Y, Config.MinRotationSpeed);
++        Progress.bIsActive = Progress.Progress > 0.f;
+@@ -499,9 +305,2 @@
+-    if (!IsQTERunning())
+-    {
+-        return;
+-    }
+-
+-    ClearTimers();
+-    ResetState();
+-    SetQTEState(EQTEState::Inactive);
+-    OnQTEComplete.Broadcast(false);
++    if (!RulesBridge || !RulesBridge->FinishRound(false, true)) return;
++    PublishRoundCompletion(false);
+@@ -518,7 +317 @@
+-    if (bPause == bIsPaused || !IsQTERunning())
+-    {
+-        return;
+-    }
+-
+-    bIsPaused = bPause;
+-    
++    if (!RulesBridge || !RulesBridge->PauseRound(bPause)) return;
+@@ -527,8 +320,2 @@
+-        if (bPause)
+-        {
+-            World->GetTimerManager().PauseTimer(GlobalTimerHandle);
+-        }
+-        else
+-        {
+-            World->GetTimerManager().UnPauseTimer(GlobalTimerHandle);
+-        }
++        if (bPause) World->GetTimerManager().PauseTimer(GlobalTimerHandle);
++        else World->GetTimerManager().UnPauseTimer(GlobalTimerHandle);
+@@ -543,0 +331,10 @@
++EQTEState UQTE_Subsystem::GetCurrentState() const
++{
++    return RulesBridge ? static_cast<EQTEState>(RulesBridge->RoundState()) : EQTEState::Inactive;
++}
++
++void UQTE_Subsystem::FinishAuthoredRound()
++{
++    if (RulesBridge && RulesBridge->FinishAuthored()) PublishRoundCompletion(true);
++}
++
+@@ -546,56 +343,3 @@
+-    return CurrentState == EQTEState::Running || CurrentState == EQTEState::WaitingForPlayers;
+-}
+-
+-/**
+- * @brief Validates the current QTE configuration
+- * @details Ensures the configuration has valid snap points and settings
+- * 
+- * @return True if configuration is valid, false otherwise
+- */
+-bool UQTE_Subsystem::IsQTEConfigValid() const
+-{
+-    return CurrentConfig.SnapPoints.Num() > 0 && CurrentConfig.SnapPoints.Num() <= 2;
+-}
+-
+-/**
+- * @brief Checks if all required players are present to start the QTE
+- * @details Compares active player count with required snap points
+- * 
+- * @return True if QTE can start, false otherwise
+- */
+-bool UQTE_Subsystem::CanStartQTE() const
+-{
+-    return ActivePlayers.Num() == CurrentConfig.SnapPoints.Num();
+-}
+-
+-/**
+- * @brief Checks if all QTE actions have been completed
+- * @details Verifies that all snap points have reached their completion criteria
+- * 
+- * @return True if QTE is complete, false otherwise
+- */
+-bool UQTE_Subsystem::CheckQTECompletion()
+-{
+-    bool allComplete = true;
+-    
+-    for (const auto& Config : CurrentConfig.SnapPoints)
+-    {
+-        if (Config.RepeatCount == -1)
+-        {
+-            continue;
+-        }
+-
+-        const FQTEProgressData* Progress = ActionProgress.Find(Config.SnapPointType);
+-        if (!Progress || !Progress->bIsComplete)
+-        {
+-            allComplete = false;
+-        }
+-    }
+-    
+-    return allComplete;
+-}
+-
+-/**
+- * @brief Sets up global timers for the QTE
+- * @details Creates timeout timer if the configuration specifies a time limit
+- */
++    return RulesBridge && RulesBridge->IsRoundActive();
++}
++
+@@ -604 +348,2 @@
+-    if (UWorld* World = GetWorld())
++    const float Timeout = RulesBridge ? RulesBridge->RoundTimeout() : 0.f;
++    if (UWorld* World = GetWorld(); World && Timeout > 0.f)
+@@ -607,2 +352,5 @@
+-            [this]() { CompleteQTE(false); },
+-            CurrentConfig.TotalTime,
++            FTimerDelegate::CreateWeakLambda(this, [this]()
++            {
++                if (RulesBridge && RulesBridge->ExpireRound()) PublishRoundCompletion(false);
++            }),
++            Timeout,
+@@ -625,31 +372,0 @@
+-/**
+- * @brief Resets all internal state to default values
+- * @details Clears configuration, players, and progress data
+- */
+-void UQTE_Subsystem::ResetState()
+-{
+-    CurrentConfig = FQTEConfiguration();
+-    ActivePlayers.Empty();
+-    bIsPaused = false;
+-}
+-
+-/**
+- * @brief Changes the current QTE state
+- * @details Updates the internal state enum
+- * 
+- * @param NewState The new state to transition to
+- */
+-void UQTE_Subsystem::SetQTEState(EQTEState NewState)
+-{
+-    if (CurrentState != NewState)
+-    {
+-        CurrentState = NewState;
+-    }
+-}
+-
+-/**
+- * @brief Completes the QTE with success or failure
+- * @details Clears timers, sets final state, and broadcasts completion
+- * 
+- * @param bSuccess True if QTE was completed successfully, false if failed
+- */
+@@ -657,0 +375,5 @@
++    if (RulesBridge && RulesBridge->FinishRound(bSuccess, false)) PublishRoundCompletion(bSuccess);
++}
++
++void UQTE_Subsystem::PublishRoundCompletion(bool bSuccess)
++{
+@@ -659,2 +381 @@
+-    
+-    SetQTEState(bSuccess ? EQTEState::Completed : EQTEState::Failed);
++    ActivePlayers.Reset();
+diff --git a/Source/BCR/Sources/System/UI_Quest/UI_Subsystem.cpp b/Source/BCR/Sources/System/UI_Quest/UI_Subsystem.cpp
+--- a/Source/BCR/Sources/System/UI_Quest/UI_Subsystem.cpp
++++ b/Source/BCR/Sources/System/UI_Quest/UI_Subsystem.cpp
+@@ -1,0 +2,3 @@
++#include "BCR/Headers/System/UI_Quest/BCRQuestBridge.h"
++#include "Engine/GameInstance.h"
++#include "Engine/World.h"
+@@ -3,6 +6,5 @@
+-/**
+- * @brief Initializes the quest subsystem
+- * @details Sets up the initial state for quest tracking and management
+- * 
+- * @param Collection The subsystem collection for dependency management
+- */
++namespace
++{
++    constexpr const TCHAR* AssemblerActivationTag = TEXT("activate_the_assembler");
++}
++
+@@ -11,2 +13,3 @@
+-	Super::Initialize(Collection);
+-};
++    Super::Initialize(Collection);
++    FWorldDelegates::OnWorldCleanup.AddUObject(this, &UQuest_Subsystem::OnQuestWorldCleanup);
++}
+@@ -14,4 +16,0 @@
+-/**
+- * @brief Cleans up the quest subsystem
+- * @details Performs cleanup when the subsystem is destroyed
+- */
+@@ -20 +19,4 @@
+-	Super::Deinitialize();
++    FWorldDelegates::OnWorldCleanup.RemoveAll(this);
++    QuestBridge = nullptr;
++    QuestWorld.Reset();
++    Super::Deinitialize();
+@@ -23,6 +25,22 @@
+-/**
+- * @brief Loads a new quest line and starts the first quest
+- * @details Finds and activates the first quest in the chain (one with empty PreviousQuestTag)
+- * 
+- * @param NewQuestLine The quest data asset containing the quest line to load
+- */
++void UQuest_Subsystem::OnQuestWorldCleanup(UWorld* World, bool, bool)
++{
++    auto RemoveWorldListeners = [World](auto& Event)
++    {
++        for (UObject* Listener : Event.GetAllObjects())
++        {
++            if (Listener && Listener->GetWorld() == World && !Listener->IsA<UGameInstance>()
++                && !Listener->IsA<UGameInstanceSubsystem>())
++                Event.RemoveAll(Listener);
++        }
++    };
++    RemoveWorldListeners(OnQuestCompleted);
++    RemoveWorldListeners(OnQuestLineCompleted);
++
++    if (QuestWorld.Get() == World)
++    {
++        UE_LOG(LogTemp, Display, TEXT("BCR_QUEST_POLICY_CLEANUP world=%s"), *World->GetName());
++        QuestBridge = nullptr;
++        QuestWorld.Reset();
++    }
++}
++
+@@ -31,10 +49,4 @@
+-	CurrentQuestLine = NewQuestLine->QuestLine;
+-	
+-	for (FQuestStruct Quest : CurrentQuestLine.QuestLineData)
+-	{
+-		if (Quest.PreviousQuestTag == "")
+-		{
+-			CurrentQuest = Quest;
+-			return;
+-		}
+-	}
++    UGameInstance* Instance = GetGameInstance();
++    UWorld* World = Instance ? Instance->GetWorld() : nullptr;
++    if (!IsValid(NewQuestLine) || !World || !World->IsGameWorld())
++        return;
+@@ -42,2 +54,25 @@
+-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("QuestLine Not Started : First Quest Not Found, Check the Previous Tag of the Quest you want First"));
+-	return;
++    const bool bNeedsBridge = !QuestBridge || QuestWorld.Get() != World;
++    UBCRQuestBridge* Bridge = QuestBridge.Get();
++    if (bNeedsBridge)
++    {
++        UClass* Class = FindObject<UClass>(nullptr, TEXT("/Script/UnrealSharp.ManagedQuestProgress_C"));
++        if (!Class || !Class->IsChildOf(UBCRQuestBridge::StaticClass()))
++        {
++            UE_LOG(LogTemp, Error, TEXT("BCR quest policy class is unavailable in %s"), *World->GetName());
++            return;
++        }
++        Bridge = NewObject<UBCRQuestBridge>(this, Class);
++    }
++
++    if (!Bridge->InitializeQuestProgress(NewQuestLine))
++    {
++        UE_LOG(LogTemp, Warning, TEXT("BCR quest policy did not load %s"), *NewQuestLine->GetName());
++        return;
++    }
++    if (bNeedsBridge)
++    {
++        QuestBridge = Bridge;
++        QuestWorld = World;
++        UE_LOG(LogTemp, Display, TEXT("BCR_QUEST_POLICY %s world=%s"),
++            *Bridge->GetClass()->GetPathName(), *World->GetName());
++    }
+@@ -46,6 +81,12 @@
+-/**
+- * @brief Marks a quest as completed and advances to the next quest
+- * @details Validates quest tag, finds next quest in chain, or completes the quest line
+- * 
+- * @param Tag The tag of the quest to complete
+- */
++void UBCRQuestBridge::PublishQuestCompletion(const FString& Tag, bool bLineCompleted)
++{
++    UQuest_Subsystem* Subsystem = GetTypedOuter<UQuest_Subsystem>();
++    if (!Subsystem || Subsystem->QuestBridge.Get() != this)
++        return;
++
++    if (bLineCompleted)
++        Subsystem->OnQuestLineCompleted.Broadcast(Tag);
++    else
++        Subsystem->OnQuestCompleted.Broadcast(Tag);
++}
++
+@@ -54,21 +95,2 @@
+-	if (Tag != CurrentQuest.Tag)  return;
+-
+-	for (FQuestStruct Quest : CurrentQuestLine.QuestLineData)
+-	{
+-		if (Quest.Tag == CurrentQuest.NextQuestTag)
+-		{
+-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Next Quest : Next Quest Found"));
+-			OnQuestCompleted.Broadcast(CurrentQuest.Tag);
+-			CurrentQuest = Quest;
+-			QuestTarget = 0;
+-			
+-			return;
+-		}
+-	}
+-
+-	// If no next quest has been found, the QuestLine is over
+-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("QuestLine Completed : No Next Quest Found"));
+-	OnQuestLineCompleted.Broadcast(CurrentQuestLine.Tag);
+-	CurrentQuest = FQuestStruct();
+-	CurrentQuestLine = FQuestLineStruct();
+-	return;
++    if (QuestBridge)
++        QuestBridge->SubmitQuestEvent(Tag, false);
+@@ -77,6 +98,0 @@
+-/**
+- * @brief Increments progress for the current quest
+- * @details Advances quest progress and auto-completes when target amount is reached
+- * 
+- * @param Tag The tag of the quest to progress
+- */
+@@ -85,12 +101,3 @@
+-	if (Tag != CurrentQuest.Tag)
+-	{
+-		return;
+-	}
+-
+-	QuestTarget++;
+-	
+-	if (QuestTarget == CurrentQuest.Amount)
+-	{
+-		CompleteQuest(Tag);
+-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Quest Completed : Progress is Equal to Amount"));
+-	}
++    // The rope Blueprint still plays its montage. The managed output gate now authorizes progress.
++    if (QuestBridge && Tag != AssemblerActivationTag)
++        QuestBridge->SubmitQuestEvent(Tag, true);
+@@ -99,6 +106,6 @@
+-/**
+- * @brief Gets the description of the current active quest
+- * @details Returns the descriptive text for the currently active quest
+- * 
+- * @return Description string of the current quest
+- */
++void UQuest_Subsystem::NotifyAssemblerOutput()
++{
++    if (QuestBridge)
++        QuestBridge->SubmitQuestEvent(AssemblerActivationTag, true);
++}
++
+@@ -107 +114 @@
+-	return CurrentQuest.Desc;
++    return QuestBridge ? QuestBridge->ReadQuestDescription() : FString();
+@@ -110,6 +116,0 @@
+-/**
+- * @brief Gets the tag identifier of the current active quest
+- * @details Returns the unique tag for the currently active quest
+- * 
+- * @return Tag string of the current quest
+- */
+@@ -118 +119 @@
+-	return CurrentQuest.Tag;
++    return QuestBridge ? QuestBridge->ReadQuestTag() : FString();
+@@ -121,6 +121,0 @@
+-/**
+- * @brief Gets the target amount required to complete the current quest
+- * @details Returns how many actions/items are needed to complete the quest
+- * 
+- * @return Target amount for quest completion
+- */
+@@ -129 +124 @@
+-	return CurrentQuest.Amount;
++    return QuestBridge ? QuestBridge->ReadQuestAmount() : 0;
+@@ -132,6 +126,0 @@
+-/**
+- * @brief Gets the current progress towards quest completion
+- * @details Returns how many actions/items have been completed so far
+- * 
+- * @return Current progress count
+- */
+@@ -140,2 +129,2 @@
+-	return QuestTarget;
+-};
++    return QuestBridge ? QuestBridge->ReadQuestProgress() : 0;
++}
+diff --git a/Source/BCR/Sources/Test/PlayerTests.cpp b/Source/BCR/Sources/Test/PlayerTests.cpp
+--- a/Source/BCR/Sources/Test/PlayerTests.cpp
++++ b/Source/BCR/Sources/Test/PlayerTests.cpp
+@@ -0,0 +1 @@
++#if WITH_EDITOR && WITH_DEV_AUTOMATION_TESTS
+@@ -96,0 +98 @@
++#endif
+diff --git a/Source/BCREditor.Target.cs b/Source/BCREditor.Target.cs
+--- a/Source/BCREditor.Target.cs
++++ b/Source/BCREditor.Target.cs
+@@ -9,2 +9,2 @@
+-		DefaultBuildSettings = BuildSettingsVersion.V5;
+-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
++		DefaultBuildSettings = BuildSettingsVersion.Latest;
++		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;

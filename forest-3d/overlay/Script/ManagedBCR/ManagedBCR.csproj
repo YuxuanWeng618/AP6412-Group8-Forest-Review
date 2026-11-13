@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <Import Project="..\..\Plugins\UnrealSharp\UnrealSharp.Shared.props" />
+  <ItemGroup>
+    <Reference Include="BCR">
+      <HintPath>..\..\Binaries\Managed\$(TargetFramework)\BCR.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

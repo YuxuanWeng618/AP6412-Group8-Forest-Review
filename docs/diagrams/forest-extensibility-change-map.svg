@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 507 618" width="507" height="618" role="img">
+  <title>版本演化与变更影响图</title>
+  <desc>2D 回溯基线、3D 最终共享接入、两版规则对应、Change Map 与可复算 CCR。</desc>
+  <rect x="0" y="0" width="507" height="618" rx="0" fill="#FFFFFF" stroke="none" stroke-width="0.7" />
+  <text x="0" y="12" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="11" font-weight="bold" text-anchor="start">版本演化</text>
+  <g id="reference">
+    <rect x="0" y="22" width="111" height="53" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="9" y="37" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">3D 已验证参考</text>
+    <text x="9" y="51" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">197a19c</text>
+    <text x="9" y="65" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">原 3D 工坊</text>
+  </g>
+  <polyline points="113,49 129,49" fill="none" stroke="#826032" stroke-width="1" />
+  <polyline points="125.00,51.50 129.00,49.00 125.00,46.50" fill="none" stroke="#826032" stroke-width="1" />
+  <g id="baseline">
+    <rect x="132" y="22" width="111" height="53" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+    <text x="141" y="37" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">2D 回溯基线</text>
+    <text x="141" y="51" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">2d-baseline</text>
+    <text x="141" y="65" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">冻结 eeb7bd4</text>
+  </g>
+  <polyline points="245,49 261,49" fill="none" stroke="#826032" stroke-width="1" />
+  <polyline points="257.00,51.50 261.00,49.00 257.00,46.50" fill="none" stroke="#826032" stroke-width="1" />
+  <g id="menu">
+    <rect x="264" y="22" width="111" height="53" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="273" y="37" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">2D 菜单迭代</text>
+    <text x="273" y="51" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">2d-v1.1</text>
+    <text x="273" y="65" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">演示与退出</text>
+  </g>
+  <polyline points="377,49 393,49" fill="none" stroke="#826032" stroke-width="1" />
+  <polyline points="389.00,51.50 393.00,49.00 389.00,46.50" fill="none" stroke="#826032" stroke-width="1" />
+  <g id="final">
+    <rect x="396" y="22" width="111" height="53" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="405" y="37" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">3D 共享接入</text>
+    <text x="405" y="51" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">3d-final</text>
+    <text x="405" y="65" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">合并 0faba23</text>
+  </g>
+  <text x="0" y="90" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="normal" text-anchor="start">先有 3D 参考，再建立 2D 回溯基线。冻结之后，3D 接入同一个规则头文件。</text>
+  <polyline points="0,103 507,103" fill="none" stroke="#C0CDC2" stroke-width="0.65" />
+  <text x="0" y="121" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="11" font-weight="bold" text-anchor="start">两版规则对应</text>
+  <text x="130" y="121" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="normal" text-anchor="start">共享源文件  WorkshopSession.h</text>
+  <rect x="0" y="132" width="507" height="22" rx="4" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+  <text x="9" y="146" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="bold" text-anchor="start">2D 基线规则</text>
+  <text x="252" y="146" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="bold" text-anchor="middle">最终共享 C++ 规则</text>
+  <text x="364" y="146" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="bold" text-anchor="start">3D 接入后的用途</text>
+  <g id="rule-slots">
+    <rect x="0" y="157" width="507" height="21" rx="2" fill="#F1F4F2" stroke="none" stroke-width="0.7" />
+    <text x="9" y="171" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="normal" text-anchor="start">StationPair</text>
+    <polyline points="134,168 151,168" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="147.00,170.50 151.00,168.00 147.00,165.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="252" y="171" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="middle">StationPair</text>
+    <polyline points="342,168 359,168" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="355.00,170.50 359.00,168.00 355.00,165.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="364" y="171" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="normal" text-anchor="start">两人分别占位</text>
+  </g>
+  <g id="rule-recipe">
+    <rect x="0" y="180" width="507" height="21" rx="2" fill="#FFFFFF" stroke="none" stroke-width="0.7" />
+    <text x="9" y="194" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="normal" text-anchor="start">PlankRecipe</text>
+    <polyline points="134,191 151,191" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="147.00,193.50 151.00,191.00 147.00,188.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="252" y="194" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="middle">ItemRecipe</text>
+    <polyline points="342,191 359,191" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="355.00,193.50 359.00,191.00 355.00,188.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="364" y="194" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="normal" text-anchor="start">预约材料、确认消耗</text>
+  </g>
+  <g id="rule-ropes">
+    <rect x="0" y="203" width="507" height="21" rx="2" fill="#F1F4F2" stroke="none" stroke-width="0.7" />
+    <text x="9" y="217" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="normal" text-anchor="start">WorkshopSession::Pull</text>
+    <polyline points="134,214 151,214" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="147.00,216.50 151.00,214.00 147.00,211.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="252" y="217" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="middle">RopePair</text>
+    <polyline points="342,214 359,214" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="355.00,216.50 359.00,214.00 355.00,211.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="364" y="217" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="normal" text-anchor="start">验证双人拉绳</text>
+  </g>
+  <g id="rule-output">
+    <rect x="0" y="226" width="507" height="21" rx="2" fill="#FFFFFF" stroke="none" stroke-width="0.7" />
+    <text x="9" y="240" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">2D 产出无失败分支</text>
+    <polyline points="134,237 151,237" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="147.00,239.50 151.00,237.00 147.00,234.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="252" y="240" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="9" font-weight="normal" text-anchor="middle">OutputGate</text>
+    <polyline points="342,237 359,237" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <polyline points="355.00,239.50 359.00,237.00 355.00,234.50" fill="none" stroke="#475A52" stroke-width="0.75" />
+    <text x="364" y="240" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.9" font-weight="normal" text-anchor="start">一次结算与失败重试</text>
+  </g>
+  <text x="0" y="259" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.7" font-weight="normal" text-anchor="start">订单阶段与 QTE 节奏仍分别实现。OutputGate 用于 3D 运行，2D 侧有规则测试。</text>
+  <polyline points="0,273 507,273" fill="none" stroke="#C0CDC2" stroke-width="0.65" />
+  <text x="0" y="290" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="11" font-weight="bold" text-anchor="start">Change Map</text>
+  <text x="108" y="290" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.8" font-weight="normal" text-anchor="start">2d-baseline → 3d-final</text>
+  <g id="kept">
+    <rect x="0" y="301" width="248" height="53" rx="5" fill="#E8F2EA" stroke="#94AE99" stroke-width="0.7" />
+    <text x="9" y="316" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">保持</text>
+    <text x="9" y="330" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">FPlanarWorld / QuestProgress</text>
+    <text x="9" y="344" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">共享接入保留 2D 表现和 3D 的 C# 任务规则。</text>
+  </g>
+  <g id="modified">
+    <rect x="259" y="301" width="248" height="53" rx="5" fill="#F1F4F2" stroke="#A9BBB1" stroke-width="0.7" />
+    <text x="268" y="316" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">修改</text>
+    <text x="268" y="330" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">WorkshopSession.h / UBCRWorkshopRulesBridge</text>
+    <text x="268" y="344" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">扩展核心，桥接改用 C++，保留 UE 调用签名。</text>
+  </g>
+  <g id="added">
+    <rect x="0" y="361" width="248" height="53" rx="5" fill="#F8F1E5" stroke="#C2A779" stroke-width="0.7" />
+    <text x="9" y="376" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">新增</text>
+    <text x="9" y="390" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">ItemRecipe / RopePair / OutputGate</text>
+    <text x="9" y="404" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">补齐配方预留、拉绳失效与产出失败重试。</text>
+  </g>
+  <g id="removed">
+    <rect x="259" y="361" width="248" height="53" rx="5" fill="#F8EFE9" stroke="#C8A394" stroke-width="0.7" />
+    <text x="268" y="376" fill="#854E3A" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9.3" font-weight="bold" text-anchor="start">删除</text>
+    <text x="268" y="390" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.35" font-weight="normal" text-anchor="start">ManagedWorkshopRules.cs</text>
+    <text x="268" y="404" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.6" font-weight="normal" text-anchor="start">旧 C# 工坊实现移除，QTE 仍使用 WorkstationSlots。</text>
+  </g>
+  <polyline points="0,426 507,426" fill="none" stroke="#C0CDC2" stroke-width="0.65" />
+  <text x="0" y="444" fill="#285645" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="10.5" font-weight="bold" text-anchor="start">设计推演 · 配方三段改四段（待验证）</text>
+  <g id="configure">
+    <rect x="0" y="454" width="153" height="37" rx="5" fill="#F9F5EC" stroke="#CDB68F" stroke-width="0.7" />
+    <text x="9" y="468" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="start">调整数量</text>
+    <text x="9" y="483" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.4" font-weight="normal" text-anchor="start">3D 改配方表与任务目标</text>
+  </g>
+  <polyline points="156,473 174,473" fill="none" stroke="#826032" stroke-width="1" stroke-dasharray="3 2" />
+  <polyline points="170.00,475.50 174.00,473.00 170.00,470.50" fill="none" stroke="#826032" stroke-width="1" />
+  <g id="baseline-change">
+    <rect x="177" y="454" width="153" height="37" rx="5" fill="#F9F5EC" stroke="#CDB68F" stroke-width="0.7" />
+    <text x="186" y="468" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="start">核对 2D</text>
+    <text x="186" y="483" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.4" font-weight="normal" text-anchor="start">PlankRecipe 的上限也需调整</text>
+  </g>
+  <polyline points="333,473 351,473" fill="none" stroke="#826032" stroke-width="1" stroke-dasharray="3 2" />
+  <polyline points="347.00,475.50 351.00,473.00 347.00,470.50" fill="none" stroke="#826032" stroke-width="1" />
+  <g id="test">
+    <rect x="354" y="454" width="153" height="37" rx="5" fill="#F9F5EC" stroke="#CDB68F" stroke-width="0.7" />
+    <text x="363" y="468" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="9" font-weight="bold" text-anchor="start">验证边界</text>
+    <text x="363" y="483" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.4" font-weight="normal" text-anchor="start">第 3 段未满，第 4 段计满</text>
+  </g>
+  <text x="0" y="506" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.7" font-weight="normal" text-anchor="start">结算由核心负责，UE 适配层处理投料箱和碰撞。回归需同时覆盖重复投料。</text>
+  <g id="ccr">
+    <rect x="0" y="520" width="507" height="91" rx="5" fill="#F9F5EC" stroke="#CDB68F" stroke-width="0.7" />
+    <text x="11" y="540" fill="#826032" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="10.3" font-weight="bold" text-anchor="start">正式 CCR</text>
+    <text x="160" y="540" fill="#21372F" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="10.2" font-weight="normal" text-anchor="start">(99 + 7) / 134</text>
+    <text x="400" y="541" fill="#285645" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="17" font-weight="normal" text-anchor="start">79.1%</text>
+    <text x="11" y="558" fill="#21372F" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.7" font-weight="normal" text-anchor="start">核心范围为 2D 基线 Domain 目录。1 个文件共 134 行，新增 99 行，删除 7 行。</text>
+    <text x="11" y="575" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.7" font-weight="normal" text-anchor="start">按核心增删行计数。新增行主要用于配方预留、双绳校验和产出重试。</text>
+    <text x="11" y="592" fill="#475A52" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="8.5" font-weight="normal" text-anchor="start">复算</text>
+    <text x="38" y="592" fill="#475A52" font-family="Consolas, DejaVu Sans Mono, monospace" font-size="8.5" font-weight="normal" text-anchor="start">powershell -ExecutionPolicy Bypass -File docs/route-b/ccr.ps1</text>
+  </g>
+</svg>

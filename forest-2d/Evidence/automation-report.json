@@ -1,0 +1,74 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-H3CTSR1",
+			"instance": "D39D30A44E57C3C4C583FFA625603326",
+			"instanceName": "DESKTOP-H3CTSR1-19268",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 10 (22H2) [10.0.19045.6466] ",
+			"model": "Default",
+			"gPU": "Intel(R) UHD Graphics",
+			"cPUModel": "11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz",
+			"rAMInGB": 16,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.11.12-04.32.18",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.049228895455598831,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "OrderAndInvalidActions",
+			"fullTestPath": "Forest2D.Rules.OrderAndInvalidActions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D39D30A44E57C3C4C583FFA625603326"
+			],
+			"duration": 0.016665197908878326,
+			"dateTime": "2026.11.12-04.32.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CompleteOrderWithoutTeleport",
+			"fullTestPath": "Forest2D.World.CompleteOrderWithoutTeleport",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D39D30A44E57C3C4C583FFA625603326"
+			],
+			"duration": 0.016355697065591812,
+			"dateTime": "2026.11.12-04.32.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MovementPauseAndItems",
+			"fullTestPath": "Forest2D.World.MovementPauseAndItems",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D39D30A44E57C3C4C583FFA625603326"
+			],
+			"duration": 0.016208000481128693,
+			"dateTime": "2026.11.12-04.32.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

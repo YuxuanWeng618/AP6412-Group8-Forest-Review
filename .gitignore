@@ -1,0 +1,9 @@
+/build-3d/
+/.forest-3d-*/
+**/Binaries/
+**/DerivedDataCache/
+**/Intermediate/
+**/Saved/
+**/obj/
+**/bin/
+**/.vs/

@@ -1,0 +1,36 @@
+{
+  "engine": "Unreal Engine 5.8.1 (CL 56057345)",
+  "commit": "0faba235a9f268eaacf43a521ba1b4e702b3f90c",
+  "configuration": "Forest2DEditor Win64 Development",
+  "build": "Succeeded",
+  "succeeded": 4,
+  "succeededWithWarnings": 0,
+  "failed": 0,
+  "notRun": 0,
+  "tests": [
+    {
+      "fullTestPath": "Forest2D.Rules.OrderAndInvalidActions",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "fullTestPath": "Forest2D.Rules.SharedRecipeRopesOutput",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "fullTestPath": "Forest2D.World.CompleteOrderWithoutTeleport",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "fullTestPath": "Forest2D.World.MovementPauseAndItems",
+      "state": "Success",
+      "errors": 0,
+      "warnings": 0
+    }
+  ]
+}
